@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader with Text-to-Speech</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        button, select, input {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #pdf-viewer {
+            width: 100%;
+            height: 70vh;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+        #pdf-container {
+            position: relative;
+        }
+        #text-content {
+            white-space: pre-wrap;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: yellow;
+            transition: background-color 0.3s;
+        }
+        .status {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab-button {
+            padding: 8px 16px;
+            background-color: #ecf0f1;
+            border: none;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Reader with Text-to-Speech</h1>
+        
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="switchTab('view-tab')">PDF View</button>
+            <button class="tab-button" onclick="switchTab('text-tab')">Extracted Text</button>
+        </div>
+        
+        <div class="controls">
+            <input type="file" id="pdf-input" accept=".pdf">
+            <button id="read-btn" onclick="readAloud()" disabled>Read Aloud</button>
+            <button id="pause-btn" onclick="pauseReading()" disabled>Pause</button>
+            <button id="resume-btn" onclick="resumeReading()" disabled>Resume</button>
+            <button id="stop-btn" onclick="stopReading()" disabled>Stop</button>
+            <select id="voiceSelect"></select>
+            <div>
+                Speed: <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
+                <span id="rate-value">1</span>
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="view-tab">
+            <div id="pdf-container">
+                <div id="pdf-viewer"></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="text-tab">
+            <div id="text-content"></div>
+        </div>
+        
+        <div class="status" id="status">Please upload a PDF file</div>
+    </div>
+<div class= "tag left">By: Iyiola Adedamola Richard</div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader with Text-to-Speech</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        button, select, input {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        #pdf-viewer {
+            width: 100%;
+            height: 70vh;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+        #pdf-container {
+            position: relative;
+        }
+        #text-content {
+            white-space: pre-wrap;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            background-color: yellow;
+            transition: background-color 0.3s;
+        }
+        .status {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        .tab-button {
+            padding: 8px 16px;
+            background-color: #ecf0f1;
+            border: none;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        .tag {
+            position: absolute;
+             background: white;
+              padding: 5px;
+              border-radius: 5px;
+             bottom: 10px;
+
+        }
+
+.tag.left {
+left: 3px;
+}
+.tag.right {
+right: 3px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF Reader</h1>
+        
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="switchTab('view-tab')">PDF View</button>
+            <button class="tab-button" onclick="switchTab('text-tab')">Extracted Text</button>
+        </div>
+        
+        <div class="controls">
+            <input type="file" id="pdf-input" accept=".pdf">
+            <button id="read-btn" onclick="readAloud()" disabled>Read Aloud</button>
+            <button id="pause-btn" onclick="pauseReading()" disabled>Pause</button>
+            <button id="resume-btn" onclick="resumeReading()" disabled>Resume</button>
+            <button id="stop-btn" onclick="stopReading()" disabled>Stop</button>
+            <select id="voiceSelect"></select>
+            <div>
+                Speed: <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
+                <span id="rate-value">1</span>
+            </div>
+        </div>
+        
+        <div class="tab-content active" id="view-tab">
+            <div id="pdf-container">
+                <div id="pdf-viewer"></div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="text-tab">
+            <div id="text-content"></div>
+        </div>
+        
+        <div class="status" id="status">Please upload a PDF file</div>
+    </div>
+<div class="tag left">By: Iyiola Adedamola Richard</div>
+<div class="tag right"> Source Code Community</div>
+        // PDF.js configuration
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
+        
+        // DOM elements
+        const pdfInput = document.getElementById('pdf-input');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const textContent = document.getElementById('text-content');
+        const statusEl = document.getElementById('status');
+        const rateInput = document.getElementById('rate');
+        const rateValue = document.getElementById('rate-value');
+        
+        // Speech synthesis variables
+        let voices = [];
+        let currentUtterance = null;
+        let extractedText = '';
+        let currentSentenceIndex = 0;
+        let sentences = [];
+        
+        // Initialize voices
+        function populateVoiceList() {
+            voices = window.speechSynthesis.getVoices();
+            const voiceSelect = document.getElementById("voiceSelect");
+            voiceSelect.innerHTML = '';
+            
+            // Filter for female voices (heuristic approach)
+            const femaleVoices = voices.filter(voice => 
+                voice.name.toLowerCase().includes('female') || 
+                voice.name.includes('Woman') ||
+                voice.name.includes('woman') ||
+                (voice.lang.includes('en') && !voice.default)
+            );
+            
+            // Fallback to all voices if no female voices found
+            const voicesToShow = femaleVoices.length > 0 ? femaleVoices : voices;
+            
+            voicesToShow.forEach(voice => {
+                const option = document.createElement("option");
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute("data-name", voice.name);
+                voiceSelect.appendChild(option);
+            });
+            
+            // Enable controls if voices are available
+            if (voices.length > 0) {
+                document.getElementById('read-btn').disabled = false;
+            }
+        }
+        
+        // Handle PDF file upload
+        pdfInput.addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            statusEl.textContent = "Loading PDF...";
+            
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                
+                // Clear previous content
+                pdfViewer.innerHTML = '';
+                textContent.innerHTML = '';
+                extractedText = '';
+                
+                // Extract text from all pages
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    extractedText += pageText + '\n\n';
+                }
+                
+                // Display extracted text
+                textContent.textContent = extractedText;
+                
+                // Split text into sentences for reading
+                sentences = extractedText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+                
+                // Render PDF
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    pdfViewer.appendChild(canvas);
+                    
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                }
+                
+                statusEl.textContent = `PDF loaded (${pdf.numPages} pages)`;
+                document.getElementById('read-btn').disabled = false;
+                
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                statusEl.textContent = "Error loading PDF: " + error.message;
+            }
+        });
+        
+        // Read the extracted text aloud
+        function readAloud() {
+            if (sentences.length === 0) {
+                statusEl.textContent = "No text to read";
+                return;
+            }
+            
+            currentSentenceIndex = 0;
+            readNextSentence();
+            
+            // Update button states
+            document.getElementById('read-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = false;
+            document.getElementById('stop-btn').disabled = false;
+            document.getElementById('resume-btn').disabled = true;
+            
+            statusEl.textContent = "Reading...";
+        }
+        
+        function readNextSentence() {
+            if (currentSentenceIndex >= sentences.length) {
+                stopReading();
+                statusEl.textContent = "Reading complete";
+                return;
+            }
+            
+            const sentence = sentences[currentSentenceIndex];
+            highlightCurrentSentence(sentence);
+            
+            const utterance = new SpeechSynthesisUtterance(sentence);
+            
+            // Set voice if selected
+            const voiceSelect = document.getElementById("voiceSelect");
+            const selectedOption = voiceSelect.selectedOptions[0]?.getAttribute("data-name");
+            if (selectedOption) {
+                utterance.voice = voices.find(voice => voice.name === selectedOption);
+            }
+            
+            // Set speech rate
+            utterance.rate = parseFloat(rateInput.value);
+            
+            // Handle events
+            utterance.onend = function() {
+                removeHighlight();
+                currentSentenceIndex++;
+                readNextSentence();
+            };
+            
+            utterance.onerror = function(event) {
+                console.error("Speech error:", event);
+                statusEl.textContent = "Error: " + event.error;
+            };
+            
+            currentUtterance = utterance;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        function pauseReading() {
+            if (currentUtterance) {
+                window.speechSynthesis.pause();
+                document.getElementById('pause-btn').disabled = true;
+                document.getElementById('resume-btn').disabled = false;
+                statusEl.textContent = "Paused";
+            }
+        }
+        
+        function resumeReading() {
+            if (currentUtterance) {
+                window.speechSynthesis.resume();
+                document.getElementById('pause-btn').disabled = false;
+                document.getElementById('resume-btn').disabled = true;
+                statusEl.textContent = "Reading...";
+            }
+        }
+        
+        function stopReading(){
+            window.speechSynthesis.cancel();
+            currentUtterance = null;
+            removeHighlight();
+            
+            // Update button states
+            document.getElementById('read-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+            document.getElementById('resume-btn').disabled = true;
+            document.getElementById('stop-btn').disabled = true;
+        }
+        
+        function highlightCurrentSentence(sentence) {
+            // Remove previous highlights
+            removeHighlight();
+            
+            // Highlight in text view
+            const text = textContent.textContent;
+            const startIndex = text.indexOf(sentence);
+            if (startIndex !== -1) {
+                const range = document.createRange();
+                range.setStart(textContent.firstChild, startIndex);
+                range.setEnd(textContent.firstChild, startIndex + sentence.length);
+                
+                const highlight = document.createElement('span');
+                highlight.className = 'highlight';
+                range.surroundContents(highlight);
+                
+                // Scroll to highlight
+                highlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function removeHighlight() {
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+        }
+        
+        // Rate control
+        rateInput.addEventListener('input', function() {
+            rateValue.textContent = this.value;
+            if (currentUtterance) {
+                currentUtterance.rate = parseFloat(this.value);
+            }
+        });
+        
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Initialize voices
+        speechSynthesis.onvoiceschanged = populateVoiceList;
+        
+        // Check if voices are already loaded
+        if (speechSynthesis.getVoices().length > 0) {
+            populateVoiceList();
+        } else {
+            setTimeout(populateVoiceList, 1000);
+        }
+    </script>
+</body>
+</html>
+    <script>
+        // PDF.js configuration
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
+        
+        // DOM elements
+        const pdfInput = document.getElementById('pdf-input');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const textContent = document.getElementById('text-content');
+        const statusEl = document.getElementById('status');
+        const rateInput = document.getElementById('rate');
+        const rateValue = document.getElementById('rate-value');
+        
+        // Speech synthesis variables
+        let voices = [];
+        let currentUtterance = null;
+        let extractedText = '';
+        let currentSentenceIndex = 0;
+        let sentences = [];
+        
+        // Initialize voices
+        function populateVoiceList() {
+            voices = window.speechSynthesis.getVoices();
+            const voiceSelect = document.getElementById("voiceSelect");
+            voiceSelect.innerHTML = '';
+            
+            // Filter for female voices (heuristic approach)
+            const femaleVoices = voices.filter(voice => 
+                voice.name.toLowerCase().includes('female') || 
+                voice.name.includes('Woman') ||
+                voice.name.includes('woman') ||
+                (voice.lang.includes('en') && !voice.default)
+            );
+            
+            // Fallback to all voices if no female voices found
+            const voicesToShow = femaleVoices.length > 0 ? femaleVoices : voices;
+            
+            voicesToShow.forEach(voice => {
+                const option = document.createElement("option");
+                option.textContent = `${voice.name} (${voice.lang})`;
+                option.setAttribute("data-name", voice.name);
+                voiceSelect.appendChild(option);
+            });
+            
+            // Enable controls if voices are available
+            if (voices.length > 0) {
+                document.getElementById('read-btn').disabled = false;
+            }
+        }
+        
+        // Handle PDF file upload
+        pdfInput.addEventListener('change', async function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            statusEl.textContent = "Loading PDF...";
+            
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+                
+                // Clear previous content
+                pdfViewer.innerHTML = '';
+                textContent.innerHTML = '';
+                extractedText = '';
+                
+                // Extract text from all pages
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const textContent = await page.getTextContent();
+                    const pageText = textContent.items.map(item => item.str).join(' ');
+                    extractedText += pageText + '\n\n';
+                }
+                
+                // Display extracted text
+                textContent.textContent = extractedText;
+                
+                // Split text into sentences for reading
+                sentences = extractedText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+                
+                // Render PDF
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    
+                    pdfViewer.appendChild(canvas);
+                    
+                    await page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    }).promise;
+                }
+                
+                statusEl.textContent = `PDF loaded (${pdf.numPages} pages)`;
+                document.getElementById('read-btn').disabled = false;
+                
+            } catch (error) {
+                console.error("Error loading PDF:", error);
+                statusEl.textContent = "Error loading PDF: " + error.message;
+            }
+        });
+        
+        // Read the extracted text aloud
+        function readAloud() {
+            if (sentences.length === 0) {
+                statusEl.textContent = "No text to read";
+                return;
+            }
+            
+            currentSentenceIndex = 0;
+            readNextSentence();
+            
+            // Update button states
+            document.getElementById('read-btn').disabled = true;
+            document.getElementById('pause-btn').disabled = false;
+            document.getElementById('stop-btn').disabled = false;
+            document.getElementById('resume-btn').disabled = true;
+            
+            statusEl.textContent = "Reading...";
+        }
+        
+        function readNextSentence() {
+            if (currentSentenceIndex >= sentences.length) {
+                stopReading();
+                statusEl.textContent = "Reading complete";
+                return;
+            }
+            
+            const sentence = sentences[currentSentenceIndex];
+            highlightCurrentSentence(sentence);
+            
+            const utterance = new SpeechSynthesisUtterance(sentence);
+            
+            // Set voice if selected
+            const voiceSelect = document.getElementById("voiceSelect");
+            const selectedOption = voiceSelect.selectedOptions[0]?.getAttribute("data-name");
+            if (selectedOption) {
+                utterance.voice = voices.find(voice => voice.name === selectedOption);
+            }
+            
+            // Set speech rate
+            utterance.rate = parseFloat(rateInput.value);
+            
+            // Handle events
+            utterance.onend = function() {
+                removeHighlight();
+                currentSentenceIndex++;
+                readNextSentence();
+            };
+            
+            utterance.onerror = function(event) {
+                console.error("Speech error:", event);
+                statusEl.textContent = "Error: " + event.error;
+            };
+            
+            currentUtterance = utterance;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        function pauseReading() {
+            if (currentUtterance) {
+                window.speechSynthesis.pause();
+                document.getElementById('pause-btn').disabled = true;
+                document.getElementById('resume-btn').disabled = false;
+                statusEl.textContent = "Paused";
+            }
+        }
+        
+        function resumeReading() {
+            if (currentUtterance) {
+                window.speechSynthesis.resume();
+                document.getElementById('pause-btn').disabled = false;
+                document.getElementById('resume-btn').disabled = true;
+                statusEl.textContent = "Reading...";
+            }
+        }
+        
+        function stopReading() {
+            window.speechSynthesis.cancel();
+            currentUtterance = null;
+            removeHighlight();
+            
+            // Update button states
+            document.getElementById('read-btn').disabled = false;
+            document.getElementById('pause-btn').disabled = true;
+            document.getElementById('resume-btn').disabled = true;
+            document.getElementById('stop-btn').disabled = true;
+        }
+        
+        function highlightCurrentSentence(sentence) {
+            // Remove previous highlights
+            removeHighlight();
+            
+            // Highlight in text view
+            const text = textContent.textContent;
+            const startIndex = text.indexOf(sentence);
+            if (startIndex !== -1) {
+                const range = document.createRange();
+                range.setStart(textContent.firstChild, startIndex);
+                range.setEnd(textContent.firstChild, startIndex + sentence.length);
+                
+                const highlight = document.createElement('span');
+                highlight.className = 'highlight';
+                range.surroundContents(highlight);
+                
+                // Scroll to highlight
+                highlight.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function removeHighlight() {
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(highlight => {
+                const parent = highlight.parentNode;
+                parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
+                parent.normalize();
+            });
+        }
+        
+        // Rate control
+        rateInput.addEventListener('input', function() {
+            rateValue.textContent = this.value;
+            if (currentUtterance) {
+                currentUtterance.rate = parseFloat(this.value);
+            }
+        });
+        
+        // Tab switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Initialize voices
+        speechSynthesis.onvoiceschanged = populateVoiceList;
+        
+        // Check if voices are already loaded
+        if (speechSynthesis.getVoices().length > 0) {
+            populateVoiceList();
+        } else {
+            setTimeout(populateVoiceList, 1000);
+        }
+    </script>
+</body>
+</html>
