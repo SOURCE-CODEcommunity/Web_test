@@ -48,16 +48,19 @@
         }
         button {
             background-color: #3498db;
+            background-color: #aaaaaa;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            box-shadow: 1px 1px 10px #00000042
             transition: background-color 0.3s;
         }
         button:hover {
             background-color: #2980b9;
+            background-color: #999;
         }
         .button-group {
             display: flex;
@@ -100,6 +103,19 @@
         }
         #translateToggle {
             margin-right: 8px;
+        }
+
+        .tag {
+            position: fixed;
+            left: 3px;
+            bottom: 10px;
+            background-color: #fefaff;
+            box-shadow: 1px 1px 10px #d75eff40;
+            font-size: 14px;
+        }
+
+        tag.right {
+           right: 3px;
         }
     </style>
 </head>
@@ -160,7 +176,8 @@
     </div>
     
     <div id="status" class="status"></div>
-    <div class="tag left">By: Iyiola Adedamola Richard</div>
+    <div class="tag left">By: Iyiola Adedamola Richard </div>
+    <div class="tag right">@Source-CodeCommunity2025 </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const textInput = document.getElementById('textToSpeak');
