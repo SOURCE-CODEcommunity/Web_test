@@ -3,303 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speak for Me</title>
+    <title>Speak for me</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            line-height: 1.6;
-            background-color: #f0f2f5;
+            background-color: #f5f5f5;
         }
         h1 {
             color: #2c3e50;
             text-align: center;
-            margin-bottom: 30px;
-        }
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .control-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #34495e;
         }
         textarea {
             width: 100%;
-            height: 120px;
-            margin-bottom: 15px;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            resize: vertical;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        textarea:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        select {
-            width: 100%;
+            height: 150px;
             padding: 10px;
             margin-bottom: 15px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
         }
-        .slider-container {
+        .controls {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 20px;
         }
-        .slider-container input[type="range"] {
-            flex-grow: 1;
+        .control-group {
+            flex: 1;
+            min-width: 200px;
         }
-        .slider-value {
-            min-width: 40px;
-            text-align: center;
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
         }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
         button {
             background-color: #3498db;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
-            flex: 1;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #2980b9;
-            transform: translateY(-2px);
         }
-        button:active {
-            transform: translateY(0);
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
-        button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
+        #rateValue, #pitchValue {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
         }
         .status {
             margin-top: 20px;
             padding: 10px;
             border-radius: 4px;
-            background-color: #f8f9fa;
-            text-align: center;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        .translation-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+        }
+        #translatedText {
             font-style: italic;
-            color: #7f8c8d;
+            color: #2c3e50;
+        }
+        .checkbox-group {
+            margin: 15px 0;
+        }
+        #translateToggle {
+            margin-right: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Speak for Me</h1>
-        
+    <h1>Speak for me😁</h1>
+    
+    <textarea id="textToSpeak" placeholder="Enter text you want to speak..."></textarea>
+    
+    <div class="checkbox-group">
+        <input type="checkbox" id="translateToggle" checked>
+        <label for="translateToggle">Translate text before speaking</label>
+    </div>
+    
+    <div class="controls">
         <div class="control-group">
-            <label for="textToSpeak">Enter Text:</label>
-            <textarea id="textToSpeak" placeholder="Type or paste the text you want to hear...">Hello, this is your personal text-to-speech assistant. I can speak any text you type here.</textarea>
+            <label for="sourceLanguage">Source Language:</label>
+            <select id="sourceLanguage">
+                <option value="auto">Auto-detect</option>
+                <!-- Languages will be added by JavaScript -->
+            </select>
         </div>
         
         <div class="control-group">
-            <label for="voiceSelect">Select Voice:</label>
+            <label for="targetLanguage">Target Language:</label>
+            <select id="targetLanguage">
+                <!-- Languages will be added by JavaScript -->
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="voiceSelect">Voice:</label>
             <select id="voiceSelect"></select>
         </div>
+    </div>
+    
+    <div class="controls">
+        <div class="control-group">
+            <label for="rate">Speed: <span id="rateValue">1</span></label>
+            <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
+        </div>
         
         <div class="control-group">
-            <label>Speech Settings:</label>
-            <div class="slider-container">
-                <span>Speed:</span>
-                <input type="range" id="rate" min="0.5" max="2" step="0.1" value="1">
-                <span class="slider-value" id="rate-value">1</span>
-            </div>
-            <div class="slider-container">
-                <span>Pitch:</span>
-                <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1">
-                <span class="slider-value" id="pitch-value">1</span>
-            </div>
-            <div class="slider-container">
-                <span>Volume:</span>
-                <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
-                <span class="slider-value" id="volume-value">1</span>
-            </div>
+            <label for="pitch">Pitch: <span id="pitchValue">1</span></label>
+            <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1">
         </div>
-        
-        <div class="button-group">
-            <button id="speak-btn" onclick="speak()">Speak</button>
-            <button id="pause-btn" onclick="pauseSpeech()" disabled>Pause</button>
-            <button id="resume-btn" onclick="resumeSpeech()" disabled>Resume</button>
-            <button id="stop-btn" onclick="stopSpeech()" disabled>Stop</button>
-        </div>
-        
-        <div class="status" id="status">Ready to speak</div>
     </div>
-
+    
+    <div class="button-group">
+        <button id="speakButton">Speak</button>
+        <button id="pauseButton">Pause</button>
+        <button id="resumeButton">Resume</button>
+        <button id="stopButton">Stop</button>
+    </div>
+    
+    <div class="translation-container" id="translationContainer" style="display: none;">
+        <strong>Translated text:</strong>
+        <div id="translatedText"></div>
+    </div>
+    
+    <div id="status" class="status"></div>
+    <div class="tag left">By: Iyiola Adedamola Richard</div>
     <script>
-        // Global variables
-        let voices = [];
-        let currentUtterance = null;
-        
-        // Initialize the application
-        function init() {
-            populateVoiceList();
-            setupEventListeners();
-        }
-        
-        // Populate voice list
-        function populateVoiceList() {
-            voices = window.speechSynthesis.getVoices();
-            const voiceSelect = document.getElementById("voiceSelect");
-            voiceSelect.innerHTML = '';
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('textToSpeak');
+            const voiceSelect = document.getElementById('voiceSelect');
+            const sourceLanguageSelect = document.getElementById('sourceLanguage');
+            const targetLanguageSelect = document.getElementById('targetLanguage');
+            const rateInput = document.getElementById('rate');
+            const pitchInput = document.getElementById('pitch');
+            const rateValue = document.getElementById('rateValue');
+            const pitchValue = document.getElementById('pitchValue');
+            const speakButton = document.getElementById('speakButton');
+            const pauseButton = document.getElementById('pauseButton');
+            const resumeButton = document.getElementById('resumeButton');
+            const stopButton = document.getElementById('stopButton');
+            const statusDiv = document.getElementById('status');
+            const translateToggle = document.getElementById('translateToggle');
+            const translationContainer = document.getElementById('translationContainer');
+            const translatedTextDiv = document.getElementById('translatedText');
             
-            // Add all available voices
-            voices.forEach(voice => {
-                const option = document.createElement("option");
-                option.textContent = `${voice.name} (${voice.lang})`;
-                option.setAttribute("data-name", voice.name);
-                voiceSelect.appendChild(option);
+            let speechSynthesis = window.speechSynthesis;
+            let voices = [];
+            let utterance = null;
+            
+            // Supported languages for translation (LibreTranslate compatible codes)
+            const languages = [
+                {code: 'en', name: 'English'},
+                {code: 'es', name: 'Spanish'},
+                {code: 'fr', name: 'French'},
+                {code: 'de', name: 'German'},
+                {code: 'it', name: 'Italian'},
+                {code: 'pt', name: 'Portuguese'},
+                {code: 'ru', name: 'Russian'},
+                {code: 'zh', name: 'Chinese'},
+                {code: 'ja', name: 'Japanese'},
+                {code: 'ar', name: 'Arabic'},
+                {code: 'hi', name: 'Hindi'},
+                {code: 'ko', name: 'Korean'},
+                {code: 'nl', name: 'Dutch'},
+                {code: 'tr', name: 'Turkish'},
+                {code: 'pl', name: 'Polish'},
+                {code: 'sv', name: 'Swedish'},
+                {code: 'fi', name: 'Finnish'},
+                {code: 'da', name: 'Danish'},
+                {code: 'he', name: 'Hebrew'},
+                {code: 'id', name: 'Indonesian'}
+            ];
+            
+            // Populate language dropdowns
+            languages.forEach(lang => {
+                const sourceOption = document.createElement('option');
+                sourceOption.value = lang.code;
+                sourceOption.textContent = lang.name;
+                sourceLanguageSelect.appendChild(sourceOption);
                 
-                // Mark female voices
-                if (voice.name.toLowerCase().includes('female') || 
-                    voice.name.includes('Woman') || 
-                    voice.name.includes('woman')) {
-                    option.style.fontWeight = 'bold';
+                const targetOption = document.createElement('option');
+                targetOption.value = lang.code;
+                targetOption.textContent = lang.name;
+                targetLanguageSelect.appendChild(targetOption);
+            });
+            
+            // Set default target language to Spanish
+            targetLanguageSelect.value = 'es';
+            
+            // Update rate and pitch value displays
+            rateInput.addEventListener('input', () => {
+                rateValue.textContent = rateInput.value;
+            });
+            
+            pitchInput.addEventListener('input', () => {
+                pitchValue.textContent = pitchInput.value;
+            });
+            
+            // Load voices
+            function loadVoices() {
+                voices = speechSynthesis.getVoices();
+                voiceSelect.innerHTML = '';
+                
+                // Filter voices by target language if translation is enabled
+                const targetLang = targetLanguageSelect.value;
+                let filteredVoices = voices;
+                
+                if (translateToggle.checked) {
+                    filteredVoices = voices.filter(voice => voice.lang.startsWith(targetLang));
+                }
+                
+                if (filteredVoices.length > 0) {
+                    filteredVoices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        voiceSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.textContent = 'No voices available';
+                    voiceSelect.appendChild(option);
+                }
+            }
+            
+            // Voices may not be loaded immediately
+            speechSynthesis.onvoiceschanged = loadVoices;
+            loadVoices(); // Try to load immediately
+            
+            // Translation function using LibreTranslate
+            async function translateText(text, sourceLang, targetLang) {
+                // List of LibreTranslate public endpoints (you can replace with your own if needed)
+                const endpoints = [
+                    'https://libretranslate.de/translate',
+                    'https://translate.argosopentech.com/translate',
+                    'https://libretranslate.com/translate'
+                ];
+                
+                const params = {
+                    q: text,
+                    source: sourceLang,
+                    target: targetLang,
+                    format: 'text'
+                };
+                
+                let lastError = null;
+                
+                // Try each endpoint until one works
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            body: JSON.stringify(params),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        return data.translatedText;
+                    } catch (error) {
+                        lastError = error;
+                        console.warn(`Translation failed with ${endpoint}, trying next...`, error);
+                        continue;
+                    }
+                }
+                
+                throw lastError || new Error('All translation endpoints failed');
+            }
+            
+            // Speak function with optional translation
+            async function speak() {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+                
+                const text = textInput.value.trim();
+                if (!text) {
+                    showStatus('Please enter some text to speak.', 'error');
+                    return;
+                }
+                
+                let textToSpeak = text;
+                let sourceLang = sourceLanguageSelect.value;
+                const targetLang = targetLanguageSelect.value;
+                
+                // Hide translation container initially
+                translationContainer.style.display = 'none';
+                
+                if (translateToggle.checked) {
+                    try {
+                        showStatus('Translating...', 'success');
+                        
+                        // If auto-detect is selected, we'll let the API detect the language
+                        if (sourceLang === 'auto') {
+                            sourceLang = 'auto';
+                        }
+                        
+                        const translated = await translateText(text, sourceLang, targetLang);
+                        textToSpeak = translated;
+                        
+                        // Show the translation
+                        translatedTextDiv.textContent = translated;
+                        translationContainer.style.display = 'block';
+                        showStatus('Translation complete. Speaking...', 'success');
+                    } catch (error) {
+                        console.error('Translation error:', error);
+                        showStatus('Translation failed. Speaking original text. Error: ' + error.message, 'error');
+                        // Fall back to original text if translation fails
+                        textToSpeak = text;
+                    }
+                }
+                
+                utterance = new SpeechSynthesisUtterance(textToSpeak);
+                
+                // Set selected voice
+                const selectedVoiceName = voiceSelect.value;
+                if (selectedVoiceName && selectedVoiceName !== 'No voices available') {
+                    const selectedVoice = voices.find(voice => voice.name === selectedVoiceName);
+                    if (selectedVoice) {
+                        utterance.voice = selectedVoice;
+                    }
+                }
+                
+                // Set language based on target language if translation is enabled
+                if (translateToggle.checked) {
+                    utterance.lang = targetLang;
+                }
+                
+                utterance.rate = parseFloat(rateInput.value);
+                utterance.pitch = parseFloat(pitchInput.value);
+                
+                utterance.onend = function() {
+                    showStatus('Speech finished.', 'success');
+                };
+                
+                utterance.onerror = function(event) {
+                    showStatus('Error occurred: ' + event.error, 'error');
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
+            
+            // Control functions
+            speakButton.addEventListener('click', speak);
+            
+            pauseButton.addEventListener('click', function() {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.pause();
+                    showStatus('Speech paused.', 'success');
                 }
             });
             
-            // Enable speak button if voices are available
-            document.getElementById('speak-btn').disabled = voices.length === 0;
-            updateStatus(voices.length > 0 ? "Ready to speak" : "No voices available");
-        }
-        
-        // Set up event listeners
-        function setupEventListeners() {
-            // Update slider values
-            document.getElementById('rate').addEventListener('input', function() {
-                document.getElementById('rate-value').textContent = this.value;
-            });
-            document.getElementById('pitch').addEventListener('input', function() {
-                document.getElementById('pitch-value').textContent = this.value;
-            });
-            document.getElementById('volume').addEventListener('input', function() {
-                document.getElementById('volume-value').textContent = this.value;
+            resumeButton.addEventListener('click', function() {
+                if (speechSynthesis.paused) {
+                    speechSynthesis.resume();
+                    showStatus('Speech resumed.', 'success');
+                }
             });
             
-            // Handle speech synthesis events
-            speechSynthesis.onvoiceschanged = populateVoiceList;
-        }
-        
-        // Speak the text
-        function speak() {
-            const text = document.getElementById("textToSpeak").value.trim();
-            if (!text) {
-                updateStatus("Please enter some text to speak");
-                return;
+            stopButton.addEventListener('click', function() {
+                if (speechSynthesis.speaking || speechSynthesis.paused) {
+                    speechSynthesis.cancel();
+                    showStatus('Speech stopped.', 'success');
+                }
+            });
+            
+            // Status message function
+            function showStatus(message, type) {
+                statusDiv.textContent = message;
+                statusDiv.className = 'status ' + type;
             }
             
-            // Stop any current speech
-            stopSpeech();
+            // When target language changes, update available voices
+            targetLanguageSelect.addEventListener('change', loadVoices);
             
-            // Create new utterance
-            currentUtterance = new SpeechSynthesisUtterance(text);
-            
-            // Set voice
-            const voiceSelect = document.getElementById("voiceSelect");
-            const selectedOption = voiceSelect.selectedOptions[0]?.getAttribute("data-name");
-            if (selectedOption) {
-                currentUtterance.voice = voices.find(voice => voice.name === selectedOption);
-            }
-            
-            // Set speech parameters
-            currentUtterance.rate = parseFloat(document.getElementById('rate').value);
-            currentUtterance.pitch = parseFloat(document.getElementById('pitch').value);
-            currentUtterance.volume = parseFloat(document.getElementById('volume').value);
-            
-            // Set up event handlers
-            currentUtterance.onstart = function() {
-                updateStatus("Speaking...");
-                document.getElementById('speak-btn').disabled = true;
-                document.getElementById('pause-btn').disabled = false;
-                document.getElementById('stop-btn').disabled = false;
-            };
-            
-            currentUtterance.onend = function() {
-                updateStatus("Finished speaking");
-                resetControlStates();
-            };
-            
-            currentUtterance.onerror = function(event) {
-                updateStatus("Error: " + event.error);
-                resetControlStates();
-            };
-            
-            // Start speaking
-            window.speechSynthesis.speak(currentUtterance);
-        }
-        
-        // Pause speech
-        function pauseSpeech() {
-            window.speechSynthesis.pause();
-            updateStatus("Paused");
-            document.getElementById('pause-btn').disabled = true;
-            document.getElementById('resume-btn').disabled = false;
-        }
-        
-        // Resume speech
-        function resumeSpeech() {
-            window.speechSynthesis.resume();
-            updateStatus("Speaking...");
-            document.getElementById('pause-btn').disabled = false;
-            document.getElementById('resume-btn').disabled = true;
-        }
-        
-        // Stop speech
-        function stopSpeech() {
-            window.speechSynthesis.cancel();
-            updateStatus("Stopped");
-            resetControlStates();
-        }
-        
-        // Reset control states
-        function resetControlStates() {
-            document.getElementById('speak-btn').disabled = false;
-            document.getElementById('pause-btn').disabled = true;
-            document.getElementById('resume-btn').disabled = true;
-            document.getElementById('stop-btn').disabled = true;
-        }
-        
-        // Update status message
-        function updateStatus(message) {
-            document.getElementById('status').textContent = message;
-        }
-        
-        // Initialize when the page loads
-        window.onload = function() {
-            init();
-            
-            // Some browsers need this to load voices properly
-            if (speechSynthesis.getVoices().length === 0) {
-                speechSynthesis.onvoiceschanged = populateVoiceList;
-            }
-        };
+            // When translate toggle changes, update available voices
+            translateToggle.addEventListener('change', loadVoices);
+        });
     </script>
 </body>
 </html>
