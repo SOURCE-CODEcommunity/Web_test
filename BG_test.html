@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study-Wars | Optimized Battleground</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #0a0a12;
+            --neon-purple: #9d00ff;
+            --neon-orange: #ff5e00;
+            --neon-blue: #00d9ff;
+            --glass-light: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            line-height: 1.6;
+        }
+
+        /* Auth Modal - Optimized */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .auth-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .auth-container {
+            background: #111;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .auth-modal.active .auth-container {
+            transform: scale(1);
+        }
+
+        /* Input Styles - Optimized */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #222;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--neon-purple);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--neon-orange);
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .link {
+            color: var(--neon-blue);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* Lobby - Optimized */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: none;
+        }
+
+        .container.active {
+            display: block;
+        }
+
+        .battle-modes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .mode-card {
+            background: #111;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #222;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .mode-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--neon-orange);
+        }
+
+        /* Battle UI - Optimized */
+        .battle-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .battle-info {
+            background: #111;
+            padding: 1rem;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .question-container {
+            background: #111;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-btn {
+            background: #222;
+            border: 1px solid #333;
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .battle-timer {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--neon-orange);
+        }
+
+        .players-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .player-card {
+            background: #111;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .player-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--neon-purple);
+            margin: 0 auto 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .battle-header {
+                flex-direction: column;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div id="loginForm">
+                <h2 class="text-center">Enter the Battleground</h2>
+                <div class="input-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail">
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword">
+                </div>
+                <button class="btn btn-primary" onclick="login()">Login</button>
+                <p class="text-center" style="margin-top: 1rem;">Don't have an account? <span class="link" onclick="showRegister()">Register</span></p>
+            </div>
+            
+            <div id="registerForm" style="display: none;">
+                <h2 class="text-center">Join the Battle</h2>
+                <div class="input-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername">
+                </div>
+                <div class="input-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail">
+                </div>
+                <div class="input-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword">
+                </div>
+                <button class="btn btn-secondary" onclick="register()">Create Account</button>
+                <p class="text-center" style="margin-top: 1rem;">Already have an account? <span class="link" onclick="showLogin()">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lobby -->
+    <div class="container" id="lobby">
+        <h1 style="color: var(--neon-orange); text-align: center; margin-bottom: 1.5rem;">CHOOSE YOUR BATTLEGROUND</h1>
+        
+        <div class="battle-modes">
+            <div class="mode-card" onclick="startBattle('quick-match')">
+                <div class="mode-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Quick Match</h3>
+                <p>Jump into a random battle immediately. First to 10 correct answers wins!</p>
+            </div>
+            
+            <div class="mode-card" onclick="startBattle('ranked')">
+                <div class="mode-icon"><i class="fas fa-trophy"></i></div>
+                <h3>Ranked Battle</h3>
+                <p>Compete for leaderboard position. 15 questions, highest score wins.</p>
+            </div>
+            
+            <div class="mode-card" onclick="startBattle('team')">
+                <div class="mode-icon"><i class="fas fa-users"></i></div>
+                <h3>Team Warfare</h3>
+                <p>Join forces with other warriors against a rival team.</p>
+            </div>
+            
+            <div class="mode-card" onclick="startBattle('custom')">
+                <div class="mode-icon"><i class="fas fa-cog"></i></div>
+                <h3>Custom Battle</h3>
+                <p>Create your own rules and invite friends.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Battleground -->
+    <div class="container" id="battleground">
+        <div class="battle-header">
+            <div class="battle-info">
+                <h2 id="battleMode">Quick Match</h2>
+                <p>Question: <span id="questionNumber">1</span>/<span id="totalQuestions">10</span></p>
+            </div>
+            <div class="battle-info">
+                <p>Score: <span id="playerScore">0</span></p>
+                <p>Rank: <span id="playerRank">-</span></p>
+            </div>
+        </div>
+        
+        <div class="battle-timer">
+            <i class="fas fa-clock"></i> <span id="countdown">15</span>s
+        </div>
+        
+        <div class="question-container">
+            <h2 id="questionText">Loading question...</h2>
+        </div>
+        
+        <div class="options-grid" id="optionsContainer">
+            <!-- Options will be inserted here by JavaScript -->
+        </div>
+        
+        <h3 style="text-align: center; margin-bottom: 1rem;">Competitors</h3>
+        <div class="players-container" id="playersContainer">
+            <!-- Player cards will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // DOM Cache - Optimized
+        const dom = {
+            authModal: document.getElementById('authModal'),
+            loginForm: document.getElementById('loginForm'),
+            registerForm: document.getElementById('registerForm'),
+            lobby: document.getElementById('lobby'),
+            battleground: document.getElementById('battleground'),
+            battleMode: document.getElementById('battleMode'),
+            questionNumber: document.getElementById('questionNumber'),
+            totalQuestions: document.getElementById('totalQuestions'),
+            playerScore: document.getElementById('playerScore'),
+            playerRank: document.getElementById('playerRank'),
+            countdown: document.getElementById('countdown'),
+            questionText: document.getElementById('questionText'),
+            optionsContainer: document.getElementById('optionsContainer'),
+            playersContainer: document.getElementById('playersContainer')
+        };
+
+        // State Management - Optimized
+        const state = {
+            currentQuestion: 1,
+            score: 0,
+            timer: null,
+            timeLeft: 15,
+            players: [],
+            questions: [
+                {
+                    text: "What is the chemical symbol for gold?",
+                    options: ["Go", "Gd", "Au", "Ag"],
+                    correct: 2
+                },
+                {
+                    text: "In which year did World War II end?",
+                    options: ["1943", "1945", "1947", "1939"],
+                    correct: 1
+                },
+                {
+                    text: "What is the capital of Japan?",
+                    options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+                    correct: 2
+                },
+                {
+                    text: "Who painted the Mona Lisa?",
+                    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+                    correct: 2
+                },
+                {
+                    text: "What is the largest planet in our solar system?",
+                    options: ["Earth", "Saturn", "Jupiter", "Neptune"],
+                    correct: 2
+                }
+            ]
+        };
+
+        // Initialize App - Optimized
+        function initApp() {
+            showAuthModal();
+            
+            // Mock players data
+            state.players = [
+                { id: 1, name: 'You', score: 0, avatar: 'Y' },
+                { id: 2, name: 'MathWarrior', score: 0, avatar: 'M' },
+                { id: 3, name: 'ScienceQueen', score: 0, avatar: 'S' },
+                { id: 4, name: 'HistoryBuff', score: 0, avatar: 'H' }
+            ];
+        }
+
+        // Auth Functions - Optimized
+        function showAuthModal() {
+            dom.authModal.classList.add('active');
+        }
+
+        function hideAuthModal() {
+            dom.authModal.classList.remove('active');
+            dom.lobby.classList.add('active');
+        }
+
+        function showLogin() {
+            dom.loginForm.style.display = 'block';
+            dom.registerForm.style.display = 'none';
+        }
+        
+        function showRegister() {
+            dom.loginForm.style.display = 'none';
+            dom.registerForm.style.display = 'block';
+        }
+        
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            hideAuthModal();
+        }
+        
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            // Simple validation
+            if (!username || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            hideAuthModal();
+        }
+
+        // Battle Functions - Optimized
+        function startBattle(mode) {
+            // Reset state
+            state.currentQuestion = 1;
+            state.score = 0;
+            state.timeLeft = 15;
+            dom.playerScore.textContent = '0';
+            
+            // Set UI
+            dom.lobby.classList.remove('active');
+            dom.battleground.classList.add('active');
+            
+            // Set battle mode
+            const modeName = {
+                'quick-match': 'Quick Match',
+                'ranked': 'Ranked Battle',
+                'team': 'Team Warfare',
+                'custom': 'Custom Battle'
+            }[mode];
+            
+            dom.battleMode.textContent = modeName;
+            dom.totalQuestions.textContent = mode === 'ranked' ? '15' : '10';
+            
+            // Initialize battle
+            loadQuestion();
+            renderPlayers();
+            startTimer();
+        }
+
+        function loadQuestion() {
+            dom.questionNumber.textContent = state.currentQuestion;
+            
+            // Get question (cycle through available questions)
+            const question = state.questions[(state.currentQuestion - 1) % state.questions.length];
+            dom.questionText.textContent = question.text;
+            
+            // Clear previous options
+            dom.optionsContainer.innerHTML = '';
+            
+            // Create document fragment for batch DOM insertion
+            const fragment = document.createDocumentFragment();
+            
+            question.options.forEach((option, index) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn';
+                optionBtn.textContent = option;
+                optionBtn.onclick = () => selectAnswer(index, question.correct);
+                fragment.appendChild(optionBtn);
+            });
+            
+            dom.optionsContainer.appendChild(fragment);
+        }
+        
+        function selectAnswer(selectedIndex, correctIndex) {
+            const options = dom.optionsContainer.querySelectorAll('.option-btn');
+            
+            // Disable all buttons
+            options.forEach(btn => {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+            });
+            
+            // Highlight selected answer
+            options[selectedIndex].style.borderColor = selectedIndex === correctIndex 
+                ? 'var(--neon-blue)' 
+                : 'var(--neon-orange)';
+            
+            // Update score if correct
+            if (selectedIndex === correctIndex) {
+                state.score++;
+                dom.playerScore.textContent = state.score;
+                updatePlayerScore(0, state.score);
+            }
+            
+            // Move to next question or end battle
+            clearInterval(state.timer);
+            setTimeout(() => {
+                state.currentQuestion++;
+                const totalQuestions = parseInt(dom.totalQuestions.textContent);
+                
+                if (state.currentQuestion <= totalQuestions) {
+                    loadQuestion();
+                    resetTimer();
+                } else {
+                    endBattle();
+                }
+            }, 1000);
+        }
+        
+        function renderPlayers() {
+            // Clear previous players
+            dom.playersContainer.innerHTML = '';
+            
+            // Create document fragment for batch DOM insertion
+            const fragment = document.createDocumentFragment();
+            
+            state.players.forEach(player => {
+                const card = document.createElement('div');
+                card.className = 'player-card';
+                
+                card.innerHTML = `
+                    <div class="player-avatar">${player.avatar}</div>
+                    <h4>${player.name}</h4>
+                    <p>Score: <span class="player-score">${player.score}</span></p>
+                `;
+                
+                fragment.appendChild(card);
+            });
+            
+            dom.playersContainer.appendChild(fragment);
+        }
+        
+        function updatePlayerScore(playerIndex, newScore) {
+            const scoreElements = document.querySelectorAll('.player-score');
+            if (scoreElements[playerIndex]) {
+                scoreElements[playerIndex].textContent = newScore;
+            }
+        }
+        
+        function startTimer() {
+            state.timeLeft = 15;
+            dom.countdown.textContent = state.timeLeft;
+            
+            state.timer = setInterval(() => {
+                state.timeLeft--;
+                dom.countdown.textContent = state.timeLeft;
+                
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function resetTimer() {
+            clearInterval(state.timer);
+            startTimer();
+        }
+        
+        function timeUp() {
+            const options = dom.optionsContainer.querySelectorAll('.option-btn');
+            options.forEach(btn => {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+            });
+            
+            // Move to next question or end battle
+            setTimeout(() => {
+                state.currentQuestion++;
+                const totalQuestions = parseInt(dom.totalQuestions.textContent);
+                
+                if (state.currentQuestion <= totalQuestions) {
+                    loadQuestion();
+                    resetTimer();
+                } else {
+                    endBattle();
+                }
+            }, 500);
+        }
+        
+        function endBattle() {
+            alert(`Battle complete! Your score: ${state.score}`);
+            dom.battleground.classList.remove('active');
+            dom.lobby.classList.add('active');
+            
+            // Cleanup
+            clearInterval(state.timer);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
