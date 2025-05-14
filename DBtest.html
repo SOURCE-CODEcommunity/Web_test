@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study-Wars Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0a0a12;
+            --neon-purple: #9d00ff;
+            --neon-orange: #ff5e00;
+            --neon-blue: #00d9ff;
+            --glass-light: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Gradient Background Animation */
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a0a2e 0%, #2e0a1a 50%, #1a2e0a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Panel Styles */
+        .glass-panel {
+            background: var(--glass-light);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* Profile Section */
+        .profile {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--neon-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 1.5rem;
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        .profile-info h2 {
+            color: var(--neon-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            color: var(--neon-orange);
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-title {
+            color: var(--neon-purple);
+            font-size: 1.25rem;
+        }
+
+        .view-all {
+            color: var(--neon-blue);
+            cursor: pointer;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(157, 0, 255, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            color: white;
+        }
+
+        .drill { background: var(--neon-purple); }
+        .quick-test { background: var(--neon-orange); }
+        .ranked { background: #ff00aa; }
+        .team { background: #00ffaa; }
+        .custom { background: #aa00ff; }
+
+        .card-title {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-meta {
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+            .stats {
+                justify-content: center;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Performance Optimizations */
+        .glass-panel, .card {
+            will-change: transform;
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient-bg"></div>
+    
+    <div class="dashboard">
+        <!-- Profile Section -->
+        <section class="profile glass-panel">
+            <div class="profile-avatar">SW</div>
+            <div class="profile-info">
+                <h2>Warrior Name</h2>
+                <p>Rank: Scholar | XP: 1,250/2,000</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Wins</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Streak</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section class="section glass-panel">
+            <div class="section-header">
+                <h3 class="section-title">Recent Practice</h3>
+                <span class="view-all">View All</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon drill">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Algebra Drill</h4>
+                            <div class="card-meta">10 min ago</div>
+                        </div>
+                    </div>
+                    <p>Completed 30/30 questions</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon quick-test">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Quick Test</h4>
+                            <div class="card-meta">2 hours ago</div>
+                        </div>
+                    </div>
+                    <p>Score: 85% in Geometry</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Battleground Section -->
+        <section class="section glass-panel">
+            <div class="section-header">
+                <h3 class="section-title">Recent Battles</h3>
+                <span class="view-all">View All</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-trophy ranked"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Ranked Battle</h4>
+                            <div class="card-meta">Yesterday</div>
+                        </div>
+                    </div>
+                    <p>Defeated MathMaster | +25 XP</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-users team"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Team Warfare</h4>
+                            <div class="card-meta">2 days ago</div>
+                        </div>
+                    </div>
+                    <p>Victory with Team Quantum</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-cog custom"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Custom Battle</h4>
+                            <div class="card-meta">3 days ago</div>
+                        </div>
+                    </div>
+                    <p>Created "Advanced Calculus"</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section class="section glass-panel">
+            <div class="section-header">
+                <h3 class="section-title">Ongoing & Upcoming Events</h3>
+                <span class="view-all">View All</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #ffcc00;">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">Math Marathon</h4>
+                            <div class="card-meta">Ends in 2 days</div>
+                        </div>
+                    </div>
+                    <p>Solve 100 problems for bonus rewards</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: #00ccff;">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div>
+                            <h4 class="card-title">New Season</h4>
+                            <div class="card-meta">Starts May 15</div>
+                        </div>
+                    </div>
+                    <p>Rank reset with new rewards</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        by: Iyiola Adedamola Richard @StudyWars2025
+    </footer>
+
+    <!-- Performance Optimized Scripts -->
+    <script>
+        // Lazy load non-critical elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Will add interactive functionality here
+            // (e.g., click handlers for cards, dynamic data loading)
+        });
+    </script>
+</body>
+</html>
