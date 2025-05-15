@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Wars Dev Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #212529;
+            --light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a0a2e 0%, #0a0a12 100%);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Countdown Styles */
+        .countdown {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .countdown h2 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+        
+        .timer {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+        
+        /* Todo List Styles */
+        .todo-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .task-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .task-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .task-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0 1.5rem;
+            cursor: pointer;
+        }
+        
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+        }
+        
+        .task-item input[type="checkbox"] {
+            margin-right: 1rem;
+        }
+        
+        .task-text {
+            flex: 1;
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+        }
+        
+        /* Auth Styles */
+        .auth-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .auth-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Study Wars Dev Tracker</h1>
+        
+        <!-- Countdown Section -->
+        <div class="countdown">
+            <h2>Launch Countdown</h2>
+            <div class="timer" id="countdown">15 days 00:00:00</div>
+            <p>Days until Study Wars launch</p>
+        </div>
+        
+        <!-- Auth Section -->
+        <div class="auth-section" id="authSection">
+            <button class="auth-btn" id="loginBtn">Login</button>
+            <button class="auth-btn" id="signupBtn">Sign Up</button>
+        </div>
+        
+        <!-- Todo List -->
+        <div class="todo-container" id="todoApp" style="display: none;">
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="Add a development task...">
+                <button id="addTaskBtn"><i class="fas fa-plus"></i> Add</button>
+            </div>
+            <ul class="task-list" id="taskList"></ul>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const countdownEl = document.getElementById('countdown');
+        const authSection = document.getElementById('authSection');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const todoApp = document.getElementById('todoApp');
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        
+        // Countdown Timer (15 days from now)
+        function updateCountdown() {
+            const now = new Date();
+            const launchDate = new Date();
+            launchDate.setDate(now.getDate() + 15);
+            
+            const diff = launchDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Task Management
+        function renderTasks(tasks) {
+            taskList.innerHTML = '';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} data-id="${task.id}">
+                    <span class="task-text">${task.text}</span>
+                    <button class="delete-btn" data-id="${task.id}"><i class="fas fa-trash"></i></button>
+                `;
+                taskList.appendChild(li);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', toggleTask);
+            });
+            
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', deleteTask);
+            });
+        }
+        
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (text) {
+                const user = auth.currentUser;
+                if (user) {
+                    db.collection('tasks').add({
+                        text: text,
+                        completed: false,
+                        userId: user.uid,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    taskInput.value = '';
+                }
+            }
+        }
+        
+        function toggleTask(e) {
+            const taskId = e.target.dataset.id;
+            db.collection('tasks').doc(taskId).update({
+                completed: e.target.checked
+            });
+        }
+        
+        function deleteTask(e) {
+            const taskId = e.target.closest('button').dataset.id;
+            db.collection('tasks').doc(taskId).delete();
+        }
+        
+        // Auth Functions
+        function setupAuth() {
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    authSection.style.display = 'none';
+                    todoApp.style.display = 'block';
+                    
+                    // Load tasks
+                    db.collection('tasks')
+                        .where('userId', '==', user.uid)
+                        .orderBy('createdAt')
+                        .onSnapshot(snapshot => {
+                            const tasks = [];
+                            snapshot.forEach(doc => {
+                                tasks.push({
+                                    id: doc.id,
+                                    ...doc.data()
+                                });
+                            });
+                            renderTasks(tasks);
+                        });
+                } else {
+                    authSection.style.display = 'block';
+                    todoApp.style.display = 'none';
+                }
+            });
+            
+            loginBtn.addEventListener('click', () => {
+                const email = prompt('Enter email:');
+                const password = prompt('Enter password:');
+                if (email && password) {
+                    auth.signInWithEmailAndPassword(email, password)
+                        .catch(error => alert(error.message));
+                }
+            });
+            
+            signupBtn.addEventListener('click', () => {
+                const email = prompt('Enter email:');
+                const password = prompt('Enter password:');
+                if (email && password) {
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .catch(error => alert(error.message));
+                }
+            });
+        }
+        
+        // Event Listeners
+        addTaskBtn.addEventListener('click', addTask);
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTask();
+        });
+        
+        // Initialize
+        setupAuth();
+    </script>
+</body>
+</html>
