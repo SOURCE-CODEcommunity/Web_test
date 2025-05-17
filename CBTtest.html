@@ -773,6 +773,68 @@
             newTestBtn: document.getElementById('newTestBtn')
         };
 
+        
+    // [Previous code remains the same until the setupEventListeners function]
+
+    // Modified setupEventListeners function
+    function setupEventListeners() {
+        // Token modal
+        elements.submitToken.addEventListener('click', () => {
+            const token = elements.tokenInput.value.trim();
+            if (validateToken(token)) {
+                hideTokenModal();
+                showSelectionInterface();
+            }
+        });
+        
+        elements.tokenInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                elements.submitToken.click();
+            }
+        });
+        
+        // Selection interface - FIXED THESE EVENT LISTENERS
+        elements.yearSelect.addEventListener('change', function() {
+            state.testYear = this.value;
+            validateSelection();
+        });
+        
+        elements.timeInput.addEventListener('input', function() {
+            state.testTime = parseInt(this.value) || 30;
+            validateSelection();
+        });
+        
+        // FIXED: Added proper click handler for start button
+        elements.startTestBtn.addEventListener('click', function() {
+            if (!this.disabled) {
+                showTestInterface();
+            }
+        });
+        
+        // Add change event to subject checkboxes
+        document.querySelectorAll('.subject-card input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const subjectCard = this.closest('.subject-card');
+                if (this.checked) {
+                    subjectCard.classList.add('selected');
+                    if (!state.selectedSubjects.includes(this.value)) {
+                        state.selectedSubjects.push(this.value);
+                    }
+                } else {
+                    subjectCard.classList.remove('selected');
+                    state.selectedSubjects = state.selectedSubjects.filter(s => s !== this.value);
+                }
+                validateSelection();
+            });
+        });
+
+        // [Rest of the event listeners remain the same]
+        // ... (keep all other existing event listeners) ...
+    }
+
+    // [Rest of the code remains the same]
+   
+
         // Initialize the application
         function init() {
             // Check if token is already validated
