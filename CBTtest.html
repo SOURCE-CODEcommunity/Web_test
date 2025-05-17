@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Application</title>
+    <style>
+        /* Google-inspired Paper Smooth Design */
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --danger-color: #EA4335;
+            --warning-color: #FBBC05;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #6c757d;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #202124;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        /* Interface Container */
+        .interface-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 20px;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        /* Selection Interface */
+        .selection-interface {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        .subject-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .subject-card {
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .subject-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+
+        .subject-card input {
+            display: none;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-start;
+        }
+
+        .btn:hover {
+            background-color: #3367d6;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:disabled {
+            background-color: var(--medium-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Test Interface */
+        .test-interface {
+            display: none;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .submit-btn {
+            background-color: var(--danger-color);
+        }
+
+        .submit-btn:hover {
+            background-color: #d33426;
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--danger-color);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background-color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background-color: var(--light-gray);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .question-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .q-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .q-number.answered {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .q-number.current {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Submit Interface */
+        .submit-interface {
+            display: none;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .results-table th {
+            background-color: var(--light-gray);
+            font-weight: 500;
+        }
+
+        .results-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .total-score {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        /* Footer */
+        footer {
+            background-color: white;
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+
+        /* Token Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .token-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .subject-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .test-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subject-container {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .interface-container {
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Confetti Effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            opacity: 0;
+            z-index: 999;
+            animation: confetti 5s ease-in-out forwards;
+        }
+
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Token Modal -->
+    <div class="modal" id="tokenModal">
+        <div class="modal-content fade-in">
+            <h2 class="modal-title">Enter Your Access Token</h2>
+            <p class="error-message" id="tokenError">Invalid token or token already used on another device.</p>
+            <input type="text" class="token-input" id="tokenInput" placeholder="Enter your unique access token">
+            <button class="btn" id="submitToken">Start Test</button>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <header>
+        <div class="header-title">UI Post UTME CBT test</div>
+    </header>
+
+    <div class="container">
+        <!-- Selection Interface -->
+        <div class="interface-container selection-interface active" id="selectionInterface">
+            <div class="form-group">
+                <label>Select Subjects (Choose at least 4)</label>
+                <div class="subject-container" id="subjectContainer">
+                    <!-- Subjects will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Select Year</label>
+                <select id="yearSelect">
+                    <option value="">-- Select Year --</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Set Time (Minimum 30 minutes)</label>
+                <input type="number" id="timeInput" min="30" value="30" placeholder="Enter time in minutes">
+            </div>
+            <button class="btn" id="startTestBtn" disabled>Start Test</button>
+        </div>
+
+        <!-- Test Interface -->
+        <div class="interface-container test-interface" id="testInterface">
+            <div class="test-header">
+                <button class="btn submit-btn" id="submitTestBtn">Submit</button>
+                <div class="tabs" id="subjectTabs">
+                    <!-- Tabs will be populated by JavaScript -->
+                </div>
+                <div class="timer" id="timer">00:30:00</div>
+            </div>
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">Question 1/25</div>
+                <div class="question-text" id="questionText">What is the question?</div>
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn" id="prevBtn">Previous</button>
+                <button class="btn" id="nextBtn">Next</button>
+            </div>
+            <div class="question-numbers" id="questionNumbers">
+                <!-- Question numbers will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Submit Interface -->
+        <div class="interface-container submit-interface" id="submitInterface">
+            <h2>Test Results</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                    <!-- Results will be populated by JavaScript -->
+                </tbody>
+            </table>
+            <div class="total-score" id="totalScore">Total Score: 0%</div>
+            <button class="btn" id="newTestBtn">Start New Test</button>
+        </div>
+    </div>
+
+    <footer>
+        by: Iyiola Adedamola Richard @CBTtest2025
+    </footer>
+
+    <script>
+        // Sample Questions Data in JSON format
+        const questionsData = {
+            questions: {
+                Mathematics: [
+                    {
+                        No: 1,
+                        question: "What is the value of π (pi) to two decimal places?",
+                        options: ["I. 3.14", "II. 3.16", "III. 3.18", "IV. 3.12"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the square root of 64?",
+                        options: ["I. 6", "II. 7", "III. 8", "IV. 9"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 3,
+                        question: "Solve for x: 2x + 5 = 15",
+                        options: ["I. 5", "II. 10", "III. 7.5", "IV. 6"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the area of a rectangle with length 8 and width 5?",
+                        options: ["I. 13", "II. 30", "III. 40", "IV. 45"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is a prime number?",
+                        options: ["I. 15", "II. 21", "III. 29", "IV. 33"],
+                        answers: ["III"]
+                    }
+                ],
+                English: [
+                    {
+                        No: 1,
+                        question: "Which word is a synonym for 'happy'?",
+                        options: ["I. Joyful", "II. Sad", "III. Angry", "IV. Tired"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the past tense of 'run'?",
+                        options: ["I. Ran", "II. Runned", "III. Running", "IV. Runs"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which of these is a proper noun?",
+                        options: ["I. city", "II. london", "III. London", "IV. country"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the plural of 'child'?",
+                        options: ["I. Childs", "II. Children", "III. Childes", "IV. Child"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which word is an adjective?",
+                        options: ["I. Quickly", "II. Beautiful", "III. Running", "IV. Happiness"],
+                        answers: ["II"]
+                    }
+                ],
+                Chemistry: [
+                    {
+                        No: 1,
+                        question: "What is the chemical symbol for gold?",
+                        options: ["I. Au", "II. Ag", "III. Fe", "IV. Hg"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the pH value of pure water?",
+                        options: ["I. 5", "II. 7", "III. 8", "IV. 14"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which gas is most abundant in Earth's atmosphere?",
+                        options: ["I. Oxygen", "II. Carbon dioxide", "III. Nitrogen", "IV. Hydrogen"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the atomic number of carbon?",
+                        options: ["I. 6", "II. 12", "III. 14", "IV. 16"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is NOT a state of matter?",
+                        options: ["I. Solid", "II. Liquid", "III. Gas", "IV. Energy"],
+                        answers: ["IV"]
+                    }
+                ],
+                Physics: [
+                    {
+                        No: 1,
+                        question: "What is the unit of force?",
+                        options: ["I. Joule", "II. Newton", "III. Watt", "IV. Pascal"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the speed of light in a vacuum?",
+                        options: ["I. 300,000 km/s", "II. 150,000 km/s", "III. 450,000 km/s", "IV. 600,000 km/s"],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which law states that 'for every action there is an equal and opposite reaction'?",
+                        options: ["I. Newton's First Law", "II. Newton's Second Law", "III. Newton's Third Law", "IV. Law of Gravitation"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the SI unit of electric current?",
+                        options: ["I. Volt", "II. Ohm", "III. Ampere", "IV. Watt"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is a vector quantity?",
+                        options: ["I. Mass", "II. Time", "III. Velocity", "IV. Temperature"],
+                        answers: ["III"]
+                    }
+                ],
+                Biology: [
+                    {
+                        No: 1,
+                        question: "What is the powerhouse of the cell?",
+                        options: ["I. Nucleus", "II. Mitochondria", "III. Ribosome", "IV. Golgi apparatus"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 2,
+                        question: "Which blood type is the universal donor?",
+                        options: ["I. A", "II. B", "III. AB", "IV. O"],
+                        answers: ["IV"]
+                    },
+                    {
+                        No: 3,
+                        question: "What is the process by which plants make their own food?",
+                        options: ["I. Respiration", "II. Photosynthesis", "III. Transpiration", "IV. Digestion"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 4,
+                        question: "How many bones are in the adult human body?",
+                        options: ["I. 156", "II. 206", "III. 256", "IV. 306"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is NOT part of the central nervous system?",
+                        options: ["I. Brain", "II. Spinal cord", "III. Nerves", "IV. Cerebellum"],
+                        answers: ["III"]
+                    }
+                ],
+                History: [
+                    {
+                        No: 1,
+                        question: "In which year did World War II end?",
+                        options: ["I. 1943", "II. 1945", "III. 1947", "IV. 1950"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 2,
+                        question: "Who was the first president of the United States?",
+                        options: ["I. Thomas Jefferson", "II. Abraham Lincoln", "III. George Washington", "IV. John Adams"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which ancient civilization built the pyramids?",
+                        options: ["I. Greeks", "II. Romans", "III. Egyptians", "IV. Mayans"],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "When did Nigeria gain independence?",
+                        options: ["I. 1957", "II. 1960", "III. 1963", "IV. 1970"],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which empire was ruled by Genghis Khan?",
+                        options: ["I. Roman", "II. Ottoman", "III. Mongol", "IV. British"],
+                        answers: ["III"]
+                    }
+                ]
+            }
+        };
+
+        // Application State
+        const state = {
+            selectedSubjects: [],
+            testTime: 30,
+            testYear: "",
+            currentSubject: "",
+            currentQuestionIndex: 0,
+            userAnswers: {},
+            testStarted: false,
+            timeLeft: 0,
+            timerInterval: null,
+            usedTokens: JSON.parse(localStorage.getItem('usedTokens')) || [],
+            deviceId: localStorage.getItem('deviceId') || generateDeviceId()
+        };
+
+        // Generate a unique device ID
+        function generateDeviceId() {
+            const id = 'device-' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('deviceId', id);
+            return id;
+        }
+
+        // DOM Elements
+        const elements = {
+            tokenModal: document.getElementById('tokenModal'),
+            tokenInput: document.getElementById('tokenInput'),
+            tokenError: document.getElementById('tokenError'),
+            submitToken: document.getElementById('submitToken'),
+            selectionInterface: document.getElementById('selectionInterface'),
+            testInterface: document.getElementById('testInterface'),
+            submitInterface: document.getElementById('submitInterface'),
+            subjectContainer: document.getElementById('subjectContainer'),
+            yearSelect: document.getElementById('yearSelect'),
+            timeInput: document.getElementById('timeInput'),
+            startTestBtn: document.getElementById('startTestBtn'),
+            subjectTabs: document.getElementById('subjectTabs'),
+            timer: document.getElementById('timer'),
+            questionNumber: document.getElementById('questionNumber'),
+            questionText: document.getElementById('questionText'),
+            optionsContainer: document.getElementById('optionsContainer'),
+            prevBtn: document.getElementById('prevBtn'),
+            nextBtn: document.getElementById('nextBtn'),
+            questionNumbers: document.getElementById('questionNumbers'),
+            submitTestBtn: document.getElementById('submitTestBtn'),
+            resultsTableBody: document.getElementById('resultsTableBody'),
+            totalScore: document.getElementById('totalScore'),
+            newTestBtn: document.getElementById('newTestBtn')
+        };
+
+        // Initialize the application
+        function init() {
+            // Check if token is already validated
+            const validatedToken = localStorage.getItem('validatedToken');
+            
+            if (validatedToken && state.usedTokens.includes(validatedToken)) {
+                // Token is valid for this device
+                showSelectionInterface();
+            } else {
+                // Show token modal
+                showTokenModal();
+            }
+
+            // Populate subjects
+            populateSubjects();
+            
+            // Set up event listeners
+            setupEventListeners();
+        }
+
+        // Show token modal
+        function showTokenModal() {
+            elements.tokenModal.style.display = 'flex';
+            elements.tokenInput.focus();
+        }
+
+        // Hide token modal
+        function hideTokenModal() {
+            elements.tokenModal.style.display = 'none';
+        }
+
+        // Validate token
+        function validateToken(token) {
+            // In a real application, this would check against a server or database
+            // For this demo, we'll use a simple validation
+            const isValid = token.trim().length >= 8;
+            
+            if (!isValid) {
+                elements.tokenError.style.display = 'block';
+                return false;
+            }
+            
+            // Check if token is already used on another device
+            if (state.usedTokens.includes(token) && !localStorage.getItem('validatedToken')) {
+                elements.tokenError.style.display = 'block';
+                return false;
+            }
+            
+            // Mark token as used for this device
+            if (!state.usedTokens.includes(token)) {
+                state.usedTokens.push(token);
+                localStorage.setItem('usedTokens', JSON.stringify(state.usedTokens));
+                localStorage.setItem('validatedToken', token);
+            }
+            
+            return true;
+        }
+
+        // Show selection interface
+        function showSelectionInterface() {
+            hideTokenModal();
+            elements.selectionInterface.classList.add('active');
+            elements.testInterface.classList.remove('active');
+            elements.submitInterface.classList.remove('active');
+        }
+
+        // Show test interface
+        function showTestInterface() {
+            elements.selectionInterface.classList.remove('active');
+            elements.testInterface.classList.add('active');
+            elements.submitInterface.classList.remove('active');
+            
+            // Initialize test
+            initTest();
+        }
+
+        // Show submit interface
+        function showSubmitInterface() {
+            elements.selectionInterface.classList.remove('active');
+            elements.testInterface.classList.remove('active');
+            elements.submitInterface.classList.add('active');
+            
+            // Calculate and display results
+            displayResults();
+        }
+
+        // Populate subjects
+        function populateSubjects() {
+            elements.subjectContainer.innerHTML = '';
+            
+            Object.keys(questionsData.questions).forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.innerHTML = `
+                    <input type="checkbox" id="subject-${subject}" value="${subject}">
+                    <label for="subject-${subject}">${subject}</label>
+                `;
+                
+                subjectCard.addEventListener('click', () => {
+                    const checkbox = subjectCard.querySelector('input');
+                    checkbox.checked = !checkbox.checked;
+                    
+                    if (checkbox.checked) {
+                        subjectCard.classList.add('selected');
+                        if (!state.selectedSubjects.includes(subject)) {
+                            state.selectedSubjects.push(subject);
+                        }
+                    } else {
+                        subjectCard.classList.remove('selected');
+                        state.selectedSubjects = state.selectedSubjects.filter(s => s !== subject);
+                    }
+                    
+                    validateSelection();
+                });
+                
+                elements.subjectContainer.appendChild(subjectCard);
+            });
+        }
+
+        // Validate selection
+        function validateSelection() {
+            const yearSelected = elements.yearSelect.value !== '';
+            const timeValid = parseInt(elements.timeInput.value) >= 30;
+            const subjectsValid = state.selectedSubjects.length >= 4;
+            
+            elements.startTestBtn.disabled = !(yearSelected && timeValid && subjectsValid);
+        }
+
+        // Initialize test
+        function initTest() {
+            state.testTime = parseInt(elements.timeInput.value);
+            state.testYear = elements.yearSelect.value;
+            state.currentSubject = state.selectedSubjects[0];
+            state.currentQuestionIndex = 0;
+            state.userAnswers = {};
+            state.testStarted = true;
+            
+            // Initialize timer
+            state.timeLeft = state.testTime * 60; // Convert to seconds
+            updateTimerDisplay();
+            
+            if (state.timerInterval) {
+                clearInterval(state.timerInterval);
+            }
+            
+            state.timerInterval = setInterval(() => {
+                state.timeLeft--;
+                updateTimerDisplay();
+                
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timerInterval);
+                    submitTest();
+                }
+            }, 1000);
+            
+            // Initialize subject tabs
+            initSubjectTabs();
+            
+            // Load first question
+            loadQuestion();
+        }
+
+        // Initialize subject tabs
+        function initSubjectTabs() {
+            elements.subjectTabs.innerHTML = '';
+            
+            state.selectedSubjects.forEach((subject, index) => {
+                const tab = document.createElement('div');
+                tab.className = `tab ${index === 0 ? 'active' : ''}`;
+                tab.textContent = subject;
+                tab.addEventListener('click', () => {
+                    switchSubject(subject);
+                });
+                elements.subjectTabs.appendChild(tab);
+            });
+        }
+
+        // Switch subject
+        function switchSubject(subject) {
+            state.currentSubject = subject;
+            state.currentQuestionIndex = 0;
+            
+            // Update active tab
+            const tabs = elements.subjectTabs.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.textContent === subject) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Load first question of new subject
+            loadQuestion();
+        }
+
+        // Load question
+        function loadQuestion() {
+            const questions = questionsData.questions[state.currentSubject];
+            const question = questions[state.currentQuestionIndex];
+            
+            // Update question number display
+            elements.questionNumber.textContent = `Question ${state.currentQuestionIndex + 1}/${questions.length}`;
+            elements.questionText.textContent = question.question;
+            
+            // Load options
+            elements.optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                
+                // Check if this option is selected
+                const isSelected = state.userAnswers[state.currentSubject] && 
+                                 state.userAnswers[state.currentSubject][state.currentQuestionIndex] === option;
+                
+                if (isSelected) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <input type="radio" 
+                           name="question-${state.currentSubject}-${state.currentQuestionIndex}" 
+                           id="option-${state.currentSubject}-${state.currentQuestionIndex}-${index}" 
+                           value="${option}" 
+                           ${isSelected ? 'checked' : ''}>
+                    <label for="option-${state.currentSubject}-${state.currentQuestionIndex}-${index}">${option}</label>
+                `;
+                
+                optionElement.addEventListener('click', () => {
+                    selectOption(option);
+                });
+                
+                elements.optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+            
+            // Update question numbers
+            updateQuestionNumbers();
+        }
+
+        // Select option
+        function selectOption(option) {
+            // Initialize subject in userAnswers if not exists
+            if (!state.userAnswers[state.currentSubject]) {
+                state.userAnswers[state.currentSubject] = {};
+            }
+            
+            // Store selected answer
+            state.userAnswers[state.currentSubject][state.currentQuestionIndex] = option;
+            
+            // Update UI
+            const options = elements.optionsContainer.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                const input = opt.querySelector('input');
+                if (input.value === option) {
+                    opt.classList.add('selected');
+                    input.checked = true;
+                }
+            });
+            
+            // Update question numbers to show answered questions
+            updateQuestionNumbers();
+        }
+
+        // Update navigation buttons
+        function updateNavigationButtons() {
+            const questions = questionsData.questions[state.currentSubject];
+            
+            // Previous button
+            if (state.currentQuestionIndex === 0) {
+                elements.prevBtn.disabled = true;
+            } else {
+                elements.prevBtn.disabled = false;
+            }
+            
+            // Next button
+            if (state.currentQuestionIndex === questions.length - 1) {
+                elements.nextBtn.textContent = 'Last Question';
+            } else {
+                elements.nextBtn.textContent = 'Next';
+            }
+        }
+
+        // Update question numbers
+        function updateQuestionNumbers() {
+            const questions = questionsData.questions[state.currentSubject];
+            elements.questionNumbers.innerHTML = '';
+            
+            for (let i = 0; i < questions.length; i++) {
+                const qNumber = document.createElement('div');
+                qNumber.className = 'q-number';
+                
+                // Check if current question
+                if (i === state.currentQuestionIndex) {
+                    qNumber.classList.add('current');
+                }
+                
+                // Check if answered
+                if (state.userAnswers[state.currentSubject] && state.userAnswers[state.currentSubject][i]) {
+                    qNumber.classList.add('answered');
+                }
+                
+                qNumber.textContent = i + 1;
+                qNumber.addEventListener('click', () => {
+                    state.currentQuestionIndex = i;
+                    loadQuestion();
+                });
+                
+                elements.questionNumbers.appendChild(qNumber);
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const hours = Math.floor(state.timeLeft / 3600);
+            const minutes = Math.floor((state.timeLeft % 3600) / 60);
+            const seconds = state.timeLeft % 60;
+            
+            elements.timer.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running low
+            if (state.timeLeft <= 300) { // 5 minutes
+                elements.timer.style.color = 'var(--danger-color)';
+            }
+        }
+
+        // Submit test
+        function submitTest() {
+            clearInterval(state.timerInterval);
+            state.testStarted = false;
+            showSubmitInterface();
+            createConfetti();
+        }
+
+        // Display results
+        function displayResults() {
+            elements.resultsTableBody.innerHTML = '';
+            
+            let totalQuestions = 0;
+            let totalCorrect = 0;
+            
+            state.selectedSubjects.forEach(subject => {
+                const questions = questionsData.questions[subject];
+                let correct = 0;
+                
+                // Count correct answers
+                if (state.userAnswers[subject]) {
+                    for (let i = 0; i < questions.length; i++) {
+                        if (state.userAnswers[subject][i]) {
+                            const userAnswer = state.userAnswers[subject][i].split('.')[0].trim();
+                            const correctAnswer = questions[i].answers[0];
+                            
+                            if (userAnswer === correctAnswer) {
+                                correct++;
+                            }
+                        }
+                    }
+                }
+                
+                totalQuestions += questions.length;
+                totalCorrect += correct;
+                
+                // Add row to results table
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject}</td>
+                    <td>${correct}/${questions.length} (${Math.round((correct / questions.length) * 100)}%)</td>
+                `;
+                elements.resultsTableBody.appendChild(row);
+            });
+            
+            // Display total score
+            const totalPercentage = Math.round((totalCorrect / totalQuestions) * 100);
+            elements.totalScore.textContent = `Total Score: ${totalCorrect}/${totalQuestions} (${totalPercentage}%)`;
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position
+                confetti.style.left = Math.random() * 100 + 'vw';
+                
+                // Random color
+                const colors = ['#4285F4', '#34A853', '#EA4335', '#FBBC05'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random size
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Random animation duration
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Token modal
+            elements.submitToken.addEventListener('click', () => {
+                const token = elements.tokenInput.value.trim();
+                if (validateToken(token)) {
+                    hideTokenModal();
+                    showSelectionInterface();
+                }
+            });
+            
+            elements.tokenInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    elements.submitToken.click();
+                }
+            });
+            
+            // Selection interface
+            elements.yearSelect.addEventListener('change', validateSelection);
+            elements.timeInput.addEventListener('input', validateSelection);
+            elements.startTestBtn.addEventListener('click', showTestInterface);
+            
+            // Test interface
+            elements.prevBtn.addEventListener('click', () => {
+                if (state.currentQuestionIndex > 0) {
+                    state.currentQuestionIndex--;
+                    loadQuestion();
+                }
+            });
+            
+            elements.nextBtn.addEventListener('click', () => {
+                const questions = questionsData.questions[state.currentSubject];
+                if (state.currentQuestionIndex < questions.length - 1) {
+                    state.currentQuestionIndex++;
+                    loadQuestion();
+                }
+            });
+            
+            elements.submitTestBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to submit your test?')) {
+                    submitTest();
+                }
+            });
+            
+            // Submit interface
+            elements.newTestBtn.addEventListener('click', () => {
+                // Reset state
+                state.selectedSubjects = [];
+                state.testTime = 30;
+                state.testYear = "";
+                state.currentSubject = "";
+                state.currentQuestionIndex = 0;
+                state.userAnswers = {};
+                
+                // Reset UI
+                document.querySelectorAll('.subject-card').forEach(card => {
+                    card.classList.remove('selected');
+                    card.querySelector('input').checked = false;
+                });
+                
+                elements.yearSelect.value = '';
+                elements.timeInput.value = '30';
+                elements.startTestBtn.disabled = true;
+                
+                showSelectionInterface();
+            });
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>
