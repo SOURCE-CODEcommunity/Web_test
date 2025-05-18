@@ -596,10 +596,10 @@
         <div class="interface-container active" id="subjectSelection">
             <div class="subject-selection">
                 <h2 class="text-center">Select Subjects for Your Test</h2>
-                <p class="text-center mb-20">Choose at least 4 subjects to begin your examination</p>
+                <p class="text-center mb-20">Choose at least a subject to begin your examination</p>
                 
                 <!-- File Upload for Custom Questions -->
-                <div class="file-upload">
+                <div class="file-upload" title= "If you have a question JSON of the required format upload for custom questions">
                     <label for="questionsFile">Load custom questions (optional):</label>
                     <input type="file" id="questionsFile" class="file-input" accept=".json">
                     <button class="file-btn" onclick="document.getElementById('questionsFile').click()">Choose JSON File</button>
@@ -1385,7 +1385,7 @@
             }
             
             // Enable/disable start button based on selection
-            startTestBtn.disabled = state.selectedSubjects.length < 4;
+            startTestBtn.disabled = state.selectedSubjects.length < 1;
         }
 
         // Setup event listeners
