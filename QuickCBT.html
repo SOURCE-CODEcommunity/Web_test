@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCBT</title>
+    <style>
+        /* Glassy Paper Design System */
+        :root {
+            --primary-color: #4285F4;
+            --secondary-color: #34A853;
+            --accent-color: #EA4335;
+            --warning-color: #FBBC05;
+            --light-gray: rgba(248, 249, 250, 0.9);
+            --medium-gray: rgba(218, 220, 224, 0.7);
+            --dark-gray: #5f6368;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+            --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                          0 1px 3px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --blur: blur(8px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #202124;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            padding: 15px 20px;
+            box-shadow: var(--glass-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: var(--glass-border);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--primary-color);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        /* Interface Container */
+        .interface-container {
+            display: none;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 12px;
+            box-shadow: var(--glass-shadow);
+            border: var(--glass-border);
+            padding: 30px;
+            margin-top: 20px;
+            transition: var(--transition);
+        }
+
+        .interface-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Subject Selection Interface */
+        .subject-selection h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .subject-card {
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border: var(--glass-border);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .subject-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .subject-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(66, 133, 244, 0.15);
+        }
+
+        .subject-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .time-selection {
+            margin: 25px 0;
+        }
+
+        .time-selection label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .time-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-input input {
+            padding: 10px 15px;
+            background-color: var(--glass-bg);
+            border: var(--glass-border);
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100px;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .time-input span {
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 20px auto 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn:disabled {
+            background-color: var(--medium-gray);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #3367d6;
+        }
+
+        .btn-danger {
+            background-color: var(--accent-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #d33426;
+        }
+
+        /* Test Interface */
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .test-tabs {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .test-tab {
+            padding: 8px 16px;
+            border-radius: 4px;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 14px;
+            transition: var(--transition);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .test-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .test-tab:hover:not(.active) {
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+
+        .timer {
+            background-color: var(--light-gray);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: var(--dark-gray);
+            min-width: 100px;
+            text-align: center;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .timer.warning {
+            color: var(--warning-color);
+            animation: pulse 1s infinite;
+        }
+
+        .timer.danger {
+            color: var(--accent-color);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 12px 16px;
+            background-color: var(--glass-bg);
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .option:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .option.selected {
+            background-color: rgba(66, 133, 244, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .option.selected::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: -1px;
+            bottom: -1px;
+            width: 4px;
+            background-color: var(--primary-color);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--medium-gray);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .question-indicators {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .question-indicator {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .question-indicator:hover {
+            transform: scale(1.1);
+        }
+
+        .question-indicator.answered {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .question-indicator.current {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Results Interface */
+        .results-container h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .results-table th, .results-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .results-table th {
+            background-color: rgba(66, 133, 244, 0.1);
+            color: var(--dark-gray);
+            font-weight: 500;
+        }
+
+        .results-table tr:hover {
+            background-color: rgba(66, 133, 244, 0.05);
+        }
+
+        .total-score {
+            font-size: 24px;
+            font-weight: 500;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary-color);
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* File Upload */
+        .file-upload {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .file-upload label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark-gray);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .file-btn:hover {
+            background-color: #2d9247;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--dark-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .subject-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .test-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .test-tabs {
+                width: 100%;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .btn {
+                max-width: 100%;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">QuickCBT</div>
+    </header>
+
+    <div class="container">
+        <!-- Subject Selection Interface -->
+        <div class="interface-container active" id="subjectSelection">
+            <div class="subject-selection">
+                <h2 class="text-center">Select Subjects for Your Test</h2>
+                <p class="text-center mb-20">Choose at least 4 subjects to begin your examination</p>
+                
+                <!-- File Upload for Custom Questions -->
+                <div class="file-upload">
+                    <label for="questionsFile">Load custom questions (optional):</label>
+                    <input type="file" id="questionsFile" class="file-input" accept=".json">
+                    <button class="file-btn" onclick="document.getElementById('questionsFile').click()">Choose JSON File</button>
+                    <div class="file-name" id="fileName">No file selected</div>
+                </div>
+                
+                <div class="subject-grid" id="subjectGrid">
+                    <!-- Subjects will be populated by JavaScript -->
+                </div>
+                
+                <div class="time-selection">
+                    <label for="testDuration">Set Test Duration (minutes):</label>
+                    <div class="time-input">
+                        <input type="number" id="testDuration" min="30" value="30">
+                        <span>minutes (minimum 30 minutes)</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="startTestBtn" disabled>Start Test</button>
+            </div>
+        </div>
+
+        <!-- Test Interface -->
+        <div class="interface-container" id="testInterface">
+            <div class="test-header">
+                <div class="test-tabs" id="testTabs">
+                    <!-- Subject tabs will be populated by JavaScript -->
+                </div>
+                <div class="timer" id="testTimer">30:00</div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">Question 1/25</div>
+                <div class="question-text" id="questionText">Loading question...</div>
+                
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="nav-btn" id="prevBtn" disabled>Previous</button>
+                
+                <div class="question-indicators" id="questionIndicators">
+                    <!-- Question indicators will be populated by JavaScript -->
+                </div>
+                
+                <button class="nav-btn" id="nextBtn">Next</button>
+            </div>
+            
+            <div class="text-center" style="margin-top: 20px;">
+                <button class="btn btn-danger" id="submitTestBtn">Submit Test</button>
+            </div>
+        </div>
+
+        <!-- Results Interface -->
+        <div class="interface-container" id="resultsInterface">
+            <div class="results-container">
+                <h2>Test Results</h2>
+                
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTableBody">
+                        <!-- Results will be populated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="total-score" id="totalScore">
+                    Total Score: 0%
+                </div>
+                
+                <button class="btn btn-primary" id="restartBtn">Take Another Test</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        By: Iyiola Adedamola Richard @QuickCBT&copy;2025
+    </footer>
+
+    <script>
+        // Default questions data in JSON format
+        let questionsData = {
+            questions: {
+                Mathematics: [
+                    {
+                        No: 1,
+                        question: "What is the value of π (pi) to two decimal places?",
+                        options: [
+                            "I. 3.14",
+                            "II. 3.16",
+                            "III. 3.18",
+                            "IV. 3.12"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the square root of 64?",
+                        options: [
+                            "I. 6",
+                            "II. 7",
+                            "III. 8",
+                            "IV. 9"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 3,
+                        question: "Solve for x: 2x + 5 = 15",
+                        options: [
+                            "I. 5",
+                            "II. 10",
+                            "III. 7.5",
+                            "IV. 6"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the area of a circle with radius 5?",
+                        options: [
+                            "I. 25π",
+                            "II. 10π",
+                            "III. 50π",
+                            "IV. 5π"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is a prime number?",
+                        options: [
+                            "I. 9",
+                            "II. 15",
+                            "III. 17",
+                            "IV. 21"
+                        ],
+                        answers: ["III"]
+                    }
+                ],
+                English: [
+                    {
+                        No: 1,
+                        question: "Which of these is a synonym for 'happy'?",
+                        options: [
+                            "I. Joyful",
+                            "II. Sad",
+                            "III. Angry",
+                            "IV. Tired"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the past tense of 'run'?",
+                        options: [
+                            "I. Ran",
+                            "II. Runned",
+                            "III. Running",
+                            "IV. Runs"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which word is an adjective?",
+                        options: [
+                            "I. Quickly",
+                            "II. Beautiful",
+                            "III. Running",
+                            "IV. They"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the plural of 'child'?",
+                        options: [
+                            "I. Childs",
+                            "II. Children",
+                            "III. Childes",
+                            "IV. Child's"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which sentence is correct?",
+                        options: [
+                            "I. She don't like apples.",
+                            "II. She doesn't likes apples.",
+                            "III. She doesn't like apples.",
+                            "IV. She not like apples."
+                        ],
+                        answers: ["III"]
+                    }
+                ],
+                Chemistry: [
+                    {
+                        No: 1,
+                        question: "What is the chemical symbol for gold?",
+                        options: [
+                            "I. Au",
+                            "II. Ag",
+                            "III. Fe",
+                            "IV. Pb"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 2,
+                        question: "What is the pH value of pure water?",
+                        options: [
+                            "I. 0",
+                            "II. 7",
+                            "III. 14",
+                            "IV. 10"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which gas is most abundant in Earth's atmosphere?",
+                        options: [
+                            "I. Oxygen",
+                            "II. Carbon dioxide",
+                            "III. Nitrogen",
+                            "IV. Hydrogen"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the lightest element?",
+                        options: [
+                            "I. Helium",
+                            "II. Hydrogen",
+                            "III. Oxygen",
+                            "IV. Lithium"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "What is the chemical formula for water?",
+                        options: [
+                            "I. HO",
+                            "II. H2O",
+                            "III. H2O2",
+                            "IV. H3O"
+                        ],
+                        answers: ["II"]
+                    }
+                ],
+                Physics: [
+                    {
+                        No: 1,
+                        question: "What is the unit of force?",
+                        options: [
+                            "I. Joule",
+                            "II. Watt",
+                            "III. Newton",
+                            "IV. Pascal"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 2,
+                        question: "Which law states that 'for every action, there is an equal and opposite reaction'?",
+                        options: [
+                            "I. Newton's First Law",
+                            "II. Newton's Second Law",
+                            "III. Newton's Third Law",
+                            "IV. Law of Gravitation"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 3,
+                        question: "What is the speed of light in a vacuum?",
+                        options: [
+                            "I. 300,000 km/s",
+                            "II. 150,000 km/s",
+                            "III. 500,000 km/s",
+                            "IV. 1,000,000 km/s"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 4,
+                        question: "What is the SI unit of electric current?",
+                        options: [
+                            "I. Volt",
+                            "II. Ohm",
+                            "III. Ampere",
+                            "IV. Watt"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which of these is a vector quantity?",
+                        options: [
+                            "I. Mass",
+                            "II. Temperature",
+                            "III. Velocity",
+                            "IV. Energy"
+                        ],
+                        answers: ["III"]
+                    }
+                ],
+                Biology: [
+                    {
+                        No: 1,
+                        question: "What is the powerhouse of the cell?",
+                        options: [
+                            "I. Nucleus",
+                            "II. Ribosome",
+                            "III. Mitochondria",
+                            "IV. Chloroplast"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 2,
+                        question: "Which blood type is the universal donor?",
+                        options: [
+                            "I. A",
+                            "II. B",
+                            "III. AB",
+                            "IV. O"
+                        ],
+                        answers: ["IV"]
+                    },
+                    {
+                        No: 3,
+                        question: "What is the process by which plants make their own food?",
+                        options: [
+                            "I. Respiration",
+                            "II. Photosynthesis",
+                            "III. Transpiration",
+                            "IV. Digestion"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 4,
+                        question: "How many bones are in the adult human body?",
+                        options: [
+                            "I. 156",
+                            "II. 206",
+                            "III. 256",
+                            "IV. 306"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which organ produces insulin?",
+                        options: [
+                            "I. Liver",
+                            "II. Pancreas",
+                            "III. Kidney",
+                            "IV. Stomach"
+                        ],
+                        answers: ["II"]
+                    }
+                ],
+                History: [
+                    {
+                        No: 1,
+                        question: "In which year did World War II end?",
+                        options: [
+                            "I. 1943",
+                            "II. 1945",
+                            "III. 1947",
+                            "IV. 1950"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 2,
+                        question: "Who was the first president of the United States?",
+                        options: [
+                            "I. Thomas Jefferson",
+                            "II. George Washington",
+                            "III. Abraham Lincoln",
+                            "IV. John Adams"
+                        ],
+                        answers: ["II"]
+                    },
+                    {
+                        No: 3,
+                        question: "Which ancient civilization built the pyramids?",
+                        options: [
+                            "I. Greeks",
+                            "II. Romans",
+                            "III. Egyptians",
+                            "IV. Mayans"
+                        ],
+                        answers: ["III"]
+                    },
+                    {
+                        No: 4,
+                        question: "When was the Declaration of Independence signed?",
+                        options: [
+                            "I. 1776",
+                            "II. 1789",
+                            "III. 1801",
+                            "IV. 1812"
+                        ],
+                        answers: ["I"]
+                    },
+                    {
+                        No: 5,
+                        question: "Which country was the first to send a human to space?",
+                        options: [
+                            "I. USA",
+                            "II. China",
+                            "III. Soviet Union",
+                            "IV. UK"
+                        ],
+                        answers: ["III"]
+                    }
+                ]
+            }
+        };
+
+        // Application State
+        const state = {
+            selectedSubjects: [],
+            testDuration: 30,
+            currentSubject: null,
+            currentQuestionIndex: 0,
+            userAnswers: {},
+            timerInterval: null,
+            timeRemaining: 0
+        };
+
+        // DOM Elements
+        const subjectSelectionInterface = document.getElementById('subjectSelection');
+        const testInterface = document.getElementById('testInterface');
+        const resultsInterface = document.getElementById('resultsInterface');
+        const subjectGrid = document.getElementById('subjectGrid');
+        const testDurationInput = document.getElementById('testDuration');
+        const startTestBtn = document.getElementById('startTestBtn');
+        const testTabs = document.getElementById('testTabs');
+        const testTimer = document.getElementById('testTimer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const questionIndicators = document.getElementById('questionIndicators');
+        const submitTestBtn = document.getElementById('submitTestBtn');
+        const resultsTableBody = document.getElementById('resultsTableBody');
+        const totalScore = document.getElementById('totalScore');
+        const restartBtn = document.getElementById('restartBtn');
+        const questionsFileInput = document.getElementById('questionsFile');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        // Initialize the application
+        function init() {
+            populateSubjectGrid();
+            setupEventListeners();
+        }
+
+        // Populate the subject selection grid
+        function populateSubjectGrid() {
+            subjectGrid.innerHTML = '';
+            const subjects = Object.keys(questionsData.questions);
+            
+            subjects.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.textContent = subject;
+                subjectCard.addEventListener('click', () => toggleSubjectSelection(subject, subjectCard));
+                subjectGrid.appendChild(subjectCard);
+            });
+        }
+
+        // Toggle subject selection
+        function toggleSubjectSelection(subject, card) {
+            const index = state.selectedSubjects.indexOf(subject);
+            
+            if (index === -1) {
+                state.selectedSubjects.push(subject);
+                card.classList.add('selected');
+            } else {
+                state.selectedSubjects.splice(index, 1);
+                card.classList.remove('selected');
+            }
+            
+            // Enable/disable start button based on selection
+            startTestBtn.disabled = state.selectedSubjects.length < 4;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            testDurationInput.addEventListener('change', (e) => {
+                const duration = parseInt(e.target.value);
+                state.testDuration = duration >= 30 ? duration : 30;
+                e.target.value = state.testDuration;
+            });
+            
+            startTestBtn.addEventListener('click', startTest);
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            submitTestBtn.addEventListener('click', submitTest);
+            restartBtn.addEventListener('click', restartTest);
+            
+            // File input for custom questions
+            questionsFileInput.addEventListener('change', handleFileUpload);
+        }
+
+        // Handle file upload for custom questions
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            fileNameDisplay.textContent = file.name;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const customQuestions = JSON.parse(e.target.result);
+                    
+                    // Validate the JSON structure
+                    if (customQuestions && customQuestions.questions && typeof customQuestions.questions === 'object') {
+                        questionsData = customQuestions;
+                        populateSubjectGrid();
+                        state.selectedSubjects = [];
+                        startTestBtn.disabled = true;
+                        
+                        // Clear any selected subjects
+                        document.querySelectorAll('.subject-card.selected').forEach(card => {
+                            card.classList.remove('selected');
+                        });
+                        
+                        alert('Custom questions loaded successfully!');
+                    } else {
+                        throw new Error('Invalid questions format');
+                    }
+                } catch (error) {
+                    alert('Error loading questions file: ' + error.message);
+                    console.error('Error parsing questions file:', error);
+                }
+            };
+            reader.onerror = function() {
+                alert('Error reading file');
+            };
+            reader.readAsText(file);
+        }
+
+        // Start the test
+        function startTest() {
+            // Set test duration in seconds
+            state.timeRemaining = state.testDuration * 60;
+            updateTimerDisplay();
+            
+            // Initialize user answers
+            state.selectedSubjects.forEach(subject => {
+                state.userAnswers[subject] = Array(questionsData.questions[subject].length).fill(null);
+            });
+           
+            // Set first subject
+            state.currentSubject = state.selectedSubjects[0];
+            state.currentQuestionIndex = 0;
+            
+            // Setup test tabs
+            setupTestTabs();
+            
+            // Setup question indicators
+            setupQuestionIndicators();
+            
+            // Show first question
+            showCurrentQuestion();
+            
+            // Start timer
+            state.timerInterval = setInterval(updateTimer, 1000);
+            
+            // Switch to test interface
+            switchInterface('testInterface');
+        }
+
+        // Setup test tabs
+        function setupTestTabs() {
+            testTabs.innerHTML = '';
+            
+            state.selectedSubjects.forEach(subject => {
+                const tab = document.createElement('div');
+                tab.className = `test-tab ${subject === state.currentSubject ? 'active' : ''}`;
+                tab.textContent = subject;
+                tab.addEventListener('click', () => switchSubject(subject));
+                testTabs.appendChild(tab);
+            });
+        }
+
+        // Switch between subjects
+        function switchSubject(subject) {
+            state.currentSubject = subject;
+            state.currentQuestionIndex = 0;
+            
+            // Update active tab
+            Array.from(testTabs.children).forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === subject);
+            });
+            
+            // Update question indicators
+            setupQuestionIndicators();
+            
+            // Show first question of new subject
+            showCurrentQuestion();
+        }
+
+        // Setup question indicators
+        function setupQuestionIndicators() {
+            questionIndicators.innerHTML = '';
+            const questions = questionsData.questions[state.currentSubject];
+            
+            questions.forEach((_, index) => {
+                const indicator = document.createElement('div');
+                indicator.className = `question-indicator ${index === state.currentQuestionIndex ? 'current' : ''} ${state.userAnswers[state.currentSubject][index] !== null ? 'answered' : ''}`;
+                indicator.textContent = index + 1;
+                indicator.addEventListener('click', () => goToQuestion(index));
+                questionIndicators.appendChild(indicator);
+            });
+        }
+
+        // Show current question
+        function showCurrentQuestion() {
+            const questions = questionsData.questions[state.currentSubject];
+            const currentQuestion = questions[state.currentQuestionIndex];
+            
+            // Update question number display
+            questionNumber.textContent = `Question ${state.currentQuestionIndex + 1}/${questions.length}`;
+            
+            // Update question text
+            questionText.textContent = currentQuestion.question;
+            
+            // Update options
+            optionsContainer.innerHTML = '';
+            currentQuestion.options.forEach((option, optionIndex) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = `option ${state.userAnswers[state.currentSubject][state.currentQuestionIndex] === optionIndex ? 'selected' : ''}`;
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectAnswer(optionIndex));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            prevBtn.disabled = state.currentQuestionIndex === 0;
+            nextBtn.disabled = state.currentQuestionIndex === questions.length - 1;
+        }
+
+        // Select an answer
+        function selectAnswer(optionIndex) {
+            // Save the answer
+            state.userAnswers[state.currentSubject][state.currentQuestionIndex] = optionIndex;
+            
+            // Update the selected option style
+            Array.from(optionsContainer.children).forEach((option, idx) => {
+                option.classList.toggle('selected', idx === optionIndex);
+            });
+            
+            // Update the question indicator
+            questionIndicators.children[state.currentQuestionIndex].classList.add('answered');
+        }
+
+        // Go to a specific question
+        function goToQuestion(index) {
+            state.currentQuestionIndex = index;
+            showCurrentQuestion();
+            
+            // Update question indicators
+            Array.from(questionIndicators.children).forEach((indicator, idx) => {
+                indicator.classList.toggle('current', idx === index);
+            });
+        }
+
+        // Go to previous question
+        function goToPreviousQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                goToQuestion(state.currentQuestionIndex - 1);
+            }
+        }
+
+        // Go to next question
+        function goToNextQuestion() {
+            const questions = questionsData.questions[state.currentSubject];
+            if (state.currentQuestionIndex < questions.length - 1) {
+                goToQuestion(state.currentQuestionIndex + 1);
+            }
+        }
+
+        // Update timer
+        function updateTimer() {
+            state.timeRemaining--;
+            updateTimerDisplay();
+            
+            if (state.timeRemaining <= 0) {
+                clearInterval(state.timerInterval);
+                submitTest();
+            }
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(state.timeRemaining / 60);
+            const seconds = state.timeRemaining % 60;
+            
+            testTimer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            // Change color when time is running out
+            if (state.timeRemaining <= 300) { // 5 minutes
+                testTimer.classList.add('danger');
+                testTimer.classList.remove('warning');
+            } else if (state.timeRemaining <= 600) { // 10 minutes
+                testTimer.classList.add('warning');
+                testTimer.classList.remove('danger');
+            } else {
+                testTimer.classList.remove('warning', 'danger');
+            }
+        }
+
+        // Submit the test
+        function submitTest() {
+            clearInterval(state.timerInterval);
+            calculateResults();
+            switchInterface('resultsInterface');
+        }
+
+        // Calculate results
+        function calculateResults() {
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            
+            resultsTableBody.innerHTML = '';
+            
+            // Calculate scores for each subject
+            state.selectedSubjects.forEach(subject => {
+                const questions = questionsData.questions[subject];
+                let correct = 0;
+                
+                questions.forEach((question, index) => {
+                    const userAnswerIndex = state.userAnswers[subject][index];
+                    if (userAnswerIndex !== null) {
+                        const userAnswer = question.options[userAnswerIndex].split('.')[0].trim();
+                        if (question.answers.includes(userAnswer)) {
+                            correct++;
+                        }
+                    }
+                });
+                
+                totalCorrect += correct;
+                totalQuestions += questions.length;
+                
+                const percentage = Math.round((correct / questions.length) * 100);
+                
+                // Add to results table
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${subject}</td>
+                    <td>${correct}/${questions.length}</td>
+                    <td>${percentage}%</td>
+                `;
+                resultsTableBody.appendChild(row);
+            });
+            
+            // Calculate total score
+            const totalPercentage = Math.round((totalCorrect / totalQuestions) * 100);
+            totalScore.textContent = `Total Score: ${totalPercentage}%`;
+        }
+
+        // Restart the test
+        function restartTest() {
+            // Reset state
+            state.selectedSubjects = [];
+            state.currentSubject = null;
+            state.currentQuestionIndex = 0;
+            state.userAnswers = {};
+            state.timerInterval = null;
+            state.timeRemaining = 0;
+            
+            // Reset UI
+            subjectGrid.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            testDurationInput.value = '30';
+            startTestBtn.disabled = true;
+            fileNameDisplay.textContent = 'No file selected';
+            questionsFileInput.value = '';
+            
+            // Switch back to subject selection
+            switchInterface('subjectSelection');
+        }
+
+        // Switch between interfaces
+        function switchInterface(interfaceId) {
+            // Hide all interfaces
+            subjectSelectionInterface.classList.remove('active');
+            testInterface.classList.remove('active');
+            resultsInterface.classList.remove('active');
+            
+            // Show the selected interface
+            document.getElementById(interfaceId).classList.add('active');
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
