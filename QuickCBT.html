@@ -31,7 +31,7 @@
 
         body {
             background-color: #f0f2f5;
-            background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -40,7 +40,35 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            
         }
+
+        body {
+  background: linear-gradient(
+    135deg,
+    #fff5f5 0%,       /* Very light pink */
+    #fff9f9 50%,      /* Almost white with pink tint */
+    #fff 100%         /* Pure white */
+  );
+  background-attachment: fixed;
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
         .container {
             max-width: 1000px;
@@ -65,8 +93,9 @@
 
         .header-title {
             font-size: 24px;
-            font-weight: 500;
+            font-weight: 900;
             color: var(--primary-color);
+            color: #aaa;
             text-align: center;
             letter-spacing: 0.5px;
         }
