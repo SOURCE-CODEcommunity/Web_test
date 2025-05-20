@@ -908,6 +908,284 @@
             }
         ],
 
+               "STA 112: What is Probability? - Module 3": [
+            {
+                "No": 1,
+                "question": "Which of the following is NOT one of the four conceptual approaches to probability?",
+                "options": [
+                    "I. Classical probability",
+                    "II. Relative frequentist probability",
+                    "III. Conditional probability",
+                    "IV. Subjective probability"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 2,
+                "question": "What is the classical definition of probability?",
+                "options": [
+                    "I. Probability is a measure of personal belief",
+                    "II. Probability is the limit of relative frequency",
+                    "III. Probability is favorable outcomes divided by total possible outcomes",
+                    "IV. Probability is defined by three axioms"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 3,
+                "question": "When two fair dice are thrown, what is the probability of getting a sum of 9?",
+                "options": [
+                    "I. 1/6",
+                    "II. 1/9",
+                    "III. 1/12",
+                    "IV. 1/36"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 4,
+                "question": "What is the key characteristic of empirical (a posteriori) probability?",
+                "options": [
+                    "I. It can only be determined before the experiment",
+                    "II. It can only be determined after the experiment",
+                    "III. It is based on personal belief",
+                    "IV. It follows three axioms"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 5,
+                "question": "If 30 out of 200 students wear glasses, what is the empirical probability a randomly chosen student wears glasses?",
+                "options": [
+                    "I. 0.15",
+                    "II. 0.30",
+                    "III. 0.60",
+                    "IV. 0.85"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 6,
+                "question": "Which type of probability is based on personal conviction or belief?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 7,
+                "question": "What is the range of possible values for any probability?",
+                "options": [
+                    "I. 0 to 1",
+                    "II. -1 to 1",
+                    "III. 0 to ∞",
+                    "IV. -∞ to ∞"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 8,
+                "question": "Which axiom states that the probability of the sample space is 1?",
+                "options": [
+                    "I. First axiom",
+                    "II. Second axiom",
+                    "III. Third axiom",
+                    "IV. Fourth axiom"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 9,
+                "question": "When two fair dice are thrown, what is the probability of getting two odd numbers?",
+                "options": [
+                    "I. 1/2",
+                    "II. 1/4",
+                    "III. 1/6",
+                    "IV. 1/8"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 10,
+                "question": "Which probability approach is rarely used in practice due to lack of theoretical backing?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 11,
+                "question": "What is the probability of getting two prime numbers when two fair dice are thrown?",
+                "options": [
+                    "I. 1/9",
+                    "II. 1/6",
+                    "III. 1/4",
+                    "IV. 1/2"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 12,
+                "question": "Which probability approach defines probability as the limit of relative frequency?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 13,
+                "question": "What is the probability of getting two factors of 12 when two fair dice are thrown?",
+                "options": [
+                    "I. 1/3",
+                    "II. 4/9",
+                    "III. 5/9",
+                    "IV. 2/3"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 14,
+                "question": "Which axiom states that all probabilities are non-negative?",
+                "options": [
+                    "I. First axiom",
+                    "II. Second axiom",
+                    "III. Third axiom",
+                    "IV. All of the above"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 15,
+                "question": "What is another name for classical probability?",
+                "options": [
+                    "I. A posteriori probability",
+                    "II. A priori probability",
+                    "III. Subjective probability",
+                    "IV. Empirical probability"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 16,
+                "question": "Which probability approach requires equally likely outcomes?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 17,
+                "question": "What is the sum of probabilities of all outcomes in the sample space?",
+                "options": [
+                    "I. 0",
+                    "II. 0.5",
+                    "III. 1",
+                    "IV. It depends on the experiment"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 18,
+                "question": "Which of the following is an example where subjective probability might be used?",
+                "options": [
+                    "I. Rolling a fair die",
+                    "II. Predicting weather",
+                    "III. Flipping a coin",
+                    "IV. Drawing cards from a deck"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 19,
+                "question": "What is the key requirement for outcomes in classical probability?",
+                "options": [
+                    "I. They must be mutually exclusive",
+                    "II. They must be exhaustive",
+                    "III. They must be equally likely",
+                    "IV. All of the above"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 20,
+                "question": "Which probability approach is based on Kolmogorov's axioms?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 21,
+                "question": "What is the probability of an impossible event?",
+                "options": [
+                    "I. 0",
+                    "II. 0.5",
+                    "III. 1",
+                    "IV. Undefined"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 22,
+                "question": "Which probability approach would be most appropriate for predicting the outcome of a new, never-before-seen experiment?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 23,
+                "question": "What is the probability of a certain event?",
+                "options": [
+                    "I. 0",
+                    "II. 0.5",
+                    "III. 1",
+                    "IV. Undefined"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 24,
+                "question": "Which probability approach would be used to determine the probability of a machine part failing based on historical data?",
+                "options": [
+                    "I. Classical",
+                    "II. Empirical",
+                    "III. Subjective",
+                    "IV. Axiomatic"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 25,
+                "question": "What is the main limitation of classical probability?",
+                "options": [
+                    "I. It requires equally likely outcomes which may not exist",
+                    "II. It requires large amounts of data",
+                    "III. It's too subjective",
+                    "IV. It doesn't follow mathematical axioms"
+                ],
+                "answers": ["I"]
+            }
+        ],
+
         "COS 101: Fundamentals of Computer Science - Week 1": [
             {
                 "No": 1,
