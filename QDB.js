@@ -629,6 +629,285 @@
             }
         ],
 
+      
+     "STA 112: Concepts of Combination - Module 2": [
+            {
+                "No": 1,
+                "question": "What is the key difference between permutation and combination?",
+                "options": [
+                    "I. Permutation considers order while combination does not",
+                    "II. Combination considers order while permutation does not",
+                    "III. Both consider order equally",
+                    "IV. Neither considers order"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 2,
+                "question": "What is the formula for combination?",
+                "options": [
+                    "I. n!/(n-r)!",
+                    "II. n!/(r!(n-r)!)",
+                    "III. (n-r)!/r!",
+                    "IV. n!/r!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 3,
+                "question": "Calculate ⁵C₂.",
+                "options": [
+                    "I. 5",
+                    "II. 10",
+                    "III. 20",
+                    "IV. 60"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 4,
+                "question": "In how many ways can 3 students be selected from a group of 7 students?",
+                "options": [
+                    "I. 21",
+                    "II. 35",
+                    "III. 210",
+                    "IV. 5040"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 5,
+                "question": "What is the value of ⁷C₀?",
+                "options": [
+                    "I. 0",
+                    "II. 1",
+                    "III. 7",
+                    "IV. Undefined"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 6,
+                "question": "From 8 boys and 5 girls, how many committees of 7 with exactly 3 girls can be formed?",
+                "options": [
+                    "I. 56",
+                    "II. 80",
+                    "III. 560",
+                    "IV. 700"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 7,
+                "question": "If two particular boys refuse to serve together in a committee, how does this affect the number of possible committees?",
+                "options": [
+                    "I. Increases the number",
+                    "II. Decreases the number",
+                    "III. No effect",
+                    "IV. Makes it zero"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 8,
+                "question": "What is a conditional combination?",
+                "options": [
+                    "I. Combination with no restrictions",
+                    "II. Combination with specific restrictions",
+                    "III. Combination that must include all items",
+                    "IV. Combination that excludes certain items"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 9,
+                "question": "In how many ways can a committee of 2 boys and 1 girl be selected from 5 boys and 3 girls?",
+                "options": [
+                    "I. 8",
+                    "II. 15",
+                    "III. 30",
+                    "IV. 120"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 10,
+                "question": "How many ways can 6 people be paired into teams of 2?",
+                "options": [
+                    "I. 15",
+                    "II. 30",
+                    "III. 720",
+                    "IV. 64"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 11,
+                "question": "What is the relationship between nCr and nC(n-r)?",
+                "options": [
+                    "I. They are equal",
+                    "II. nCr is greater",
+                    "III. nC(n-r) is greater",
+                    "IV. No relationship"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 12,
+                "question": "Calculate ⁸C₅.",
+                "options": [
+                    "I. 56",
+                    "II. 112",
+                    "III. 336",
+                    "IV. 6720"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 13,
+                "question": "A committee of 6 must include exactly 1 assembly member from 9 commissioners and 3 assembly members. How many ways can this be formed?",
+                "options": [
+                    "I. 84",
+                    "II. 252",
+                    "III. 924",
+                    "IV. 1584"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 14,
+                "question": "What is the value of nCn?",
+                "options": [
+                    "I. 0",
+                    "II. 1",
+                    "III. n",
+                    "IV. n!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 15,
+                "question": "How many distinct arrangements exist for the letters in 'COMMITTEE'?",
+                "options": [
+                    "I. 9!",
+                    "II. 9!/(2!2!)",
+                    "III. 9!/(2!2!2!)",
+                    "IV. 9!/2!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 16,
+                "question": "Evaluate ⁵P₄ + ⁷C₄.",
+                "options": [
+                    "I. 65",
+                    "II. 85",
+                    "III. 120",
+                    "IV. 145"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 17,
+                "question": "How many ways can you arrange the letters in 'STATISTICS'?",
+                "options": [
+                    "I. 10!",
+                    "II. 10!/(3!2!2!)",
+                    "III. 10!/(3!2!)",
+                    "IV. 10!/3!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 18,
+                "question": "What is the sum of ⁶C₀ + ⁶C₁ + ⁶C₂ + ... + ⁶C₆?",
+                "options": [
+                    "I. 6",
+                    "II. 32",
+                    "III. 64",
+                    "IV. 720"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 19,
+                "question": "If a particular boy must be in a committee of 7 from 8 boys and 5 girls, how many committees are possible?",
+                "options": [
+                    "I. 120",
+                    "II. 330",
+                    "III. 792",
+                    "IV. 1716"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 20,
+                "question": "How many distinct arrangements exist for the letters in 'LETTERS'?",
+                "options": [
+                    "I. 7!",
+                    "II. 7!/(2!2!)",
+                    "III. 7!/(2!)",
+                    "IV. 7!/2!2!2!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 21,
+                "question": "What is the value of ¹⁰C₇?",
+                "options": [
+                    "I. 120",
+                    "II. 240",
+                    "III. 360",
+                    "IV. 720"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 22,
+                "question": "How many ways can you select a committee of 4 from 10 people if 2 specific people cannot serve together?",
+                "options": [
+                    "I. 70",
+                    "II. 140",
+                    "III. 182",
+                    "IV. 210"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 23,
+                "question": "What is the combination formula equivalent to n!/(r!(n-r)!)?",
+                "options": [
+                    "I. nPr/r!",
+                    "II. nPr × r!",
+                    "III. (n-r)!/r!",
+                    "IV. n!/(n-r)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 24,
+                "question": "How many distinct arrangements exist for the letters in 'CALCULUS'?",
+                "options": [
+                    "I. 8!",
+                    "II. 8!/(2!2!)",
+                    "III. 8!/(2!2!2!)",
+                    "IV. 8!/2!"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 25,
+                "question": "What is the value of nC₁?",
+                "options": [
+                    "I. 0",
+                    "II. 1",
+                    "III. n",
+                    "IV. n!"
+                ],
+                "answers": ["III"]
+            }
+        ],
+
         "COS 101: Fundamentals of Computer Science - Week 1": [
             {
                 "No": 1,
