@@ -834,7 +834,7 @@
                 "question": "If a particular boy must be in a committee of 7 from 8 boys and 5 girls, how many committees are possible?",
                 "options": [
                     "I. 120",
-                    "II. 330",
+                    "II. 350",
                     "III. 792",
                     "IV. 1716"
                 ],
