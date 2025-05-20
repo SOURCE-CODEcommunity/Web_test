@@ -767,7 +767,7 @@
                 "No": 13,
                 "question": "A committee of 6 must include exactly 1 assembly member from 9 commissioners and 3 assembly members. How many ways can this be formed?",
                 "options": [
-                    "I. 84",
+                    "I. 378",
                     "II. 252",
                     "III. 924",
                     "IV. 1584"
@@ -803,7 +803,7 @@
                     "I. 65",
                     "II. 85",
                     "III. 120",
-                    "IV. 145"
+                    "IV. 155"
                 ],
                 "answers": ["IV"]
             },
