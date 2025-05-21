@@ -794,7 +794,7 @@
                     "III. 9!/(2!2!2!)",
                     "IV. 9!/2!"
                 ],
-                "answers": ["II"]
+                "answers": ["III"]
             },
             {
                 "No": 16,
@@ -838,7 +838,7 @@
                     "III. 792",
                     "IV. 1716"
                 ],
-                "answers": ["III"]
+                "answers": ["II"]
             },
             {
                 "No": 20,
@@ -893,7 +893,7 @@
                     "III. 8!/(2!2!2!)",
                     "IV. 8!/2!"
                 ],
-                "answers": ["II"]
+                "answers": ["III"]
             },
             {
                 "No": 25,
@@ -1185,6 +1185,284 @@
                 "answers": ["I"]
             }
         ],
+        "STA 112: Some Laws of Probability - Module 4": [
+            {
+                "No": 1,
+                "question": "What defines mutually exclusive events?",
+                "options": [
+                    "I. Events that can occur simultaneously",
+                    "II. Events where the occurrence of one prevents the other",
+                    "III. Events that always occur together",
+                    "IV. Events with equal probabilities"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 2,
+                "question": "What is the addition rule for probability of events A and B?",
+                "options": [
+                    "I. P(A∪B) = P(A) + P(B)",
+                    "II. P(A∪B) = P(A) × P(B)",
+                    "III. P(A∪B) = P(A) + P(B) - P(A∩B)",
+                    "IV. P(A∪B) = P(A) - P(B)"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 3,
+                "question": "If two events are mutually exclusive, what is P(A∩B)?",
+                "options": [
+                    "I. 0",
+                    "II. 1",
+                    "III. P(A) + P(B)",
+                    "IV. P(A) × P(B)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 4,
+                "question": "What is the formula for conditional probability P(A|B)?",
+                "options": [
+                    "I. P(A∩B)/P(B)",
+                    "II. P(B)/P(A)",
+                    "III. P(A∪B)/P(B)",
+                    "IV. P(A) × P(B)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 5,
+                "question": "Two events are independent if:",
+                "options": [
+                    "I. P(A|B) = P(A)",
+                    "II. P(A∩B) = 0",
+                    "III. P(A∪B) = 1",
+                    "IV. P(A) = P(B)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 6,
+                "question": "For independent events A and B, what is P(A∩B)?",
+                "options": [
+                    "I. P(A) + P(B)",
+                    "II. P(A) × P(B)",
+                    "III. P(A)/P(B)",
+                    "IV. P(A) - P(B)"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 7,
+                "question": "Which of these is an example of mutually exclusive events?",
+                "options": [
+                    "I. Getting heads and tails on the same coin flip",
+                    "II. Rain and sunshine on the same day",
+                    "III. Being a student and being an athlete",
+                    "IV. Both I and II"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 8,
+                "question": "If P(A) = 0.4 and P(B) = 0.3 and they're independent, what is P(A∩B)?",
+                "options": [
+                    "I. 0.7",
+                    "II. 0.12",
+                    "III. 0.1",
+                    "IV. 1.2"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 9,
+                "question": "What is the key difference between disjoint and independent events?",
+                "options": [
+                    "I. Disjoint events can occur together, independent cannot",
+                    "II. Independent events can occur together, disjoint cannot",
+                    "III. There is no difference",
+                    "IV. Disjoint events always have equal probabilities"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 10,
+                "question": "Bayes' Theorem is used to calculate:",
+                "options": [
+                    "I. Union probabilities",
+                    "II. Conditional probabilities",
+                    "III. Only independent events",
+                    "IV. Only mutually exclusive events"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 11,
+                "question": "If P(A|B) = P(A), then events A and B are:",
+                "options": [
+                    "I. Mutually exclusive",
+                    "II. Independent",
+                    "III. Dependent",
+                    "IV. Complementary"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 12,
+                "question": "What is P(A∪B) if A and B are mutually exclusive with P(A)=0.5 and P(B)=0.3?",
+                "options": [
+                    "I. 0.8",
+                    "II. 0.15",
+                    "III. 0.2",
+                    "IV. 0.65"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 13,
+                "question": "Which formula represents the multiplication rule for independent events?",
+                "options": [
+                    "I. P(A∩B) = P(A) + P(B)",
+                    "II. P(A∩B) = P(A) × P(B)",
+                    "III. P(A∩B) = P(A)/P(B)",
+                    "IV. P(A∩B) = P(A) - P(B)"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 14,
+                "question": "In Bayes' Theorem, what must be true about events B₁, B₂,..., Bₖ?",
+                "options": [
+                    "I. They must be independent",
+                    "II. They must be mutually exclusive and exhaustive",
+                    "III. They must have equal probabilities",
+                    "IV. They must be dependent on each other"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 15,
+                "question": "If P(A)=0.6, P(B)=0.4, and P(A∩B)=0.24, are A and B independent?",
+                "options": [
+                    "I. Yes, because P(A∩B) = P(A)×P(B)",
+                    "II. No, because P(A) ≠ P(B)",
+                    "III. No, because P(A∩B) ≠ 0",
+                    "IV. Cannot be determined"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 16,
+                "question": "What is the probability of the complement of event A, P(A')?",
+                "options": [
+                    "I. 1 - P(A)",
+                    "II. P(A) - 1",
+                    "III. 1/P(A)",
+                    "IV. P(A)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 17,
+                "question": "Which of these pairs are always mutually exclusive?",
+                "options": [
+                    "I. A student passing and failing the same exam",
+                    "II. Being tall and being smart",
+                    "III. Owning a cat and owning a dog",
+                    "IV. Being married and being single"
+                ],
+                "answers": ["I", "IV"]
+            },
+            {
+                "No": 18,
+                "question": "If P(A)=0.3, P(B)=0.5, and P(A∪B)=0.65, what is P(A∩B)?",
+                "options": [
+                    "I. 0.15",
+                    "II. 0.8",
+                    "III. 0.2",
+                    "IV. 0.35"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 19,
+                "question": "What does P(A|B) = 0.7 mean?",
+                "options": [
+                    "I. The probability of A is 70%",
+                    "II. The probability of B given A is 70%",
+                    "III. The probability of A given B is 70%",
+                    "IV. The probability of A or B is 70%"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 20,
+                "question": "For Bayes' Theorem, what is the denominator?",
+                "options": [
+                    "I. P(A|B₁)P(B₁)",
+                    "II. Σ P(A|Bⱼ)P(Bⱼ)",
+                    "III. P(B₁|A)",
+                    "IV. P(A)"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 21,
+                "question": "If two events cannot occur together, they are:",
+                "options": [
+                    "I. Independent",
+                    "II. Mutually exclusive",
+                    "III. Both independent and mutually exclusive",
+                    "IV. Neither independent nor mutually exclusive"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 22,
+                "question": "What is P(A∩B) if P(A)=0.4, P(B)=0.5, and P(A|B)=0.6?",
+                "options": [
+                    "I. 0.3",
+                    "II. 0.2",
+                    "III. 0.9",
+                    "IV. 0.24"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 23,
+                "question": "Which statement about independent events is false?",
+                "options": [
+                    "I. P(A|B) = P(A)",
+                    "II. P(B|A) = P(B)",
+                    "III. P(A∩B) = P(A)×P(B)",
+                    "IV. P(A∪B) = P(A) + P(B)"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 24,
+                "question": "In probability, what is a sure event?",
+                "options": [
+                    "I. An event with P=0",
+                    "II. An event with P=1",
+                    "III. An independent event",
+                    "IV. A mutually exclusive event"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 25,
+                "question": "If P(A∩B) = 0.2, P(A) = 0.5, and P(B) = 0.4, are A and B independent?",
+                "options": [
+                    "I. Yes, because P(A∩B) = P(A)×P(B)",
+                    "II. No, because P(A∩B) ≠ 0",
+                    "III. No, because P(A∩B) ≠ P(A)×P(B)",
+                    "IV. Yes, because P(A) > P(B)"
+                ],
+                "answers": ["I"]
+            }
+        ],
+           
 
         "COS 101: Fundamentals of Computer Science - Week 1": [
             {
