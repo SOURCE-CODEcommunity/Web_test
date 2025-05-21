@@ -577,7 +577,7 @@
                 "question": "How many distinct arrangements exist for the letters in 'STATISTICS'?",
                 "options": [
                     "I. 10!",
-                    "II. 10!/(3!2!2!)",
+                    "II. 10!/(3!3!2!)",
                     "III. 10!/(3!2!)",
                     "IV. 10!/3!"
                 ],
