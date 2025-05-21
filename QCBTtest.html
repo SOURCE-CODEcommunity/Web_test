@@ -664,6 +664,71 @@
         .mb-20 {
             margin-bottom: 20px;
         }
+
+    /* Auth Form Styles */
+.auth-form {
+  background-color: var(--glass-bg);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.auth-form input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background-color: var(--light-gray);
+}
+
+/* Admin Styles */
+.admin-container {
+  background-color: var(--glass-bg);
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input, .filters select {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--medium-gray);
+}
+
+.admin-results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-results-table th {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-results-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.btn-view-details {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -671,6 +736,27 @@
         <div class="header-title">QuickCBT</div>
     </header>
 
+<!-- Auth Interface -->
+<div class="interface-container active" id="authInterface">
+  <div class="auth-form">
+    <h2>Welcome to CBT Platform</h2>
+    <div id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button id="loginBtn" class="btn btn-primary">Login</button>
+      <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+      <p>Admin? <a href="admin.html">Go to Dashboard</a></p>
+    </div>
+    <div id="signupForm" style="display:none">
+      <input type="text" id="signupName" placeholder="Full Name">
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <button id="signupBtn" class="btn btn-primary">Create Account</button>
+      <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+    </div>
+  </div>
+</div>
+    
     <div class="container">
         <!-- Subject Selection Interface -->
         <div class="interface-container active" id="subjectSelection">
@@ -776,12 +862,12 @@
         By: Iyiola Adedamola Richard @QuickCBT&copy;2025
     </footer>
 
-    <!-- Load Firebase SDKs first -->
+    <!-- Load Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<!-- Then load your config -->
+<!-- Then load config -->
 <script src="config.js"></script>
 
     <script>
@@ -1209,11 +1295,6 @@ document.addEventListener('DOMContentLoaded', () => {
   switchInterface('resultsInterface');
 }
 
-// Initialize auth when DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-  initAuth();
-  // Rest of your existing initialization code
-});
 
         // Calculate results
         
@@ -1359,8 +1440,15 @@ closeDialog.addEventListener('click', () => {
             document.getElementById(interfaceId).classList.add('active');
         }
 
-        // Initialize the application when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', init);
+        
+// Initialize auth when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+ // Initialize the application when the DOM is loaded
+init()
+});
+
+       
     </script>
 
   
