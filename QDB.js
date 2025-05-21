@@ -772,7 +772,7 @@
                     "III. 924",
                     "IV. 1584"
                 ],
-                "answers": ["III"]
+                "answers": ["I"]
             },
             {
                 "No": 14,
