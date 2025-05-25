@@ -883,7 +883,7 @@
 
         // Initialize the application
         function init() {
-            populateSubjectGrid();
+            
             setupEventListeners();
         }
 
@@ -896,7 +896,7 @@
                 const subjectCard = document.createElement('div');
                 subjectCard.className = 'subject-card';
                 subjectCard.textContent = subject;
-                subjectCard.addEventListener('click', () => toggleSubjectSelection(subject, subjectCard));
+                subjectCard.addEventListener('click', () => toggleSubjectSelection(subject, subjectCard)); 
                 subjectGrid.appendChild(subjectCard);
             });
         }
@@ -959,11 +959,8 @@
   });
 }
 
-// Replace your existing populateSubjectGrid() call with:
-document.addEventListener('DOMContentLoaded', () => {
-  populateCourseCategories();
-  // Rest of your initialization code...
-});
+// :
+
 
         
         // Toggle subject selection
@@ -1362,7 +1359,11 @@ closeDialog.addEventListener('click', () => {
         }
 
         // Initialize the application when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            populateCourseCategories();
+            
+        });
     </script>
 
   
