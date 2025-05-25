@@ -625,7 +625,57 @@
 
 .view-details-btn:hover {
   background-color: #3367d6;
+}/* Course Category Styles */
+.course-category {
+  margin-bottom: 15px;
+  background-color: var(--glass-bg);
+  border-radius: 8px;
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
 }
+
+.course-header {
+  padding: 15px 20px;
+  background-color: rgba(66, 133, 244, 0.1);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.course-header:hover {
+  background-color: rgba(66, 133, 244, 0.2);
+}
+
+.course-code {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.course-toggle {
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+.course-toggle.collapsed {
+  transform: rotate(-90deg);
+}
+
+.course-tests {
+  display: none;
+  padding: 10px;
+}
+
+.course-tests.show {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -685,10 +735,18 @@
                     <button class="file-btn" onclick="document.getElementById('questionsFile').click()">Choose JSON File</button>
                     <div class="file-name" id="fileName">No file selected</div>
                 </div>
-                
-                <div class="subject-grid" id="subjectGrid">
+                <div class="subject-selection">
+  <h2 class="text-center">Select Your Test</h2>
+  <p class="text-center mb-20">Tests are grouped by course codes</p>
+  
+  <div class="course-categories" id="courseCategories">
+    <!-- Categories will be generated here -->
+  </div>
+</div>
+            <!--    <div class="subject-grid" id="subjectGrid">
                     <!-- Subjects will be populated by JavaScript -->
-                </div>
+                </div> 
+-->
                 
                 <div class="time-selection">
                     <label for="testDuration">Set Test Duration (minutes):</label>
@@ -843,21 +901,86 @@
             });
         }
 
+        function populateCourseCategories() {
+  const courseCategories = document.getElementById('courseCategories');
+  courseCategories.innerHTML = '';
+  
+  // Group subjects by course code
+  const courses = {};
+  Object.keys(questionsData.questions).forEach(subject => {
+    // Extract course code (e.g., "COS 101" from "COS 101: Introduction to CS")
+    const courseMatch = subject.match(/^([A-Za-z]{2,4} \d{3})/);
+    const courseCode = courseMatch ? courseMatch[1] : "Other";
+    
+    if (!courses[courseCode]) {
+      courses[courseCode] = [];
+    }
+    courses[courseCode].push(subject);
+  });
+  
+  // Create category elements
+  Object.entries(courses).forEach(([courseCode, subjects]) => {
+    const category = document.createElement('div');
+    category.className = 'course-category';
+    
+    category.innerHTML = `
+      <div class="course-header">
+        <span class="course-code">${courseCode}</span>
+        <span class="course-toggle">›</span>
+      </div>
+      <div class="course-tests">
+        ${subjects.map(subject => `
+          <div class="subject-card" data-subject="${subject}">
+            ${subject}
+          </div>
+        `).join('')}
+      </div>
+    `;
+    
+    // Add toggle functionality
+    const header = category.querySelector('.course-header');
+    const toggle = category.querySelector('.course-toggle');
+    const testsContainer = category.querySelector('.course-tests');
+    
+    header.addEventListener('click', () => {
+      testsContainer.classList.toggle('show');
+      toggle.classList.toggle('collapsed');
+    });
+    
+    courseCategories.appendChild(category);
+  });
+  
+  // Add subject selection functionality
+  document.querySelectorAll('.subject-card').forEach(card => {
+    card.addEventListener('click', function() {
+      const subject = this.getAttribute('data-subject');
+      toggleSubjectSelection(subject, this);
+    });
+  });
+}
+
+// Replace your existing populateSubjectGrid() call with:
+document.addEventListener('DOMContentLoaded', () => {
+  populateCourseCategories();
+  // Rest of your initialization code...
+});
+
+        
         // Toggle subject selection
-        function toggleSubjectSelection(subject, card) {
-            const index = state.selectedSubjects.indexOf(subject);
-            
-            if (index === -1) {
-                state.selectedSubjects.push(subject);
-                card.classList.add('selected');
-            } else {
-                state.selectedSubjects.splice(index, 1);
-                card.classList.remove('selected');
-            }
-            
-            // Enable/disable start button based on selection
-            startTestBtn.disabled = state.selectedSubjects.length < 1;
-        }
+function toggleSubjectSelection(subject, card) {
+  const index = state.selectedSubjects.indexOf(subject);
+  
+  if (index === -1) {
+    state.selectedSubjects.push(subject);
+    card.classList.add('selected');
+  } else {
+    state.selectedSubjects.splice(index, 1);
+    card.classList.remove('selected');
+  }
+  
+  // Enable/disable start button
+  startTestBtn.disabled = state.selectedSubjects.length < 4;
+}
 
         // Setup event listeners
         function setupEventListeners() {
