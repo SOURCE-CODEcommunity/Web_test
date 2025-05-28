@@ -1462,6 +1462,846 @@
                 "answers": ["I"]
             }
         ],
+
+
+        "STA 112: Problems on Probability - Module 5": [
+            {
+                "No": 1,
+                "question": "If P(X)=2/3, P(Y)=1/7, and P(X∩Y)=5/11, what is P(X∪Y)?",
+                "options": [
+                    "I. 126/231",
+                    "II. 154/231",
+                    "III. 77/231",
+                    "IV. 105/231"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 2,
+                "question": "A bag contains 2 black, 4 red, and 6 yellow balls. What is the probability of drawing a black ball?",
+                "options": [
+                    "I. 1/6",
+                    "II. 1/3",
+                    "III. 1/2",
+                    "IV. 2/3"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 3,
+                "question": "When two fair dice are tossed, what is the probability of getting two odd numbers?",
+                "options": [
+                    "I. 1/4",
+                    "II. 1/6",
+                    "III. 1/2",
+                    "IV. 1/36"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 4,
+                "question": "Two hunters have P(P)=2/9 and P(Q)=1/7 hit probabilities. What is P(only one hits)?",
+                "options": [
+                    "I. 19/63",
+                    "II. 42/63",
+                    "III. 7/63",
+                    "IV. 2/63"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 5,
+                "question": "In the straw prize example with 50 straws, what's the probability of winning if you can draw up to 4 straws?",
+                "options": [
+                    "I. 1/50",
+                    "II. 4/50",
+                    "III. 1/4",
+                    "IV. 4/25"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 6,
+                "question": "For lettuce seeds with P(A)=50%, P(B)=30%, P(C)=20%, and germination rates of 50%, 60%, 70% respectively, what is P(C|germinates)?",
+                "options": [
+                    "I. 14/57",
+                    "II. 25/57",
+                    "III. 18/57",
+                    "IV. 20/57"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 7,
+                "question": "If P(P)=3/4, P(Q)=1/6, and P(P∩Q)=1/12, what is P(P∪Q)?",
+                "options": [
+                    "I. 5/6",
+                    "II. 11/12",
+                    "III. 1/2",
+                    "IV. 7/12"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 8,
+                "question": "In the same bag of balls (2 black, 4 red, 6 yellow), what is P(not red)?",
+                "options": [
+                    "I. 1/3",
+                    "II. 1/2",
+                    "III. 2/3",
+                    "IV. 5/6"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 9,
+                "question": "When two dice are tossed, what is P(sum of 8 or 12)?",
+                "options": [
+                    "I. 1/6",
+                    "II. 5/36",
+                    "III. 1/36",
+                    "IV. 1/9"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 10,
+                "question": "For the hunters, what is P(both miss)?",
+                "options": [
+                    "I. 19/63",
+                    "II. 42/63",
+                    "III. 7/63",
+                    "IV. 2/63"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 11,
+                "question": "What is the probability that Q only hits the target?",
+                "options": [
+                    "I. 19/63",
+                    "II. 42/63",
+                    "III. 7/63",
+                    "IV. 2/63"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 12,
+                "question": "What is the probability that none of the hunters miss?",
+                "options": [
+                    "I. 19/63",
+                    "II. 42/63",
+                    "III. 7/63",
+                    "IV. 2/63"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 13,
+                "question": "In the medical example, if P(gene)=2% and P(disease|gene)=25%, what is P(gene and disease)?",
+                "options": [
+                    "I. 0.5%",
+                    "II. 2%",
+                    "III. 25%",
+                    "IV. 27%"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 14,
+                "question": "If P(Mandy survives)=0.90 and P(Ashley survives)=0.95, what is P(both survive)?",
+                "options": [
+                    "I. 0.855",
+                    "II. 0.90",
+                    "III. 0.95",
+                    "IV. 1.85"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 15,
+                "question": "What is P(only Mandy survives)?",
+                "options": [
+                    "I. 0.045",
+                    "II. 0.855",
+                    "III. 0.90",
+                    "IV. 0.95"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 16,
+                "question": "What is P(neither survives)?",
+                "options": [
+                    "I. 0.005",
+                    "II. 0.045",
+                    "III. 0.855",
+                    "IV. 0.95"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 17,
+                "question": "What assumption was made about Mandy and Ashley's survival probabilities?",
+                "options": [
+                    "I. They are mutually exclusive",
+                    "II. They are dependent",
+                    "III. They are independent",
+                    "IV. They are complementary"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 18,
+                "question": "In the bag of balls, what is P(yellow)?",
+                "options": [
+                    "I. 1/6",
+                    "II. 1/3",
+                    "III. 1/2",
+                    "IV. 2/3"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 19,
+                "question": "In the dice example, what is P(both prime or both odd)?",
+                "options": [
+                    "I. 1/4",
+                    "II. 1/2",
+                    "III. 1/6",
+                    "IV. 1/36"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 20,
+                "question": "For the hunters, what is P(one misses)?",
+                "options": [
+                    "I. 19/63",
+                    "II. 42/63",
+                    "III. 7/63",
+                    "IV. 2/63"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 21,
+                "question": "In the lettuce seed example, what was P(G|A)?",
+                "options": [
+                    "I. 50%",
+                    "II. 60%",
+                    "III. 70%",
+                    "IV. 20%"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 22,
+                "question": "What was the denominator in the Bayes' Theorem calculation for the lettuce seeds?",
+                "options": [
+                    "I. 25/100",
+                    "II. 18/100",
+                    "III. 14/100",
+                    "IV. 57/100"
+                ],
+                "answers": ["IV"]
+            },
+            {
+                "No": 23,
+                "question": "In the bag of balls, what is P(not black)?",
+                "options": [
+                    "I. 1/6",
+                    "II. 5/6",
+                    "III. 1/3",
+                    "IV. 2/3"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 24,
+                "question": "Which probability rule was used to calculate P(X∪Y) in the first example?",
+                "options": [
+                    "I. Multiplication rule",
+                    "II. Addition rule",
+                    "III. Bayes' Theorem",
+                    "IV. Complement rule"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 25,
+                "question": "What type of probability problem is the lettuce seed example?",
+                "options": [
+                    "I. Conditional probability",
+                    "II. Independent events",
+                    "III. Mutually exclusive events",
+                    "IV. Permutation"
+                ],
+                "answers": ["I"]
+            }
+        ],
+
+        
+ 
+  
+        "STA 112: Random Variable - Module 6": [
+            {
+                "No": 1,
+                "question": "What is a random variable?",
+                "options": [
+                    "I. A fixed numerical value",
+                    "II. A function that assigns numbers to outcomes",
+                    "III. The average of possible outcomes",
+                    "IV. The probability of an event"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 2,
+                "question": "Which type of random variable takes countable values?",
+                "options": [
+                    "I. Continuous",
+                    "II. Discrete",
+                    "III. Both",
+                    "IV. Neither"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 3,
+                "question": "For the pmf f(x)=x/10 where x=1,2,3,4, what is P(X=3)?",
+                "options": [
+                    "I. 0.1",
+                    "II. 0.3",
+                    "III. 0.4",
+                    "IV. 1.0"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 4,
+                "question": "What must be true for f(x) to be a valid pmf?",
+                "options": [
+                    "I. f(x) ≥ 0 and Σf(x)=1",
+                    "II. f(x) ≤ 1",
+                    "III. f(x) can be negative",
+                    "IV. Σf(x)=0"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 5,
+                "question": "Given f(x)=C(4x-2x²) for 0<x<2, what is C?",
+                "options": [
+                    "I. 1/8",
+                    "II. 3/8",
+                    "III. 1/2",
+                    "IV. 1"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 6,
+                "question": "For the continuous RV with pdf f(x)=3/8(4x-2x²), what is P(X>1)?",
+                "options": [
+                    "I. 0.25",
+                    "II. 0.50",
+                    "III. 0.75",
+                    "IV. 1.00"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 7,
+                "question": "Which describes a continuous random variable?",
+                "options": [
+                    "I. Countable outcomes",
+                    "II. Interval outcomes",
+                    "III. Only integer values",
+                    "IV. Fixed single value"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 8,
+                "question": "For f(x)=x/15 where x=1,2,3,4,5, what is P(1 or 2)?",
+                "options": [
+                    "I. 1/15",
+                    "II. 2/15",
+                    "III. 3/15",
+                    "IV. 5/15"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 9,
+                "question": "What is P(1≤X≤3) for f(x)=x/15 where x=1,2,3,4,5?",
+                "options": [
+                    "I. 3/15",
+                    "II. 6/15",
+                    "III. 9/15",
+                    "IV. 12/15"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 10,
+                "question": "In the coin toss example, if P(X=0)=a and P(X=3)=1/8, what is a?",
+                "options": [
+                    "I. 1/8",
+                    "II. 1/4",
+                    "III. 3/8",
+                    "IV. 1/2"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 11,
+                "question": "What condition must a pdf satisfy?",
+                "options": [
+                    "I. ∫f(x)dx=1",
+                    "II. f(x) can be negative",
+                    "III. f(x) must be constant",
+                    "IV. ∫f(x)dx=0"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 12,
+                "question": "Which is an example of a discrete random variable?",
+                "options": [
+                    "I. Time taken to complete a test",
+                    "II. Height of students",
+                    "III. Number of defective items",
+                    "IV. Temperature readings"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 13,
+                "question": "For f(x)=3/8(4x-2x²), what is P(0.5<X<1.5)?",
+                "options": [
+                    "I. 0.25",
+                    "II. 0.50",
+                    "III. 0.75",
+                    "IV. 1.00"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 14,
+                "question": "What is the key difference between pmf and pdf?",
+                "options": [
+                    "I. pmf for discrete, pdf for continuous",
+                    "II. pdf for discrete, pmf for continuous",
+                    "III. Both are the same",
+                    "IV. Neither is used in probability"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 15,
+                "question": "For the coin toss RV, if P(X=1)=3/8 and P(X=2)=b, what is b?",
+                "options": [
+                    "I. 1/8",
+                    "II. 3/8",
+                    "III. 1/2",
+                    "IV. 5/8"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 16,
+                "question": "What is E(X) for the coin toss example?",
+                "options": [
+                    "I. 1.0",
+                    "II. 1.5",
+                    "III. 2.0",
+                    "IV. 2.5"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 17,
+                "question": "Which is an example of a continuous random variable?",
+                "options": [
+                    "I. Number of cars in a parking lot",
+                    "II. Number of students in class",
+                    "III. Weight of newborn babies",
+                    "IV. Number of heads in coin tosses"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 18,
+                "question": "What is Var(X) for the coin toss example?",
+                "options": [
+                    "I. 0.5",
+                    "II. 0.75",
+                    "III. 1.0",
+                    "IV. 1.25"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 19,
+                "question": "For f(x)=3/8(4x-2x²), what is the expected value E(X)?",
+                "options": [
+                    "I. 0.5",
+                    "II. 1.0",
+                    "III. 1.5",
+                    "IV. 2.0"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 20,
+                "question": "What is the variance of X for f(x)=3/8(4x-2x²)?",
+                "options": [
+                    "I. 0.1",
+                    "II. 0.2",
+                    "III. 0.3",
+                    "IV. 0.4"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 21,
+                "question": "How is P(X=2) calculated for a discrete RV?",
+                "options": [
+                    "I. Integrate f(x) from 1 to 3",
+                    "II. Evaluate f(2)",
+                    "III. Take derivative at x=2",
+                    "IV. Sum all values up to x=2"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 22,
+                "question": "What is the domain requirement for a continuous RV?",
+                "options": [
+                    "I. Finite set of values",
+                    "II. Countable infinite values",
+                    "III. Interval of real numbers",
+                    "IV. Only positive values"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 23,
+                "question": "For f(x)=x/15, what is P(X≥4)?",
+                "options": [
+                    "I. 4/15",
+                    "II. 6/15",
+                    "III. 9/15",
+                    "IV. 12/15"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 24,
+                "question": "What property must f(x) satisfy to be a valid pdf?",
+                "options": [
+                    "I. f(x) ≥ 0 for all x",
+                    "II. ∫f(x)dx=1",
+                    "III. Both I and II",
+                    "IV. Neither I nor II"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 25,
+                "question": "In the coin toss example, why is the distribution valid?",
+                "options": [
+                    "I. All P(X=x) ≥ 0 and sum to 1",
+                    "II. It uses continuous values",
+                    "III. It has negative probabilities",
+                    "IV. It doesn't cover all outcomes"
+                ],
+                "answers": ["I"]
+            }
+        ],
+
+
+        "STA 112: Mathematical Expectation - Module 7": [
+            {
+                "No": 1,
+                "question": "What is the mathematical expectation of a random variable?",
+                "options": [
+                    "I. The most frequent value",
+                    "II. The weighted average of possible values",
+                    "III. The median value",
+                    "IV. The maximum possible value"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 2,
+                "question": "How is expected value calculated for a discrete random variable?",
+                "options": [
+                    "I. ∫xf(x)dx",
+                    "II. ΣxP(X=x)",
+                    "III. ΣP(X=x)",
+                    "IV. ∫P(X=x)dx"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 3,
+                "question": "In the robot repair example, what was E(X)?",
+                "options": [
+                    "I. 2.0",
+                    "II. 2.5",
+                    "III. 2.8",
+                    "IV. 3.0"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 4,
+                "question": "Which maintenance plan had the lowest expected cost?",
+                "options": [
+                    "I. Plan I",
+                    "II. Plan II",
+                    "III. Plan III",
+                    "IV. All equal"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 5,
+                "question": "What was the cost function for Plan I?",
+                "options": [
+                    "I. 150 + 30x",
+                    "II. 100 + 13x²",
+                    "III. 50 + 7x³",
+                    "IV. 200 + 10x"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 6,
+                "question": "How is E(X²) different from [E(X)]²?",
+                "options": [
+                    "I. They are always equal",
+                    "II. E(X²) is the expected square while [E(X)]² is square of expectation",
+                    "III. E(X²) is always smaller",
+                    "IV. There is no difference"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 7,
+                "question": "For the van hire problem, if cost C = 10 + 24X, what is E(C)?",
+                "options": [
+                    "I. 10 + 24E(X)",
+                    "II. 24 + 10E(X)",
+                    "III. 34E(X)",
+                    "IV. 240E(X)"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 8,
+                "question": "What is the expected value of a constant?",
+                "options": [
+                    "I. 0",
+                    "II. The constant itself",
+                    "III. 1",
+                    "IV. Undefined"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 9,
+                "question": "If E(X)=5, what is E(2X+3)?",
+                "options": [
+                    "I. 5",
+                    "II. 10",
+                    "III. 13",
+                    "IV. 16"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 10,
+                "question": "What is Var(X) equal to?",
+                "options": [
+                    "I. E(X²) - [E(X)]²",
+                    "II. E(X²) + [E(X)]²",
+                    "III. [E(X)]² - E(X²)",
+                    "IV. E(X)²"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 11,
+                "question": "In the robot example, what was P(X=3)?",
+                "options": [
+                    "I. 0.15",
+                    "II. 0.20",
+                    "III. 0.25",
+                    "IV. 0.30"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 12,
+                "question": "Which plan had cost function g₂(x) = 100 + 13x²?",
+                "options": [
+                    "I. Plan I",
+                    "II. Plan II",
+                    "III. Plan III",
+                    "IV. Plan IV"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 13,
+                "question": "What property must hold for E(X) to exist?",
+                "options": [
+                    "I. The sum/integral must be absolutely convergent",
+                    "II. X must be positive",
+                    "III. X must be discrete",
+                    "IV. The variance must be known"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 14,
+                "question": "If E(X)=3 and E(Y)=4, what is E(2X-Y)?",
+                "options": [
+                    "I. 1",
+                    "II. 2",
+                    "III. 5",
+                    "IV. 7"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 15,
+                "question": "For the van hire, if X has values 2,3,5 with P(2)=0.4, what is E(X)?",
+                "options": [
+                    "I. 2.5",
+                    "II. 3.0",
+                    "III. 3.15",
+                    "IV. 3.5"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 16,
+                "question": "What is the linearity property of expectation?",
+                "options": [
+                    "I. E(aX+b) = aE(X)+b",
+                    "II. E(XY) = E(X)E(Y)",
+                    "III. E(X²) = [E(X)]²",
+                    "IV. E(X+Y) = E(X)+E(Y) only if independent"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 17,
+                "question": "In the robot example, what was E(X³)?",
+                "options": [
+                    "I. 8.4",
+                    "II. 22.4",
+                    "III. 37.3",
+                    "IV. 64.0"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 18,
+                "question": "For continuous X, how is E(X) calculated?",
+                "options": [
+                    "I. ΣxP(X=x)",
+                    "II. ∫xf(x)dx",
+                    "III. Σf(x)",
+                    "IV. ∫P(X=x)dx"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 19,
+                "question": "What was the fixed cost in the van hire problem?",
+                "options": [
+                    "I. $10",
+                    "II. $24",
+                    "III. $34",
+                    "IV. $50"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 20,
+                "question": "If Var(X)=4, what is Var(3X)?",
+                "options": [
+                    "I. 4",
+                    "II. 12",
+                    "III. 36",
+                    "IV. 48"
+                ],
+                "answers": ["III"]
+            },
+            {
+                "No": 21,
+                "question": "In the robot example, what was P(X≥4)?",
+                "options": [
+                    "I. 0.15",
+                    "II. 0.30",
+                    "III. 0.45",
+                    "IV. 0.60"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 22,
+                "question": "What is E(X) if X is the outcome of a fair die?",
+                "options": [
+                    "I. 3.0",
+                    "II. 3.5",
+                    "III. 4.0",
+                    "IV. 4.5"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 23,
+                "question": "For the van hire, if C=10+24X and E(X)=3.15, what is E(C)?",
+                "options": [
+                    "I. $75.60",
+                    "II. $85.60",
+                    "III. $95.60",
+                    "IV. $105.60"
+                ],
+                "answers": ["II"]
+            },
+            {
+                "No": 24,
+                "question": "What is the relationship between E(X) and mean?",
+                "options": [
+                    "I. They are the same",
+                    "II. E(X) is always larger",
+                    "III. Mean is always larger",
+                    "IV. No relationship"
+                ],
+                "answers": ["I"]
+            },
+            {
+                "No": 25,
+                "question": "Why was Plan II optimal in the robot example?",
+                "options": [
+                    "I. It had the lowest expected cost",
+                    "II. It had the highest expected cost",
+                    "III. It had zero variance",
+                    "IV. It was the simplest plan"
+                ],
+                "answers": ["I"]
+            }
+        ],
+    
            
 
         "COS 101: Fundamentals of Computer Science - Week 1": [
