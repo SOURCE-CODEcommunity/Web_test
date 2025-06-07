@@ -206,7 +206,7 @@
                         <div class="whatsapp-name">Iyiola Adedamola Richard</div>
                     </div>
                     <div class="whatsapp-message">will there be Item 7</div>
-                    <div class="whatsapp-time">11:42 AM</div>
+                    <div class="whatsapp-time">08:41 AM</div>
                 </div>
             </div>
         </div>
@@ -228,6 +228,17 @@
             openBtn.addEventListener('click', function() {
                 // Flip the card
                 card.style.transform = 'rotateY(180deg)';
+
+                         // Update timestamp with current time
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+        const timeString = `${formattedHours}:${formattedMinutes} ${ampm}`;
+        
+        document.querySelector('.whatsapp-time').textContent = timeString;              
                 
                 // Start animations after a delay
                 setTimeout(createConfetti, 500);
