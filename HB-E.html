@@ -121,31 +121,32 @@
             animation: rainbow 3s infinite;
         }
 
-        /* SpongeBob & Friends Animations */
-        .spongebob {
+        /* SVG Characters */
+        .character {
             position: absolute;
             width: 100px;
             height: 100px;
-            bottom: 20px;
-            left: 20px;
             animation: float 3s ease-in-out infinite;
         }
 
+        .spongebob {
+            bottom: 20px;
+            left: 20px;
+        }
+
         .patrick {
-            position: absolute;
-            width: 80px;
-            height: 80px;
             bottom: 30px;
             right: 30px;
-            animation: float 4s ease-in-out infinite 0.5s;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0.5s;
         }
 
         .gary {
-            position: absolute;
-            width: 60px;
-            height: 60px;
             top: 50px;
             left: 50%;
+            width: 60px;
+            height: 60px;
             animation: slide 5s linear infinite;
         }
 
@@ -209,10 +210,52 @@
                 <h2 class="name">Eden 🎈</h2>
                 <div id="animationContainer"></div>
                 
-                <!-- SpongeBob Characters -->
-                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="spongebob" alt="SpongeBob">
-                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="patrick" alt="Patrick">
-                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="gary" alt="Gary">
+                <!-- SVG Cartoon Characters -->
+                <svg class="character spongebob" viewBox="0 0 100 100">
+                    <!-- SpongeBob Body -->
+                    <rect x="20" y="30" width="60" height="60" rx="5" fill="#FFCC00" />
+                    <!-- Eyes -->
+                    <circle cx="35" cy="45" r="5" fill="white" />
+                    <circle cx="65" cy="45" r="5" fill="white" />
+                    <circle cx="35" cy="45" r="2" fill="black" />
+                    <circle cx="65" cy="45" r="2" fill="black" />
+                    <!-- Mouth -->
+                    <path d="M35 65 Q50 75 65 65" stroke="black" stroke-width="2" fill="none" />
+                    <!-- Pants -->
+                    <rect x="20" y="75" width="60" height="15" fill="brown" />
+                    <!-- Legs -->
+                    <rect x="30" y="90" width="10" height="10" fill="#FFCC00" />
+                    <rect x="60" y="90" width="10" height="10" fill="#FFCC00" />
+                </svg>
+                
+                <svg class="character patrick" viewBox="0 0 100 100">
+                    <!-- Patrick Body -->
+                    <circle cx="50" cy="50" r="40" fill="#FF9966" />
+                    <!-- Eyes -->
+                    <circle cx="35" cy="40" r="5" fill="white" />
+                    <circle cx="65" cy="40" r="5" fill="white" />
+                    <circle cx="35" cy="40" r="2" fill="black" />
+                    <circle cx="65" cy="40" r="2" fill="black" />
+                    <!-- Mouth -->
+                    <path d="M35 65 Q50 75 65 65" stroke="black" stroke-width="2" fill="none" />
+                    <!-- Belly -->
+                    <circle cx="50" cy="60" r="15" fill="#FFCCCC" />
+                </svg>
+                
+                <svg class="character gary" viewBox="0 0 100 100">
+                    <!-- Gary Shell -->
+                    <circle cx="50" cy="50" r="30" fill="#FF9999" />
+                    <!-- Spiral -->
+                    <path d="M50 20 A30 30 0 0 1 80 50 A30 30 0 0 1 50 80 A30 30 0 0 1 20 50 A30 30 0 0 1 50 20" 
+                          fill="none" stroke="#FF6666" stroke-width="3" />
+                    <!-- Eyes -->
+                    <circle cx="40" cy="40" r="5" fill="white" />
+                    <circle cx="60" cy="40" r="5" fill="white" />
+                    <circle cx="40" cy="40" r="2" fill="black" />
+                    <circle cx="60" cy="40" r="2" fill="black" />
+                    <!-- Mouth -->
+                    <path d="M45 60 Q50 65 55 60" stroke="black" stroke-width="2" fill="none" />
+                </svg>
                 
                 <!-- Disney Junior Closing Message -->
                 <div class="disney-message" id="disneyMessage">
