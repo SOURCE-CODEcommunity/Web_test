@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Eden! 🎉</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+
+        .card-container {
+            position: relative;
+            width: 90vw;
+            max-width: 500px;
+            height: 80vh;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: all 1s ease;
+            cursor: pointer;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            background: white;
+            text-align: center;
+        }
+
+        .card-front {
+            background: linear-gradient(45deg, #ffcc00 0%, #ff9966 100%);
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background: linear-gradient(120deg, #4fc3f7 0%, #00bcd4 100%);
+            transform: rotateY(180deg);
+            overflow: hidden;
+        }
+
+        .from-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .open-card {
+            padding: 12px 24px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Comic Sans MS', cursive;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .open-card:hover {
+            transform: scale(1.05);
+            background: #ff5252;
+        }
+
+        .birthday-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff4081;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: bounce 2s infinite;
+        }
+
+        .name {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Disney Junior Closing Message */
+        .disney-message {
+            font-size: 1.5rem;
+            color: #ff0066;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 1s ease 2s;
+        }
+
+        .disney-message.show {
+            opacity: 1;
+            transform: scale(1);
+            animation: rainbow 3s infinite;
+        }
+
+        /* SpongeBob & Friends Animations */
+        .spongebob {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            bottom: 20px;
+            left: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .patrick {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            bottom: 30px;
+            right: 30px;
+            animation: float 4s ease-in-out infinite 0.5s;
+        }
+
+        .gary {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            top: 50px;
+            left: 50%;
+            animation: slide 5s linear infinite;
+        }
+
+        /* Balloons & Confetti */
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(100px); }
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff0066; }
+            20% { color: #ff6600; }
+            40% { color: #ffff00; }
+            60% { color: #00ff00; }
+            80% { color: #0066ff; }
+            100% { color: #ff0066; }
+        }
+
+        .show {
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card" id="birthdayCard">
+            <div class="card-front">
+                <div class="from-text">From: Iyiola Adedamola Richard</div>
+                <h1>🎂 For Baby Eden! 🎂</h1>
+                <p>Click below to open your surprise!</p>
+                <button class="open-card" id="openCardBtn">Open Card</button>
+            </div>
+            <div class="card-back">
+                <h1 class="birthday-text">Happy Birthday!</h1>
+                <h2 class="name">Eden 🎈</h2>
+                <div id="animationContainer"></div>
+                
+                <!-- SpongeBob Characters -->
+                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="spongebob" alt="SpongeBob">
+                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="patrick" alt="Patrick">
+                <img src="https://clipart-library.com/images/8ixKbxj8T.png" class="gary" alt="Gary">
+                
+                <!-- Disney Junior Closing Message -->
+                <div class="disney-message" id="disneyMessage">
+                    Iyiola Adedamola Richard wishes you<br>a Happy Birthday! 🎉
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.getElementById('birthdayCard');
+            const openBtn = document.getElementById('openCardBtn');
+            const animationContainer = document.getElementById('animationContainer');
+            const disneyMessage = document.getElementById('disneyMessage');
+            
+            openBtn.addEventListener('click', function() {
+                // Flip the card
+                card.style.transform = 'rotateY(180deg)';
+                
+                // Create confetti
+                createConfetti();
+                
+                // Create balloons
+                createBalloons();
+                
+                // Show Disney Junior message after delay
+                setTimeout(() => {
+                    disneyMessage.classList.add('show');
+                }, 2000);
+            });
+
+            function createConfetti() {
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    
+                    animationContainer.appendChild(confetti);
+                    
+                    // Animate confetti
+                    setTimeout(() => {
+                        confetti.style.opacity = '1';
+                        confetti.style.transition = `all ${Math.random() * 2 + 1}s ease`;
+                        confetti.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 + 100}px) rotate(${Math.random() * 360}deg)`;
+                        confetti.style.opacity = '0';
+                    }, 10);
+                }
+            }
+
+            function createBalloons() {
+                const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffbe76', '#a55eea', '#fd79a8'];
+                
+                for (let i = 0; i < 15; i++) {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.style.left = Math.random() * 80 + 10 + '%';
+                    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    if (Math.random() > 0.5) {
+                        balloon.style.width = Math.random() * 20 + 30 + 'px';
+                        balloon.style.height = Math.random() * 20 + 40 + 'px';
+                    } else {
+                        balloon.style.width = Math.random() * 20 + 40 + 'px';
+                        balloon.style.height = Math.random() * 20 + 30 + 'px';
+                    }
+                    
+                    animationContainer.appendChild(balloon);
+                    
+                    // Animate balloon
+                    setTimeout(() => {
+                        balloon.style.opacity = '0.8';
+                        balloon.style.transition = `all ${Math.random() * 3 + 2}s ease`;
+                        balloon.style.transform = `translate(0, -${Math.random() * 200 + 100}px)`;
+                    }, 10);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
