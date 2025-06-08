@@ -649,6 +649,29 @@
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
+
+        // Help Button Functionality
+const helpButton = document.getElementById('helpButton');
+const helpDialog = document.getElementById('helpDialog');
+const closeHelp = document.querySelector('.close-help');
+
+helpButton.addEventListener('click', () => {
+  helpDialog.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
+});
+
+closeHelp.addEventListener('click', () => {
+  helpDialog.style.display = 'none';
+  document.body.style.overflow = 'auto'; // Re-enable scrolling
+});
+
+// Close dialog when clicking outside
+helpDialog.addEventListener('click', (e) => {
+  if (e.target === helpDialog) {
+    helpDialog.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+});
     </script>
 </body>
 </html>
