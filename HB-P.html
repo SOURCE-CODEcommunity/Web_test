@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Praise!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Birthday Card */
+        .card {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(0deg);
+            transform-style: preserve-3d;
+            transition: all 1.5s ease-in-out;
+            z-index: 10;
+        }
+
+        .card.open {
+            transform: translate(-50%, -50%) rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card-front {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            transform: rotateY(0deg);
+            color: white;
+            text-align: center;
+        }
+
+        .card-front h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-front p {
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .card-back {
+            background: linear-gradient(45deg, #a18cd1, #fbc2eb);
+            transform: rotateY(180deg);
+            color: white;
+        }
+
+        .card-back h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .heart {
+            color: #ff6b6b;
+            font-size: 24px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .balloon {
+            width: 40px;
+            height: 60px;
+            border-radius: 50%;
+            position: relative;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .balloon:before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 50px;
+            background: #333;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Enjoy Your Day Text */
+        .enjoy-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            color: #fff;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+            opacity: 0;
+            transition: opacity 1s, transform 1s;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .enjoy-text.visible {
+            opacity: 1;
+            animation: glow 2s infinite alternate;
+        }
+
+        /* Final Message */
+        .final-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-size: 24px;
+            color: #fff;
+            background: rgba(255, 105, 180, 0.8);
+            padding: 20px 40px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: all 1s;
+            text-align: center;
+            z-index: 20;
+        }
+
+        .final-message.visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* WhatsApp Message */
+        .whatsapp-container {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            width: 250px;
+            background: #e5ddd5;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s;
+            z-index: 30;
+        }
+
+        .whatsapp-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .whatsapp-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .whatsapp-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #128c7e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .whatsapp-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .whatsapp-message {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .whatsapp-time {
+            font-size: 11px;
+            color: #666;
+            text-align: right;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
+            }
+            to {
+                text-shadow: 0 0 15px #ff69b4, 0 0 25px #ff69b4, 0 0 30px #ff69b4;
+            }
+        }
+
+        @keyframes camera-pass {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Feminine touches */
+        .ribbon {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .ribbon-top-right {
+            top: 0;
+            right: 0;
+        }
+
+        .ribbon-top-right::before,
+        .ribbon-top-right::after {
+            position: absolute;
+            z-index: -1;
+            content: '';
+            display: block;
+            border: 5px solid #ff6b8b;
+        }
+
+        .ribbon-top-right::before {
+            top: 0;
+            left: 0;
+        }
+
+        .ribbon-top-right::after {
+            bottom: 0;
+            right: 0;
+        }
+
+        .ribbon-content {
+            position: absolute;
+            display: block;
+            width: 225px;
+            padding: 15px 0;
+            background-color: #ff8fab;
+            box-shadow: 0 5px 10px rgba(0,0,0,.1);
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            right: -25px;
+            top: 30px;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Birthday Card -->
+        <div class="card">
+            <div class="card-front">
+                <h1>Happy Birthday Praise!</h1>
+                <p>Click to open</p>
+            </div>
+            <div class="card-back">
+                <h2>For an amazing woman!</h2>
+                <p>Wishing you joy and happiness!</p>
+            </div>
+        </div>
+
+        <!-- Ribbon decoration -->
+        <div class="ribbon ribbon-top-right">
+            <span class="ribbon-content">Special Day!</span>
+        </div>
+
+        <!-- Floating elements will be added by JS -->
+        <div id="floating-elements"></div>
+
+        <!-- Enjoy your day text -->
+        <div class="enjoy-text">Enjoy your special day! 💖</div>
+
+        <!-- Final message -->
+        <div class="final-message">
+            Happy Birthday Praise!<br>
+            <small>From Iyiola Adedamola Richard</small>
+        </div>
+
+        <!-- WhatsApp message -->
+        <div class="whatsapp-container">
+            <div class="whatsapp-header">
+                <div class="whatsapp-avatar">IR</div>
+                <div class="whatsapp-name">Iyiola Adedamola Richard</div>
+            </div>
+            <div class="whatsapp-message">Will there be Item 7? 😁</div>
+            <div class="whatsapp-time" id="timestamp"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const card = document.querySelector('.card');
+            const floatingElements = document.getElementById('floating-elements');
+            const enjoyText = document.querySelector('.enjoy-text');
+            const finalMessage = document.querySelector('.final-message');
+            const whatsappContainer = document.querySelector('.whatsapp-container');
+            const timestamp = document.getElementById('timestamp');
+
+            // Set current time for WhatsApp message
+            const now = new Date();
+            timestamp.textContent = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            // Create floating elements (hearts and balloons)
+            function createFloatingElements() {
+                const colors = ['#ff6b6b', '#ff8fab', '#ffb3c6', '#ff758c', '#ff7eb3'];
+                const balloonColors = ['#ff9ff3', '#feca57', '#ff6b6b', '#48dbfb', '#1dd1a1'];
+                
+                for (let i = 0; i < 30; i++) {
+                    const element = document.createElement('div');
+                    element.className = 'floating-element';
+                    
+                    if (i % 2 === 0) {
+                        element.classList.add('heart');
+                        element.innerHTML = '❤️';
+                        element.style.left = `${Math.random() * 100}%`;
+                        element.style.top = `${Math.random() * 100}%`;
+                        element.style.animationDelay = `${Math.random() * 5}s`;
+                        element.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    } else {
+                        element.classList.add('balloon');
+                        element.style.left = `${Math.random() * 100}%`;
+                        element.style.top = `${Math.random() * 100}%`;
+                        element.style.animationDelay = `${Math.random() * 5}s`;
+                        element.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                    }
+                    
+                    floatingElements.appendChild(element);
+                }
+            }
+
+            // Animation sequence
+            function startAnimation() {
+                // Open card
+                card.classList.add('open');
+                
+                // Show floating elements after card opens
+                setTimeout(() => {
+                    const elements = document.querySelectorAll('.floating-element');
+                    elements.forEach(el => el.style.opacity = '1');
+                }, 1500);
+                
+                // Show "Enjoy your day" text
+                setTimeout(() => {
+                    enjoyText.classList.add('visible');
+                    
+                    // Camera pass effect
+                    setTimeout(() => {
+                        enjoyText.style.animation = 'camera-pass 2s ease-in-out';
+                    }, 1000);
+                }, 3000);
+                
+                // Show final message
+                setTimeout(() => {
+                    finalMessage.classList.add('visible');
+                }, 6000);
+                
+                // Show WhatsApp message
+                setTimeout(() => {
+                    whatsappContainer.classList.add('visible');
+                }, 8000);
+            }
+
+            // Initialize
+            createFloatingElements();
+            
+            // Start animation on card click
+            card.addEventListener('click', function() {
+                if (!card.classList.contains('open')) {
+                    startAnimation();
+                }
+            });
+            
+            // Auto-start for demo purposes (remove if you want click to start)
+            startAnimation();
+        });
+    </script>
+</body>
+</html>
