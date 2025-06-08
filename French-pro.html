@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Number Pronunciation</title>
+    <style>
+        :root {
+            --primary-color: #4285f4;
+            --hover-color: #3367d6;
+            --background: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #202124;
+            --secondary-text: #5f6368;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--secondary-text);
+        }
+
+        select, input, button {
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid #dfe1e5;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: var(--hover-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .number-card {
+            padding: 12px;
+            border-radius: 4px;
+            background-color: var(--background);
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .number-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .number-card.active {
+            background-color: #e8f0fe;
+            border-color: var(--primary-color);
+        }
+
+        .number-card.playing {
+            animation: pulse 1.5s infinite;
+        }
+
+        .number {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .digit {
+            color: var(--secondary-text);
+            font-size: 14px;
+        }
+
+        @keyframes pulse {
+            0% { background-color: #e8f0fe; }
+            50% { background-color: #d2e3fc; }
+            100% { background-color: #e8f0fe; }
+        }
+
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+            color: var(--primary-color);
+            min-height: 24px;
+        }
+
+        .icon {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>French Number Pronunciation</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="start-number">Start From</label>
+                <select id="start-number"></select>
+            </div>
+            
+            <div class="control-group">
+                <label for="end-number">Stop At</label>
+                <select id="end-number"></select>
+            </div>
+            
+            <div class="control-group">
+                <label for="speed">Speed</label>
+                <select id="speed">
+                    <option value="0.7">Slow</option>
+                    <option value="1" selected>Normal</option>
+                    <option value="1.3">Fast</option>
+                </select>
+            </div>
+            
+            <button id="play-btn">
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                </svg>
+                Play
+            </button>
+            
+            <button id="stop-btn" disabled>
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M6,19H18V5H6V19Z" />
+                </svg>
+                Stop
+            </button>
+        </div>
+        
+        <div class="status" id="status"></div>
+        
+        <div class="numbers-grid" id="numbers-grid"></div>
+    </div>
+
+    <script>
+        // French numbers data
+        const frenchNumbers = [
+            { french: "Zéro", digit: "0" },
+            { french: "Un", digit: "1" },
+            { french: "Deux", digit: "2" },
+            { french: "Trois", digit: "3" },
+            { french: "Quatre", digit: "4" },
+            { french: "Cinq", digit: "5" },
+            { french: "Six", digit: "6" },
+            { french: "Sept", digit: "7" },
+            { french: "Huit", digit: "8" },
+            { french: "Neuf", digit: "9" },
+            { french: "Dix", digit: "10" },
+            { french: "Onze", digit: "11" },
+            { french: "Douze", digit: "12" },
+            { french: "Treize", digit: "13" },
+            { french: "Quatorze", digit: "14" },
+            { french: "Quinze", digit: "15" },
+            { french: "Seize", digit: "16" },
+            { french: "Dix-sept", digit: "17" },
+            { french: "Dix-huit", digit: "18" },
+            { french: "Dix-neuf", digit: "19" },
+            { french: "Vingt", digit: "20" },
+            { french: "Vingt et un", digit: "21" },
+            { french: "Vingt-deux", digit: "22" },
+            { french: "Vingt-trois", digit: "23" },
+            { french: "Vingt-quatre", digit: "24" },
+            { french: "Vingt-cinq", digit: "25" },
+            { french: "Vingt-six", digit: "26" },
+            { french: "Vingt-sept", digit: "27" },
+            { french: "Vingt-huit", digit: "28" },
+            { french: "Vingt-neuf", digit: "29" },
+            { french: "Trente", digit: "30" },
+            { french: "Trente et un", digit: "31" },
+            { french: "Trente-deux", digit: "32" },
+            { french: "Trente-trois", digit: "33" },
+            { french: "Trente-quatre", digit: "34" },
+            { french: "Trente-cinq", digit: "35" },
+            { french: "Trente-six", digit: "36" },
+            { french: "Trente-sept", digit: "37" },
+            { french: "Trente-huit", digit: "38" },
+            { french: "Trente-neuf", digit: "39" },
+            { french: "Quarante", digit: "40" },
+            { french: "Quarante et un", digit: "41" },
+            { french: "Quarante-deux", digit: "42" },
+            { french: "Quarante-trois", digit: "43" },
+            { french: "Quarante-quatre", digit: "44" },
+            { french: "Quarante-cinq", digit: "45" },
+            { french: "Quarante-six", digit: "46" },
+            { french: "Quarante-sept", digit: "47" },
+            { french: "Quarante-huit", digit: "48" },
+            { french: "Quarante-neuf", digit: "49" },
+            { french: "Cinquante", digit: "50" }
+        ];
+
+        // DOM elements
+        const numbersGrid = document.getElementById('numbers-grid');
+        const startNumberSelect = document.getElementById('start-number');
+        const endNumberSelect = document.getElementById('end-number');
+        const playBtn = document.getElementById('play-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const speedSelect = document.getElementById('speed');
+        const statusElement = document.getElementById('status');
+
+        // Speech synthesis
+        const synth = window.speechSynthesis;
+        let currentUtterance = null;
+        let isPlaying = false;
+        let currentIndex = 0;
+        let selectedNumbers = [];
+
+        // Initialize the app
+        function init() {
+            // Populate number grid
+            frenchNumbers.forEach((number, index) => {
+                // Create card for grid
+                const card = document.createElement('div');
+                card.className = 'number-card';
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <div class="number">${number.french}</div>
+                    <div class="digit">${number.digit}</div>
+                `;
+                card.addEventListener('click', () => toggleNumberSelection(index));
+                numbersGrid.appendChild(card);
+
+                // Create options for dropdowns
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${number.digit} - ${number.french}`;
+                startNumberSelect.appendChild(option.cloneNode(true));
+                endNumberSelect.appendChild(option);
+            });
+
+            // Set default end number to last item
+            endNumberSelect.value = frenchNumbers.length - 1;
+
+            // Event listeners
+            playBtn.addEventListener('click', playSelectedNumbers);
+            stopBtn.addEventListener('click', stopPlayback);
+        }
+
+        // Toggle number selection
+        function toggleNumberSelection(index) {
+            const card = document.querySelector(`.number-card[data-index="${index}"]`);
+            card.classList.toggle('active');
+            
+            // Update selected numbers array
+            if (card.classList.contains('active')) {
+                selectedNumbers.push(index);
+                selectedNumbers.sort((a, b) => a - b);
+            } else {
+                selectedNumbers = selectedNumbers.filter(i => i !== index);
+            }
+        }
+
+        // Play selected numbers
+        function playSelectedNumbers() {
+            if (isPlaying) return;
+            
+            // Determine which numbers to play
+            const startIdx = parseInt(startNumberSelect.value);
+            let endIdx = parseInt(endNumberSelect.value);
+            
+            // Ensure end is after start
+            if (endIdx < startIdx) {
+                endIdx = startIdx;
+                endNumberSelect.value = endIdx;
+            }
+            
+            // Get the range of numbers
+            selectedNumbers = [];
+            for (let i = startIdx; i <= endIdx; i++) {
+                selectedNumbers.push(i);
+                document.querySelector(`.number-card[data-index="${i}"]`).classList.add('active');
+            }
+            
+            if (selectedNumbers.length === 0) {
+                statusElement.textContent = "Please select numbers to play";
+                return;
+            }
+            
+            isPlaying = true;
+            currentIndex = 0;
+            playBtn.disabled = true;
+            stopBtn.disabled = false;
+            
+            playNextNumber();
+        }
+
+        // Play next number in sequence
+        function playNextNumber() {
+            if (currentIndex >= selectedNumbers.length || !isPlaying) {
+                stopPlayback();
+                return;
+            }
+            
+            const numberIndex = selectedNumbers[currentIndex];
+            const number = frenchNumbers[numberIndex];
+            
+            // Update UI
+            statusElement.textContent = `Playing: ${number.digit} - ${number.french}`;
+            
+            // Highlight current number
+            document.querySelectorAll('.number-card').forEach(card => {
+                card.classList.remove('playing');
+            });
+            const currentCard = document.querySelector(`.number-card[data-index="${numberIndex}"]`);
+            currentCard.classList.add('playing');
+            
+            // Scroll to the card if not fully visible
+            currentCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Speak the number
+            if (currentUtterance) {
+                synth.cancel();
+            }
+            
+            currentUtterance = new SpeechSynthesisUtterance(number.french);
+            currentUtterance.lang = 'fr-FR';
+            currentUtterance.rate = parseFloat(speedSelect.value);
+            
+            currentUtterance.onend = () => {
+                setTimeout(() => {
+                    currentIndex++;
+                    playNextNumber();
+                }, 500); // Small pause between numbers
+            };
+            
+            synth.speak(currentUtterance);
+        }
+
+        // Stop playback
+        function stopPlayback() {
+            isPlaying = false;
+            if (currentUtterance) {
+                synth.cancel();
+            }
+            
+            statusElement.textContent = "Ready";
+            playBtn.disabled = false;
+            stopBtn.disabled = true;
+            
+            document.querySelectorAll('.number-card').forEach(card => {
+                card.classList.remove('playing');
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
