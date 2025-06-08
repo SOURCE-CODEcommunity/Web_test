@@ -24,7 +24,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
             background-color: var(--card-bg);
@@ -97,7 +97,7 @@
 
         .numbers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
             gap: 10px;
             margin-top: 20px;
         }
@@ -154,6 +154,122 @@
             width: 18px;
             height: 18px;
         }
+
+        .section-title {
+            grid-column: 1 / -1;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-top: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #dfe1e5;
+        }
+
+            footer {
+            width: 100%;
+            text-align: center;
+            color: #999;
+            
+        }
+
+        .help-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.help-button:hover {
+  transform: scale(1.1);
+  background-color: #3367d6;
+}
+
+.help-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Help Dialog Styles */
+.help-dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+}
+
+.help-dialog-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.help-dialog h3 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.developer-info {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: var(--light-gray);
+  border-radius: 8px;
+}
+
+.developer-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.developer-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--medium-gray);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.close-help {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--dark-gray);
+}
+
+
     </style>
 </head>
 <body>
@@ -200,8 +316,34 @@
         <div class="numbers-grid" id="numbers-grid"></div>
     </div>
 
+    <button id="helpButton" class="help-button">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+    <line x1="12" y1="17" x2="12" y2="17"></line>
+  </svg>
+</button>
+
+<!-- Help Dialog -->
+<div id="helpDialog" class="help-dialog">
+  <div class="help-dialog-content">
+    <button class="close-help">&times;</button>
+    <h3>Need Help or Have Feedback?</h3>
+    <p>For any inquiries or suggestions about the application, please reach out to the developer:</p>
+    <div class="developer-info">
+      <p><strong>Iyiola Adedamola Richard</strong></p>
+      <a href="https://iar-portfolio.netlify.app/" target="_blank">Visit Developer Portfolio</a>
+    </div>
+ 
+  </div>
+</div>
+
+       <footer>
+        By: Iyiola Adedamola Richard @QuickCBT&copy;2025
+    </footer>
+
     <script>
-        // French numbers data
+        // French numbers data (0-50)
         const frenchNumbers = [
             { french: "Zéro", digit: "0" },
             { french: "Un", digit: "1" },
@@ -253,7 +395,66 @@
             { french: "Quarante-sept", digit: "47" },
             { french: "Quarante-huit", digit: "48" },
             { french: "Quarante-neuf", digit: "49" },
-            { french: "Cinquante", digit: "50" }
+            { french: "Cinquante", digit: "50" },
+            { french: "Cinquante et un", digit: "51" },
+            { french: "Cinquante-deux", digit: "52" },
+            { french: "Cinquante-trois", digit: "53" },
+            { french: "Cinquante-quatre", digit: "54" },
+            { french: "Cinquante-cinq", digit: "55" },
+            { french: "Cinquante-six", digit: "56" },
+            { french: "Cinquante-sept", digit: "57" },
+            { french: "Cinquante-huit", digit: "58" },
+            { french: "Cinquante-neuf", digit: "59" },
+            { french: "Soixante", digit: "60" },
+            { french: "Soixante et un", digit: "61" },
+            { french: "Soixante-deux", digit: "62" },
+            { french: "Soixante-trois", digit: "63" },
+            { french: "Soixante-quatre", digit: "64" },
+            { french: "Soixante-cinq", digit: "65" },
+            { french: "Soixante-six", digit: "66" },
+            { french: "Soixante-sept", digit: "67" },
+            { french: "Soixante-huit", digit: "68" },
+            { french: "Soixante-neuf", digit: "69" },
+            { french: "Soixante-dix", digit: "70" },
+            { french: "Soixante et onze", digit: "71" },
+            { french: "Soixante-douze", digit: "72" },
+            { french: "Soixante-treize", digit: "73" },
+            { french: "Soixante-quatorze", digit: "74" },
+            { french: "Soixante-quinze", digit: "75" },
+            { french: "Soixante-seize", digit: "76" },
+            { french: "Soixante-dix-sept", digit: "77" },
+            { french: "Soixante-dix-huit", digit: "78" },
+            { french: "Soixante-dix-neuf", digit: "79" },
+            { french: "Quatre-vingts", digit: "80" },
+            { french: "Quatre-vingt-un", digit: "81" },
+            { french: "Quatre-vingt-deux", digit: "82" },
+            { french: "Quatre-vingt-trois", digit: "83" },
+            { french: "Quatre-vingt-quatre", digit: "84" },
+            { french: "Quatre-vingt-cinq", digit: "85" },
+            { french: "Quatre-vingt-six", digit: "86" },
+            { french: "Quatre-vingt-sept", digit: "87" },
+            { french: "Quatre-vingt-huit", digit: "88" },
+            { french: "Quatre-vingt-neuf", digit: "89" },
+            { french: "Quatre-vingt-dix", digit: "90" },
+            { french: "Quatre-vingt-onze", digit: "91" },
+            { french: "Quatre-vingt-douze", digit: "92" },
+            { french: "Quatre-vingt-treize", digit: "93" },
+            { french: "Quatre-vingt-quatorze", digit: "94" },
+            { french: "Quatre-vingt-quinze", digit: "95" },
+            { french: "Quatre-vingt-seize", digit: "96" },
+            { french: "Quatre-vingt-dix-sept", digit: "97" },
+            { french: "Quatre-vingt-dix-huit", digit: "98" },
+            { french: "Quatre-vingt-dix-neuf", digit: "99" },
+            { french: "Cent", digit: "100" },
+            { french: "Deux cents", digit: "200" },
+            { french: "Trois cents", digit: "300" },
+            { french: "Quatre cents", digit: "400" },
+            { french: "Cinq cents", digit: "500" },
+            { french: "Six cents", digit: "600" },
+            { french: "Sept cents", digit: "700" },
+            { french: "Huit cents", digit: "800" },
+            { french: "Neuf cents", digit: "900" },
+            { french: "Mille", digit: "1000" }
         ];
 
         // DOM elements
@@ -274,26 +475,26 @@
 
         // Initialize the app
         function init() {
-            // Populate number grid
-            frenchNumbers.forEach((number, index) => {
-                // Create card for grid
-                const card = document.createElement('div');
-                card.className = 'number-card';
-                card.dataset.index = index;
-                card.innerHTML = `
-                    <div class="number">${number.french}</div>
-                    <div class="digit">${number.digit}</div>
-                `;
-                card.addEventListener('click', () => toggleNumberSelection(index));
-                numbersGrid.appendChild(card);
+            // Clear existing content
+            numbersGrid.innerHTML = '';
+            startNumberSelect.innerHTML = '';
+            endNumberSelect.innerHTML = '';
 
-                // Create options for dropdowns
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${number.digit} - ${number.french}`;
-                startNumberSelect.appendChild(option.cloneNode(true));
-                endNumberSelect.appendChild(option);
-            });
+            // Add section for 0-69
+            addSectionTitle("Numbers 0-69");
+            addNumbersToGrid(0, 69);
+
+            // Add section for 70-79
+            addSectionTitle("Numbers 70-79");
+            addNumbersToGrid(70, 79);
+
+            // Add section for 80-99
+            addSectionTitle("Numbers 80-99");
+            addNumbersToGrid(80, 99);
+
+            // Add section for 100-1000
+            addSectionTitle("Hundreds and Thousands");
+            addNumbersToGrid(100, frenchNumbers.length - 1);
 
             // Set default end number to last item
             endNumberSelect.value = frenchNumbers.length - 1;
@@ -301,6 +502,43 @@
             // Event listeners
             playBtn.addEventListener('click', playSelectedNumbers);
             stopBtn.addEventListener('click', stopPlayback);
+        }
+
+        function addSectionTitle(title) {
+            const titleElement = document.createElement('div');
+            titleElement.className = 'section-title';
+            titleElement.textContent = title;
+            numbersGrid.appendChild(titleElement);
+        }
+
+        function addNumbersToGrid(startIdx, endIdx) {
+            for (let i = startIdx; i <= endIdx; i++) {
+                const number = frenchNumbers[i];
+                
+                // Create card for grid
+                const card = document.createElement('div');
+                card.className = 'number-card';
+                card.dataset.index = i;
+                card.innerHTML = `
+                    <div class="number">${number.french}</div>
+                    <div class="digit">${number.digit}</div>
+                `;
+                card.addEventListener('click', () => toggleNumberSelection(i));
+                numbersGrid.appendChild(card);
+
+                // Create options for dropdowns
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${number.digit} - ${number.french}`;
+                
+                // Only add to start select if it's not already there
+                if (!startNumberSelect.querySelector(`option[value="${i}"]`)) {
+                    startNumberSelect.appendChild(option.cloneNode(true));
+                }
+                
+                // Add to end select
+                endNumberSelect.appendChild(option);
+            }
         }
 
         // Toggle number selection
@@ -411,6 +649,29 @@
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
+
+        // Help Button Functionality
+const helpButton = document.getElementById('helpButton');
+const helpDialog = document.getElementById('helpDialog');
+const closeHelp = document.querySelector('.close-help');
+
+helpButton.addEventListener('click', () => {
+  helpDialog.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
+});
+
+closeHelp.addEventListener('click', () => {
+  helpDialog.style.display = 'none';
+  document.body.style.overflow = 'auto'; // Re-enable scrolling
+});
+
+// Close dialog when clicking outside
+helpDialog.addEventListener('click', (e) => {
+  if (e.target === helpDialog) {
+    helpDialog.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+});
     </script>
 </body>
 </html>
