@@ -6,63 +6,55 @@
     <title>Happy Birthday Abimbola!</title>
     <link href="https://fonts.googleapis.com/css2?family=Transformers+Movie&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @font-face {
+            font-family: 'Transformers Movie';
+            src: url('https://fonts.cdnfonts.com/css/transformers-movie') format('woff2');
+            font-weight: normal;
+            font-style: normal;
         }
 
         body {
-            font-family: 'Transformers Movie', Arial, sans-serif;
-            background: #0f0f1a;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Transformers Movie', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             perspective: 1000px;
         }
 
-        /* Fiery CodeWars Background */
-        .fire-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(255,100,0,0.3) 0%, transparent 25%),
-                radial-gradient(circle at 80% 70%, rgba(255,50,0,0.3) 0%, transparent 25%),
-                linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
-            z-index: -1;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .fire-bg::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="monospace" font-size="14" fill="rgba(255,80,0,0.1)">01010101 10101010</text></svg>');
-            opacity: 0.3;
-        }
-
-        .card-container {
-            width: 90%;
-            max-width: 600px;
-            height: 70vh;
+        .container {
             position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .card {
-            width: 100%;
-            height: 100%;
             position: relative;
+            width: 300px;
+            height: 400px;
             transform-style: preserve-3d;
-            transition: transform 1.5s ease-in-out;
+            transition: all 1s ease;
             cursor: pointer;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
         }
 
         .card-face {
@@ -70,318 +62,280 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 5px;
+            border-radius: 15px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            background: rgba(10, 10, 20, 0.8);
-            box-shadow: 0 0 20px rgba(255, 100, 0, 0.5);
-            border: 1px solid rgba(255, 150, 0, 0.3);
-            overflow: hidden;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #ff4500;
         }
 
         .card-front {
-            z-index: 2;
-            transform: rotateY(0deg);
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.8));
+            border: 3px solid #ff4500;
         }
 
         .card-back {
             transform: rotateY(180deg);
-            background: rgba(15, 15, 30, 0.9);
+            background: linear-gradient(135deg, rgba(10,10,10,0.9), rgba(30,30,30,0.9));
+            border: 3px solid #00ff7f;
         }
 
-        .tech-button {
+        .open-btn {
             padding: 15px 30px;
-            background: linear-gradient(45deg, #ff5500, #ffaa00);
-            color: #000;
+            font-family: 'Transformers Movie', sans-serif;
+            font-size: 18px;
+            background: linear-gradient(to right, #ff8a00, #e52e71);
+            color: white;
             border: none;
-            border-radius: 5px;
-            font-family: 'Transformers Movie', Arial, sans-serif;
-            font-size: 1.2rem;
+            border-radius: 50px;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(255, 100, 0, 0.7);
-            margin-top: 30px;
-        }
-
-        .tech-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px rgba(255, 100, 0, 0.9);
-        }
-
-        .tech-button::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255,255,255,0.3) 0%,
-                rgba(255,255,255,0) 60%
-            );
-            transform: rotate(30deg);
-            transition: all 0.5s;
-        }
-
-        .tech-button:hover::before {
-            left: 100%;
-        }
-
-        .title {
-            font-size: 3rem;
-            color: #ff5500;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 100, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 138, 0, 0.7);
+            transition: all 0.3s ease;
+            margin-top: 20px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        .subtitle {
-            font-size: 1.5rem;
-            color: #ffaa00;
-            margin-bottom: 30px;
-            text-shadow: 0 0 5px rgba(255, 150, 0, 0.5);
+        .open-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 138, 0, 0.9);
         }
 
-        .from-text {
-            font-size: 1.2rem;
-            color: #00aaff;
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 138, 0, 0.5);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: #00ff7f;
+            text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 5px 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .signature {
             margin-top: 20px;
-            text-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+            font-size: 1.2rem;
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            border-radius: 50%;
+            animation: float 5s infinite ease-in-out;
+            opacity: 0.8;
         }
 
         .car {
             position: absolute;
             width: 60px;
             height: 30px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><rect x="10" y="20" width="80" height="20" rx="5" fill="%23ff5500"/><circle cx="25" cy="40" r="8" fill="%23000"/><circle cx="75" cy="40" r="8" fill="%23000"/></svg>');
-            opacity: 0;
-            animation: float-across 8s linear infinite;
+            animation: drive 10s linear infinite;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.7));
         }
 
-        .balloon {
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-100px) rotate(5deg); }
+        }
+
+        @keyframes drive {
+            0% { transform: translateX(-100px) rotateY(0deg); }
+            50% { transform: translateX(calc(100vw + 100px)) rotateY(0deg); }
+            51% { transform: translateX(calc(100vw + 100px)) rotateY(180deg); }
+            100% { transform: translateX(-100px) rotateY(180deg); }
+        }
+
+        .fire-effect {
             position: absolute;
-            width: 40px;
-            height: 50px;
-            border-radius: 50%;
-            opacity: 0;
-            animation: float-up 6s linear infinite;
+            width: 100%;
+            height: 100%;
+            background: url('https://media.giphy.com/media/XUFPGrX5Zis6Y/giphy.gif') center/cover;
+            opacity: 0.2;
+            z-index: -1;
         }
 
-        .balloon:before {
-            content: "";
-            position: absolute;
-            width: 1px;
-            height: 60px;
-            background-color: rgba(255,255,255,0.3);
-            top: 50px;
-            left: 20px;
-        }
-
-        .whatsapp-box {
-            background: #e2ffc7;
-            border-radius: 8px;
+        .message-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff7f;
+            border-radius: 10px;
             padding: 15px;
-            max-width: 80%;
-            position: relative;
-            margin-top: 30px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease 3s;
+            width: 250px;
+            box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
+            display: none;
         }
 
-        .whatsapp-box:before {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #e2ffc7;
-            bottom: -10px;
-            left: 20px;
-        }
-
-        .whatsapp-header {
+        .message-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            color: #00ff7f;
         }
 
-        .whatsapp-name {
-            font-weight: bold;
-            color: #075e54;
-            margin-left: 10px;
-            font-family: Arial, sans-serif;
+        .message-content {
+            color: #fff;
+            font-size: 14px;
         }
 
-        .whatsapp-message {
-            color: #333;
-            line-height: 1.4;
-            font-family: Arial, sans-serif;
+        .close-btn {
+            background: none;
+            border: none;
+            color: #ff4500;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .whatsapp-time {
-            text-align: right;
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 5px;
-            font-family: Arial, sans-serif;
+        .neon-text {
+            animation: flicker 1.5s infinite alternate;
         }
 
-        @keyframes float-up {
-            0% {
-                transform: translateY(100vh) scale(0.5);
-                opacity: 0;
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow:
+                    0 0 4px #fff,
+                    0 0 11px #fff,
+                    0 0 19px #fff,
+                    0 0 40px #ff4500,
+                    0 0 80px #ff4500,
+                    0 0 90px #ff4500,
+                    0 0 100px #ff4500,
+                    0 0 150px #ff4500;
             }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(1);
-                opacity: 0;
-            }
-        }
-
-        @keyframes float-across {
-            0% {
-                transform: translateX(-100px) translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .neon {
-            animation: neon-glow 1.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes neon-glow {
-            from {
-                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff5500, 0 0 20px #ff5500;
-            }
-            to {
-                text-shadow: 0 0 10px #fff, 0 0 15px #ffaa00, 0 0 20px #ffaa00, 0 0 25px #ffaa00;
+            20%, 24%, 55% {        
+                text-shadow: none;
             }
         }
     </style>
 </head>
 <body>
-    <div class="fire-bg"></div>
-    <div class="card-container">
+    <div class="fire-effect"></div>
+    <div class="container">
+        <!-- Create balloons -->
+        <div id="balloons-container"></div>
+        
+        <!-- Create cars -->
+        <div id="cars-container"></div>
+        
         <div class="card" id="birthdayCard">
             <div class="card-face card-front">
-                <h1 class="title neon">Happy Birthday</h1>
-                <p style="color: #ccc; margin-bottom: 20px;">Click the tech button to open</p>
-                <button class="tech-button" id="techButton">ACCESS CARD</button>
-                <div class="from-text">Iyiola Adedamola Richard present</div>
+                <h1 class="neon-text">ABIMBOLA</h1>
+                <p>Click the button to open your card</p>
+                <button class="open-btn" id="openBtn">OPEN CARD</button>
             </div>
             <div class="card-face card-back">
-                <h1 class="title neon">Happy Birthday</h1>
-                <h2 class="subtitle">ABIMBOLA</h2>
-                <p style="color: #00aaff; font-size: 1.3rem; margin: 20px 0;">May your 25 be blessed</p>
-                <div id="animationContainer"></div>
-                <div class="whatsapp-box" id="whatsappBox">
-                    <div class="whatsapp-header">
-                        <div class="whatsapp-name">Iyiola Adedamola Richard</div>
-                    </div>
-                    <div class="whatsapp-message">Send me your pics and item 7</div>
-                    <div class="whatsapp-time" id="messageTime"></div>
-                </div>
+                <h1 class="neon-text">HAPPY BIRTHDAY</h1>
+                <h2>May your 25 be blessed</h2>
+                <p>Wishing you an amazing year ahead filled with joy, success, and all the things you love!</p>
+                <div class="signature">From: Iyiola Adedamola Richard</div>
             </div>
+        </div>
+    </div>
+
+    <div class="message-box" id="messageBox">
+        <div class="message-header">
+            <span>Message</span>
+            <button class="close-btn" id="closeBtn">×</button>
+        </div>
+        <div class="message-content">
+            Send me your pics and item 7!
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const card = document.getElementById('birthdayCard');
-            const techButton = document.getElementById('techButton');
-            const animationContainer = document.getElementById('animationContainer');
-            const whatsappBox = document.getElementById('whatsappBox');
-            const messageTime = document.getElementById('messageTime');
+            const openBtn = document.getElementById('openBtn');
+            const messageBox = document.getElementById('messageBox');
+            const closeBtn = document.getElementById('closeBtn');
+            const balloonsContainer = document.getElementById('balloons-container');
+            const carsContainer = document.getElementById('cars-container');
 
-            // Set current time for WhatsApp message
-            function updateTime() {
-                const now = new Date();
-                let hours = now.getHours();
-                const minutes = now.getMinutes();
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-                const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-                messageTime.textContent = `${hours}:${formattedMinutes} ${ampm}`;
+            // Create balloons
+            for (let i = 0; i < 15; i++) {
+                createBalloon();
             }
 
-            techButton.addEventListener('click', function() {
-                // Flip the card
-                card.style.transform = 'rotateY(180deg)';
-                
-                // Create floating cars
-                createCars();
-                
-                // Create balloons
-                createBalloons();
-                
-                // Show WhatsApp box with current time
+            // Create cars
+            for (let i = 0; i < 5; i++) {
+                createCar();
+            }
+
+            // Open card
+            openBtn.addEventListener('click', function() {
+                card.classList.add('flipped');
                 setTimeout(() => {
-                    updateTime();
-                    whatsappBox.classList.add('show');
+                    messageBox.style.display = 'block';
                 }, 2000);
             });
 
-            function createCars() {
-                const colors = ['#ff5500', '#ffaa00', '#00aaff', '#ff00aa'];
+            // Close message box
+            closeBtn.addEventListener('click', function() {
+                messageBox.style.display = 'none';
+            });
+
+            function createBalloon() {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
                 
-                for (let i = 0; i < 10; i++) {
-                    const car = document.createElement('div');
-                    car.className = 'car';
-                    car.style.left = Math.random() * 100 + '%';
-                    car.style.top = Math.random() * 100 + '%';
-                    car.style.animationDelay = (Math.random() * 5) + 's';
-                    car.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-                    
-                    animationContainer.appendChild(car);
-                }
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random color
+                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                balloon.style.left = `${left}vw`;
+                balloon.style.top = `${top}vh`;
+                balloon.style.background = color;
+                balloon.style.animationDuration = `${5 + Math.random() * 10}s`;
+                balloon.style.animationDelay = `${Math.random() * 5}s`;
+                
+                balloonsContainer.appendChild(balloon);
             }
 
-            function createBalloons() {
-                const colors = ['#ff5500', '#ffaa00', '#00aaff', '#ff00aa', '#aa00ff'];
+            function createCar() {
+                const car = document.createElement('div');
+                car.className = 'car';
                 
-                for (let i = 0; i < 15; i++) {
-                    const balloon = document.createElement('div');
-                    balloon.className = 'balloon';
-                    balloon.style.left = Math.random() * 80 + 10 + '%';
-                    balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    balloon.style.animationDelay = (Math.random() * 3) + 's';
-                    
-                    if (Math.random() > 0.5) {
-                        balloon.style.width = (Math.random() * 20 + 30) + 'px';
-                        balloon.style.height = (Math.random() * 20 + 40) + 'px';
-                    } else {
-                        balloon.style.width = (Math.random() * 20 + 40) + 'px';
-                        balloon.style.height = (Math.random() * 20 + 30) + 'px';
-                    }
-                    
-                    animationContainer.appendChild(balloon);
-                }
+                // Random position
+                const top = 20 + Math.random() * 60;
+                
+                // Random car image (using emoji for simplicity)
+                const cars = ['🚗', '🚕', '🚙', '🚓', '🚚'];
+                const carEmoji = cars[Math.floor(Math.random() * cars.length)];
+                
+                car.style.top = `${top}vh`;
+                car.style.fontSize = '30px';
+                car.style.animationDuration = `${10 + Math.random() * 20}s`;
+                car.style.animationDelay = `${Math.random() * 10}s`;
+                car.textContent = carEmoji;
+                
+                carsContainer.appendChild(car);
             }
         });
     </script>
