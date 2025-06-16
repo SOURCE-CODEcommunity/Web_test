@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday Abimbola!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Transformers+Movie&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Transformers Movie';
-            src: url('https://fonts.cdnfonts.com/css/transformers-movie') format('woff2');
-            font-weight: normal;
-            font-style: normal;
+        /* Optimized CSS with reduced redundancy */
+        :root {
+            --primary: #ff4500;
+            --secondary: #00ff7f;
+            --accent: #00ffff;
+            --bg-gradient: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             overflow: hidden;
             font-family: 'Transformers Movie', sans-serif;
-            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+            background: var(--bg-gradient);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: #fff;
@@ -30,26 +37,24 @@
         }
 
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
+            0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .container {
             position: relative;
             width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            place-items: center;
         }
 
         .card {
             position: relative;
-            width: 300px;
-            height: 400px;
+            width: min(90vw, 300px);
+            height: min(80vh, 400px);
             transform-style: preserve-3d;
-            transition: all 1s ease;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
@@ -64,31 +69,30 @@
             backface-visibility: hidden;
             border-radius: 15px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            padding: 20px;
-            box-sizing: border-box;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            padding: 1.5rem;
             background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #ff4500;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            border: 2px solid var(--primary);
+            text-align: center;
         }
 
         .card-front {
             background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.8));
-            border: 3px solid #ff4500;
         }
 
         .card-back {
             transform: rotateY(180deg);
             background: linear-gradient(135deg, rgba(10,10,10,0.9), rgba(30,30,30,0.9));
-            border: 3px solid #00ff7f;
+            border-color: var(--secondary);
         }
 
         .open-btn {
-            padding: 15px 30px;
-            font-family: 'Transformers Movie', sans-serif;
-            font-size: 18px;
+            padding: 0.8rem 1.5rem;
+            font-family: inherit;
+            font-size: 1rem;
             background: linear-gradient(to right, #ff8a00, #e52e71);
             color: white;
             border: none;
@@ -96,9 +100,9 @@
             cursor: pointer;
             box-shadow: 0 0 15px rgba(255, 138, 0, 0.7);
             transition: all 0.3s ease;
-            margin-top: 20px;
+            margin-top: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .open-btn:hover {
@@ -107,83 +111,85 @@
         }
 
         h1 {
-            font-size: 2.5rem;
-            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
             background: linear-gradient(to right, #ff8a00, #e52e71);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 10px rgba(255, 138, 0, 0.5);
-            text-align: center;
+            margin-bottom: 0.5rem;
         }
 
         h2 {
-            font-size: 1.5rem;
-            margin: 10px 0;
-            color: #00ff7f;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: var(--secondary);
             text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
+            margin: 0.5rem 0;
         }
 
         p {
-            font-size: 1rem;
-            margin: 5px 0;
-            color: #fff;
-            text-align: center;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            margin: 0.3rem 0;
         }
 
         .signature {
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: #00ffff;
+            margin-top: 1.5rem;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--accent);
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         }
 
-        .balloon {
+        .balloon, .car {
             position: absolute;
-            width: 50px;
-            height: 70px;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .balloon {
+            width: 3rem;
+            height: 4rem;
             border-radius: 50%;
-            animation: float 5s infinite ease-in-out;
             opacity: 0.8;
+            animation: float 8s infinite ease-in-out;
         }
 
         .car {
-            position: absolute;
-            width: 60px;
-            height: 30px;
-            animation: drive 10s linear infinite;
+            width: 3.5rem;
+            height: 1.8rem;
+            font-size: 1.8rem;
+            animation: drive 15s linear infinite;
             filter: drop-shadow(0 0 5px rgba(255, 255, 0, 0.7));
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-100px) rotate(5deg); }
+            50% { transform: translateY(-6rem) rotate(5deg); }
         }
 
         @keyframes drive {
-            0% { transform: translateX(-100px) rotateY(0deg); }
-            50% { transform: translateX(calc(100vw + 100px)) rotateY(0deg); }
-            51% { transform: translateX(calc(100vw + 100px)) rotateY(180deg); }
-            100% { transform: translateX(-100px) rotateY(180deg); }
+            0% { transform: translateX(-6rem) rotateY(0deg); }
+            49% { transform: translateX(calc(100vw + 6rem)) rotateY(0deg); }
+            50% { transform: translateX(calc(100vw + 6rem)) rotateY(180deg); }
+            100% { transform: translateX(-6rem) rotateY(180deg); }
         }
 
         .fire-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+            position: fixed;
+            inset: 0;
             background: url('https://media.giphy.com/media/XUFPGrX5Zis6Y/giphy.gif') center/cover;
             opacity: 0.2;
             z-index: -1;
+            pointer-events: none;
         }
 
         .message-box {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 1.5rem;
+            right: 1.5rem;
             background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #00ff7f;
+            border: 1px solid var(--secondary);
             border-radius: 10px;
-            padding: 15px;
-            width: 250px;
+            padding: 1rem;
+            width: min(80vw, 250px);
             box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
             display: none;
         }
@@ -192,21 +198,20 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            color: #00ff7f;
+            margin-bottom: 0.6rem;
+            color: var(--secondary);
         }
 
         .message-content {
-            color: #fff;
-            font-size: 14px;
+            font-size: 0.9rem;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #ff4500;
+            color: var(--primary);
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1.2rem;
         }
 
         .neon-text {
@@ -215,38 +220,35 @@
 
         @keyframes flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow:
-                    0 0 4px #fff,
-                    0 0 11px #fff,
-                    0 0 19px #fff,
-                    0 0 40px #ff4500,
-                    0 0 80px #ff4500,
-                    0 0 90px #ff4500,
-                    0 0 100px #ff4500,
-                    0 0 150px #ff4500;
+                text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 
+                            0 0 40px var(--primary), 0 0 80px var(--primary), 
+                            0 0 90px var(--primary), 0 0 100px var(--primary);
             }
-            20%, 24%, 55% {        
-                text-shadow: none;
-            }
+            20%, 24%, 55% { text-shadow: none; }
+        }
+
+        /* Optimized for reduced layout shifts */
+        #balloons-container, #cars-container {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="fire-effect"></div>
+    <div class="fire-effect" aria-hidden="true"></div>
     <div class="container">
-        <!-- Create balloons -->
         <div id="balloons-container"></div>
-        
-        <!-- Create cars -->
         <div id="cars-container"></div>
         
-        <div class="card" id="birthdayCard">
-            <div class="card-face card-front">
+        <div class="card" id="birthdayCard" role="region" aria-label="Birthday Card">
+            <div class="card-face card-front" aria-label="Front of card">
                 <h1 class="neon-text">ABIMBOLA</h1>
                 <p>Click the button to open your card</p>
-                <button class="open-btn" id="openBtn">OPEN CARD</button>
+                <button class="open-btn" id="openBtn" aria-label="Open card">OPEN CARD</button>
             </div>
-            <div class="card-face card-back">
+            <div class="card-face card-back" aria-label="Back of card">
                 <h1 class="neon-text">HAPPY BIRTHDAY</h1>
                 <h2>May your 25 be blessed</h2>
                 <p>Wishing you an amazing year ahead filled with joy, success, and all the things you love!</p>
@@ -255,10 +257,10 @@
         </div>
     </div>
 
-    <div class="message-box" id="messageBox">
+    <div class="message-box" id="messageBox" role="dialog" aria-label="Message">
         <div class="message-header">
             <span>Message</span>
-            <button class="close-btn" id="closeBtn">×</button>
+            <button class="close-btn" id="closeBtn" aria-label="Close message">×</button>
         </div>
         <div class="message-content">
             Send me your pics and item 7!
@@ -266,77 +268,93 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const card = document.getElementById('birthdayCard');
-            const openBtn = document.getElementById('openBtn');
-            const messageBox = document.getElementById('messageBox');
-            const closeBtn = document.getElementById('closeBtn');
-            const balloonsContainer = document.getElementById('balloons-container');
-            const carsContainer = document.getElementById('cars-container');
+        // Optimized JavaScript with better performance
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cache DOM elements
+            const elements = {
+                card: document.getElementById('birthdayCard'),
+                openBtn: document.getElementById('openBtn'),
+                messageBox: document.getElementById('messageBox'),
+                closeBtn: document.getElementById('closeBtn'),
+                balloonsContainer: document.getElementById('balloons-container'),
+                carsContainer: document.getElementById('cars-container')
+            };
 
-            // Create balloons
-            for (let i = 0; i < 15; i++) {
-                createBalloon();
+            // Color palette for balloons
+            const balloonColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            // Car emojis
+            const carEmojis = ['🚗', '🚕', '🚙', '🚓', '🚚'];
+
+            // Create decorative elements
+            function createDecorativeElements() {
+                // Use document fragment for balloons
+                const balloonFragment = document.createDocumentFragment();
+                for (let i = 0; i < 15; i++) {
+                    balloonFragment.appendChild(createBalloon());
+                }
+                elements.balloonsContainer.appendChild(balloonFragment);
+
+                // Use document fragment for cars
+                const carFragment = document.createDocumentFragment();
+                for (let i = 0; i < 5; i++) {
+                    carFragment.appendChild(createCar());
+                }
+                elements.carsContainer.appendChild(carFragment);
             }
-
-            // Create cars
-            for (let i = 0; i < 5; i++) {
-                createCar();
-            }
-
-            // Open card
-            openBtn.addEventListener('click', function() {
-                card.classList.add('flipped');
-                setTimeout(() => {
-                    messageBox.style.display = 'block';
-                }, 2000);
-            });
-
-            // Close message box
-            closeBtn.addEventListener('click', function() {
-                messageBox.style.display = 'none';
-            });
 
             function createBalloon() {
                 const balloon = document.createElement('div');
                 balloon.className = 'balloon';
                 
-                // Random position
-                const left = Math.random() * 100;
-                const top = Math.random() * 100;
+                // Set random properties
+                Object.assign(balloon.style, {
+                    left: `${Math.random() * 100}vw`,
+                    top: `${Math.random() * 100}vh`,
+                    background: balloonColors[Math.floor(Math.random() * balloonColors.length)],
+                    animationDuration: `${5 + Math.random() * 10}s`,
+                    animationDelay: `${Math.random() * 5}s`
+                });
                 
-                // Random color
-                const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                balloon.style.left = `${left}vw`;
-                balloon.style.top = `${top}vh`;
-                balloon.style.background = color;
-                balloon.style.animationDuration = `${5 + Math.random() * 10}s`;
-                balloon.style.animationDelay = `${Math.random() * 5}s`;
-                
-                balloonsContainer.appendChild(balloon);
+                return balloon;
             }
 
             function createCar() {
                 const car = document.createElement('div');
                 car.className = 'car';
+                car.textContent = carEmojis[Math.floor(Math.random() * carEmojis.length)];
                 
-                // Random position
-                const top = 20 + Math.random() * 60;
+                // Set random properties
+                Object.assign(car.style, {
+                    top: `${20 + Math.random() * 60}vh`,
+                    animationDuration: `${10 + Math.random() * 20}s`,
+                    animationDelay: `${Math.random() * 10}s`
+                });
                 
-                // Random car image (using emoji for simplicity)
-                const cars = ['🚗', '🚕', '🚙', '🚓', '🚚'];
-                const carEmoji = cars[Math.floor(Math.random() * cars.length)];
-                
-                car.style.top = `${top}vh`;
-                car.style.fontSize = '30px';
-                car.style.animationDuration = `${10 + Math.random() * 20}s`;
-                car.style.animationDelay = `${Math.random() * 10}s`;
-                car.textContent = carEmoji;
-                
-                carsContainer.appendChild(car);
+                return car;
             }
+
+            // Event handlers
+            function setupEventListeners() {
+                elements.openBtn.addEventListener('click', () => {
+                    elements.card.classList.add('flipped');
+                    setTimeout(() => {
+                        elements.messageBox.style.display = 'block';
+                    }, 2000);
+                });
+
+                elements.closeBtn.addEventListener('click', () => {
+                    elements.messageBox.style.display = 'none';
+                });
+            }
+
+            // Initialize
+            function init() {
+                createDecorativeElements();
+                setupEventListeners();
+            }
+
+            init();
         });
     </script>
 </body>
