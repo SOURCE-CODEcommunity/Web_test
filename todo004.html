@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List with Location Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #app {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .on-site {
+            background-color: green;
+        }
+        .off-site {
+            background-color: red;
+        }
+        #todo-form {
+            margin: 20px 0;
+        }
+        #todo-input {
+            padding: 8px;
+            width: 70%;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+        .delete-btn {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>My To-Do List</h1>
+        
+        <div id="status-section">
+            <h2>Status: 
+                <span id="status-indicator" class="off-site"></span>
+                <span id="status-text">Off-Site</span>
+            </h2>
+            <button id="toggle-status">Toggle Status</button>
+        </div>
+        
+        <form id="todo-form">
+            <input type="text" id="todo-input" placeholder="Add a new task..." required>
+            <button type="submit">Add Task</button>
+        </form>
+        
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+// Configuration - Replace these with your actual values
+const JSONBIN_CONFIG = {
+    binId: '686c5b178a456b7966bd26f1',          //  your bin ID
+    apiKey: '$2a$10$0oryMYwaf6WqtnGSMxg9heqwH5SMnYEGJPcOOOfsFGwX8Uo/BDKWO'  //  your API key
+};
+
+// DOM Elements
+const todoForm = document.getElementById('todo-form');
+const todoInput = document.getElementById('todo-input');
+const todoList = document.getElementById('todo-list');
+const toggleStatusBtn = document.getElementById('toggle-status');
+const statusIndicator = document.getElementById('status-indicator');
+const statusText = document.getElementById('status-text');
+
+// User ID management
+let userId = localStorage.getItem('todoAppUserId');
+if (!userId) {
+    userId = 'user-' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('todoAppUserId', userId);
+}
+
+// App state
+let appData = {
+    todos: [],
+    userStatus: {}
+};
+
+// Initialize the app
+async function initApp() {
+    await loadData();
+    renderTodos();
+    renderStatus();
+}
+
+// Load data from JSONBin.io
+async function loadData() {
+    try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+            headers: {
+                'X-Master-Key': JSONBIN_CONFIG.apiKey
+            }
+        });
+        
+        const data = await response.json();
+        if (data.record) {
+            appData = data.record;
+        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+    }
+}
+
+// Save data to JSONBin.io
+async function saveData() {
+    try {
+        const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': JSONBIN_CONFIG.apiKey
+            },
+            body: JSON.stringify(appData)
+        });
+        
+        const result = await response.json();
+        console.log('Data saved:', result);
+    } catch (error) {
+        console.error('Error saving data:', error);
+    }
+}
+
+// Render todos to the DOM
+function renderTodos() {
+    todoList.innerHTML = '';
+    
+    appData.todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span>${todo.text}</span>
+            <button class="delete-btn" data-index="${index}">Delete</button>
+        `;
+        if (todo.completed) {
+            li.style.textDecoration = 'line-through';
+            li.style.color = '#888';
+        }
+        todoList.appendChild(li);
+    });
+    
+    // Add event listeners to delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const index = e.target.getAttribute('data-index');
+            deleteTodo(index);
+        });
+    });
+}
+
+// Render status to the DOM
+function renderStatus() {
+    const isOnSite = appData.userStatus[userId] === 'on-site';
+    
+    if (isOnSite) {
+        statusIndicator.className = 'on-site';
+        statusText.textContent = 'On-Site';
+    } else {
+        statusIndicator.className = 'off-site';
+        statusText.textContent = 'Off-Site';
+    }
+}
+
+// Add a new todo
+async function addTodo(text) {
+    appData.todos.push({
+        text,
+        completed: false,
+        createdAt: new Date().toISOString()
+    });
+    
+    await saveData();
+    renderTodos();
+    todoInput.value = '';
+}
+
+// Delete a todo
+async function deleteTodo(index) {
+    appData.todos.splice(index, 1);
+    await saveData();
+    renderTodos();
+}
+
+// Toggle user status
+async function toggleStatus() {
+    const currentStatus = appData.userStatus[userId];
+    
+    if (currentStatus === 'on-site') {
+        appData.userStatus[userId] = 'off-site';
+    } else {
+        appData.userStatus[userId] = 'on-site';
+    }
+    
+    await saveData();
+    renderStatus();
+}
+
+// Event Listeners
+todoForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = todoInput.value.trim();
+    if (text) {
+        await addTodo(text);
+    }
+});
+
+toggleStatusBtn.addEventListener('click', toggleStatus);
+
+// Initialize the app when the page loads
+document.addEventListener('DOMContentLoaded', initApp);
+</script>
+</body>
+</html>
