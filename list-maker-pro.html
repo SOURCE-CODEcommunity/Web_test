@@ -1,1 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Maker Pro</title>
+    <style>
+        /* List Maker Pro Design System */
+        :root {
+            /* Color Palette */
+            --primary-blue: #4285F4;
+            --secondary-green: #34A853;
+            --accent-red: #EA4335;
+            --warning-yellow: #FBBC05;
+            --light-gray: #f8f9fa;
+            --medium-gray: #dadce0;
+            --dark-gray: #5f6368;
+            --white: #ffffff;
+            --black: #000000;
+            
+            /* Glass Morphism Styles */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-bg-dark: rgba(0, 0, 0, 0.75);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.3);
+            --glass-border-dark: 1px solid rgba(0, 0, 0, 0.3);
+            --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                          0 1px 3px rgba(0, 0, 0, 0.08);
+            --blur-effect: blur(8px);
+            
+            /* Typography */
+            --font-main: 'Google Sans', Roboto, Arial, sans-serif;
+            --font-size-base: 16px;
+            --line-height-base: 1.5;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            
+            /* Transitions */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s ease;
+        }
 
+        /* Dark mode variables */
+        .dark-mode {
+            --glass-bg: var(--glass-bg-dark);
+            --glass-border: var(--glass-border-dark);
+            --dark-gray: #e8eaed;
+            --light-gray: #202124;
+            --medium-gray: #5f6368;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-base);
+            color: var(--dark-gray);
+            background: linear-gradient(135deg, #f5f5ff 0%, #f9f9ff 50%, #ffffff 100%);
+            background-size: 200% 200%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            transition: background-color var(--transition-slow);
+        }
+
+        .dark-mode body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Card Component */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            -webkit-backdrop-filter: var(--blur-effect);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            padding: var(--space-lg);
+            transition: var(--transition-normal);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-success {
+            background-color: var(--secondary-green);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background-color: #2d9249;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-danger {
+            background-color: var(--accent-red);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #d33a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Form Elements */
+        .form-input {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 4px;
+            border: 1px solid var(--medium-gray);
+            background-color: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            transition: var(--transition-normal);
+            width: 100%;
+            margin-bottom: var(--space-md);
+            color: var(--dark-gray);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        /* Navigation */
+        .app-header {
+            position: sticky;
+            top: 0;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            padding: var(--space-md);
+            box-shadow: var(--glass-shadow);
+            border-bottom: var(--glass-border);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-normal);
+            border: none;
+            cursor: pointer;
+            z-index: 90;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        .fab-success {
+            background-color: var(--secondary-green);
+        }
+
+        /* Modal/Dialog */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-normal);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: var(--transition-normal);
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+
+        /* List Items */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--medium-gray);
+            transition: var(--transition-fast);
+        }
+
+        .list-item:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .dark-mode .list-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            text-align: center;
+            color: var(--medium-gray);
+        }
+
+        .empty-state img {
+            width: 150px;
+            opacity: 0.5;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: var(--space-xs); }
+        .mt-2 { margin-top: var(--space-sm); }
+        .mt-3 { margin-top: var(--space-md); }
+        .mt-4 { margin-top: var(--space-lg); }
+        .mt-5 { margin-top: var(--space-xl); }
+        .mb-1 { margin-bottom: var(--space-xs); }
+        .mb-2 { margin-bottom: var(--space-sm); }
+        .mb-3 { margin-bottom: var(--space-md); }
+        .mb-4 { margin-bottom: var(--space-lg); }
+        .mb-5 { margin-bottom: var(--space-xl); }
+        .hidden { display: none !important; }
+
+        /* Responsive Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        /* Two-column layout for bank details */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-content, .print-content * {
+                visibility: visible;
+            }
+            .print-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                color: black;
+                padding: 20px;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="glass-card login-card">
+            <h1 class="mb-3">List Maker Pro</h1>
+            <p class="mb-4">Please authenticate to continue</p>
+            <button id="bioAuthBtn" class="btn btn-primary mb-2" style="width: 100%;">
+                Use Biometric Authentication
+            </button>
+            <div id="passwordAuth" class="hidden">
+                <input type="password" id="passwordInput" class="form-input" placeholder="Enter your password">
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%;">Login</button>
+            </div>
+            <div id="setupAuth" class="hidden mt-4">
+                <p>No authentication method found. Please set up security:</p>
+                <input type="text" id="userNameInput" class="form-input" placeholder="Your name">
+                <input type="password" id="newPasswordInput" class="form-input" placeholder="Create a password">
+                <button id="setupAuthBtn" class="btn btn-primary" style="width: 100%;">Set Up Security</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App (hidden until authenticated) -->
+    <div id="appContainer" class="hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>List Maker Pro</h1>
+            <button id="themeToggle" class="btn" style="background: var(--light-gray);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+            <!-- Greeting -->
+            <div class="glass-card mb-4">
+                <h1 id="greetingText">Welcome</h1>
+            </div>
+
+            <!-- Lists Container -->
+            <div id="listsContainer">
+                <!-- Lists will be dynamically inserted here -->
+                <div id="emptyState" class="empty-state">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNhY3R1cyI+PHBhdGggZD0iTTQgMTJoMTYiLz48cGF0aCBkPSJNMTAgMTZWOCIvPjxwYXRoIGQ9Ik0xNCAxNlY4Ii8+PHBhdGggZD0iTTQgMjBjMTYuNCAwIDE2LjQtNCAxNi40LTQiLz48L3N2Zz4=" alt="Empty">
+                    <h3 class="mb-2">No Lists Yet</h3>
+                    <p>Create your first list by clicking the + button</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button id="newListFab" class="fab no-print">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+
+        <!-- Footer -->
+        <footer class="glass-card text-center mt-5 no-print" style="padding: var(--space-md);">
+            <p>Created by: Iyiola Adedamola Richard</p>
+        </footer>
+    </div>
+
+    <!-- New List Modal -->
+    <div id="newListModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New List</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="newListForm">
+                <input type="text" id="listTitle" class="form-input" placeholder="List Title*" required>
+                <input type="text" id="creatorName" class="form-input" placeholder="Your Name">
+                <div class="two-column">
+                    <input type="text" id="accountName" class="form-input" placeholder="Account Name">
+                    <input type="text" id="accountNumber" class="form-input" placeholder="Account Number">
+                </div>
+                <input type="text" id="bankName" class="form-input" placeholder="Bank Name">
+                <textarea id="listDescription" class="form-input" placeholder="Description/Note" rows="3"></textarea>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create List</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- List Detail/Edit Screen -->
+    <div id="listDetailScreen" class="hidden">
+        <div class="app-header">
+            <button id="backToListBtn" class="btn" style="background: var(--light-gray);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <h1 id="detailListTitle">List Title</h1>
+            <button id="printListBtn" class="btn btn-primary no-print">Print</button>
+        </div>
+
+        <main class="container" style="max-width: 1000px; margin: 0 auto; padding: 20px;">
+            <!-- List Info -->
+            <div class="glass-card mb-4">
+                <div id="listInfoContent">
+                    <!-- List info will be dynamically inserted here -->
+                </div>
+            </div>
+
+            <!-- List Items -->
+            <div class="glass-card mb-4">
+                <h2 class="mb-3">Items</h2>
+                <div id="listItemsContainer">
+                    <!-- List items will be dynamically inserted here -->
+                </div>
+                <div id="listTotals" class="mt-4" style="text-align: right;">
+                    <!-- Totals will be dynamically inserted here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Add Item FAB -->
+        <button id="addItemFab" class="fab fab-success no-print">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Item</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="addItemForm">
+                <input type="text" id="itemName" class="form-input" placeholder="Item Name*" required>
+                <input type="number" id="itemQuantity" class="form-input" placeholder="Quantity*" min="1" required>
+                <input type="number" id="itemPrice" class="form-input" placeholder="Price per Unit*" min="0" step="0.01" required>
+                <button type="submit" class="btn btn-success" style="width: 100%;">Add to List</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Print Template (hidden until printing) -->
+    <div id="printTemplate" class="hidden">
+        <div class="print-content" style="font-family: Arial, sans-serif; padding: 20px;">
+            <h1 style="text-align: center; margin-bottom: 20px;" id="printTitle">List Title</h1>
+            <div style="margin-bottom: 20px;">
+                <p><strong>Created by:</strong> <span id="printCreator">Creator Name</span></p>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <p><strong>Account Name:</strong> <span id="printAccountName">-</span></p>
+                    <p><strong>Account Number:</strong> <span id="printAccountNumber">-</span></p>
+                </div>
+                <p><strong>Bank:</strong> <span id="printBankName">-</span></p>
+                <p><strong>Note:</strong> <span id="printDescription">-</span></p>
+            </div>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Item</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Qty</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Price</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="printItems">
+                    <!-- Items will be inserted here -->
+                </tbody>
+                <tfoot>
+                    <tr style="border-top: 2px solid #ddd;">
+                        <td colspan="3" style="padding: 10px; text-align: right;"><strong>Grand Total:</strong></td>
+                        <td style="padding: 10px; text-align: right;"><strong id="printGrandTotal">0.00</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding: 10px; text-align: right;"><strong>Total Items:</strong></td>
+                        <td style="padding: 10px; text-align: right;"><strong id="printTotalItems">0</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div style="text-align: center; margin-top: 30px; font-size: 12px; color: #777;">
+                <p>Generated by List Maker Pro</p>
+                <p id="printDate">Date</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const appContainer = document.getElementById('appContainer');
+        const bioAuthBtn = document.getElementById('bioAuthBtn');
+        const passwordAuth = document.getElementById('passwordAuth');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const setupAuth = document.getElementById('setupAuth');
+        const userNameInput = document.getElementById('userNameInput');
+        const newPasswordInput = document.getElementById('newPasswordInput');
+        const setupAuthBtn = document.getElementById('setupAuthBtn');
+        const greetingText = document.getElementById('greetingText');
+        const listsContainer = document.getElementById('listsContainer');
+        const emptyState = document.getElementById('emptyState');
+        const newListFab = document.getElementById('newListFab');
+        const newListModal = document.getElementById('newListModal');
+        const newListForm = document.getElementById('newListForm');
+        const listDetailScreen = document.getElementById('listDetailScreen');
+        const backToListBtn = document.getElementById('backToListBtn');
+        const detailListTitle = document.getElementById('detailListTitle');
+        const listInfoContent = document.getElementById('listInfoContent');
+        const listItemsContainer = document.getElementById('listItemsContainer');
+        const listTotals = document.getElementById('listTotals');
+        const addItemFab = document.getElementById('addItemFab');
+        const addItemModal = document.getElementById('addItemModal');
+        const addItemForm = document.getElementById('addItemForm');
+        const printListBtn = document.getElementById('printListBtn');
+        const printTemplate = document.getElementById('printTemplate');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // State variables
+        let currentUser = null;
+        let lists = JSON.parse(localStorage.getItem('lists')) || [];
+        let currentListId = null;
+        let isDarkMode = false;
+
+        // Initialize the app
+        function init() {
+            checkAuth();
+            setupEventListeners();
+            updateGreeting();
+            checkTimeForTheme();
+        }
+
+        // Check authentication state
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            const authMethod = localStorage.getItem('authMethod');
+            
+            if (user && authMethod) {
+                currentUser = JSON.parse(user);
+                
+                // If biometric auth is available, try to authenticate
+                if (authMethod === 'biometric' && window.PublicKeyCredential) {
+                    attemptBiometricAuth();
+                } else {
+                    // Show password auth
+                    bioAuthBtn.textContent = 'Use Password';
+                    passwordAuth.classList.remove('hidden');
+                }
+            } else {
+                // No auth setup, show setup form
+                bioAuthBtn.classList.add('hidden');
+                setupAuth.classList.remove('hidden');
+            }
+        }
+
+        // Attempt biometric authentication
+        function attemptBiometricAuth() {
+            // In a real app, you would use the Web Authentication API
+            // For this demo, we'll simulate it with a timeout
+            bioAuthBtn.textContent = 'Authenticating...';
+            
+            setTimeout(() => {
+                // Simulate successful biometric auth
+                loginSuccess();
+            }, 1000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Login events
+            bioAuthBtn.addEventListener('click', handleBioAuth);
+            loginBtn.addEventListener('click', handlePasswordLogin);
+            setupAuthBtn.addEventListener('click', handleSetupAuth);
+            
+            // App events
+            newListFab.addEventListener('click', () => toggleModal(newListModal, true));
+            Array.from(document.querySelectorAll('.modal-close')).forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modal = btn.closest('.modal');
+                    toggleModal(modal, false);
+                });
+            });
+            
+            newListForm.addEventListener('submit', handleNewListSubmit);
+            backToListBtn.addEventListener('click', showListScreen);
+            addItemFab.addEventListener('click', () => toggleModal(addItemModal, true));
+            addItemForm.addEventListener('submit', handleAddItemSubmit);
+            printListBtn.addEventListener('click', handlePrint);
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Close modal when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        toggleModal(modal, false);
+                    }
+                });
+            });
+        }
+
+        // Handle biometric authentication
+        function handleBioAuth() {
+            if (localStorage.getItem('authMethod') === 'biometric') {
+                attemptBiometricAuth();
+            } else {
+                bioAuthBtn.textContent = 'Use Password';
+                passwordAuth.classList.remove('hidden');
+            }
+        }
+
+        // Handle password login
+        function handlePasswordLogin() {
+            const password = passwordInput.value;
+            const storedPassword = currentUser?.password;
+            
+            if (password && password === storedPassword) {
+                loginSuccess();
+            } else {
+                alert('Incorrect password. Please try again.');
+                passwordInput.value = '';
+            }
+        }
+
+        // Handle auth setup
+        function handleSetupAuth() {
+            const name = userNameInput.value.trim();
+            const password = newPasswordInput.value.trim();
+            
+            if (!name || !password) {
+                alert('Please enter your name and a password');
+                return;
+            }
+            
+            // Save user data
+            currentUser = {
+                name,
+                password
+            };
+            
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            
+            // Check if biometric auth is available
+            if (window.PublicKeyCredential) {
+                localStorage.setItem('authMethod', 'biometric');
+            } else {
+                localStorage.setItem('authMethod', 'password');
+            }
+            
+            loginSuccess();
+        }
+
+        // Successful login
+        function loginSuccess() {
+            loginScreen.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+            renderLists();
+        }
+
+        // Toggle modal visibility
+        function toggleModal(modal, show) {
+            if (show) {
+                modal.classList.add('active');
+            } else {
+                modal.classList.remove('active');
+                
+                // Reset forms when closing
+                if (modal === newListModal) {
+                    newListForm.reset();
+                } else if (modal === addItemModal) {
+                    addItemForm.reset();
+                }
+            }
+        }
+
+        // Update greeting based on time of day
+        function updateGreeting() {
+            if (!currentUser) return;
+            
+            const hour = new Date().getHours();
+            let greeting = '';
+            let emoji = '';
+            
+            if (hour < 12) {
+                greeting = 'Good morning';
+                emoji = '😊';
+            } else if (hour < 18) {
+                greeting = 'Good afternoon';
+                emoji = '😎';
+            } else {
+                greeting = 'Good evening';
+                emoji = '🌙';
+            }
+            
+            greetingText.textContent = `${greeting} ${currentUser.name}${emoji}`;
+        }
+
+        // Check time to set initial theme
+        function checkTimeForTheme() {
+            const hour = new Date().getHours();
+            // Set dark mode between 6pm and 6am
+            if (hour >= 18 || hour < 6) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+        }
+
+        // Toggle dark/light theme
+        function toggleTheme() {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        // Enable dark mode
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            isDarkMode = true;
+        }
+
+        // Disable dark mode
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            isDarkMode = false;
+        }
+
+        // Render lists
+        function renderLists() {
+            if (lists.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            emptyState.classList.add('hidden');
+            listsContainer.innerHTML = '';
+            
+            lists.forEach(list => {
+                const listElement = document.createElement('div');
+                listElement.className = 'glass-card mb-3';
+                listElement.style.cursor = 'pointer';
+                listElement.innerHTML = `
+                    <h3>${list.title}</h3>
+                    <p style="color: var(--medium-gray); margin-top: var(--space-sm);">
+                        ${list.items.length} items • Total: ${formatCurrency(calculateListTotal(list))}
+                    </p>
+                `;
+                
+                listElement.addEventListener('click', () => showListDetail(list.id));
+                listsContainer.appendChild(listElement);
+            });
+        }
+
+        // Handle new list submission
+        function handleNewListSubmit(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('listTitle').value.trim();
+            const creatorName = document.getElementById('creatorName').value.trim() || currentUser.name;
+            const accountName = document.getElementById('accountName').value.trim();
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            const bankName = document.getElementById('bankName').value.trim();
+            const description = document.getElementById('listDescription').value.trim();
+            
+            if (!title) {
+                alert('List title is required');
+                return;
+            }
+            
+            const newList = {
+                id: Date.now().toString(),
+                title,
+                creatorName,
+                accountName,
+                accountNumber,
+                bankName,
+                description,
+                createdAt: new Date().toISOString(),
+                items: []
+            };
+            
+            lists.push(newList);
+            saveLists();
+            toggleModal(newListModal, false);
+            renderLists();
+        }
+
+        // Show list detail view
+        function showListDetail(listId) {
+            currentListId = listId;
+            const list = lists.find(l => l.id === listId);
+            
+            if (!list) return;
+            
+            // Update header
+            detailListTitle.textContent = list.title;
+            
+            // Update list info
+            listInfoContent.innerHTML = `
+                <h2>${list.title}</h2>
+                <p class="mt-2"><strong>Created by:</strong> ${list.creatorName}</p>
+                <div class="two-column mt-2">
+                    <p><strong>Account Name:</strong> ${list.accountName || '-'}</p>
+                    <p><strong>Account Number:</strong> ${list.accountNumber || '-'}</p>
+                </div>
+                <p class="mt-2"><strong>Bank:</strong> ${list.bankName || '-'}</p>
+                <p class="mt-2"><strong>Total:</strong> ${formatCurrency(calculateListTotal(list))}</p>
+                ${list.description ? `<p class="mt-2"><strong>Note:</strong> ${list.description}</p>` : ''}
+            `;
+            
+            // Update list items
+            renderListItems(list);
+            
+            // Show the detail screen
+            appContainer.classList.add('hidden');
+            listDetailScreen.classList.remove('hidden');
+        }
+
+        // Render list items
+        function renderListItems(list) {
+            listItemsContainer.innerHTML = '';
+            
+            if (list.items.length === 0) {
+                listItemsContainer.innerHTML = '<p style="color: var(--medium-gray); text-align: center;">No items yet</p>';
+            } else {
+                list.items.forEach((item, index) => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'list-item';
+                    itemElement.innerHTML = `
+                        <div>
+                            <strong>${item.name}</strong>
+                            <div style="font-size: 14px; color: var(--medium-gray);">
+                                ${item.quantity} × ${formatCurrency(item.price)} = ${formatCurrency(item.quantity * item.price)}
+                            </div>
+                        </div>
+                        <div class="list-item-actions">
+                            <button class="btn btn-danger" data-index="${index}" style="padding: var(--space-xs);">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Add delete event
+                    const deleteBtn = itemElement.querySelector('.btn-danger');
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        deleteItem(index);
+                    });
+                    
+                    listItemsContainer.appendChild(itemElement);
+                });
+            }
+            
+            // Update totals
+            updateListTotals(list);
+        }
+
+        // Update list totals display
+        function updateListTotals(list) {
+            const total = calculateListTotal(list);
+            const itemCount = list.items.length;
+            
+            listTotals.innerHTML = `
+                <p><strong>Total Items:</strong> ${itemCount}</p>
+                <p><strong>Grand Total:</strong> ${formatCurrency(total)}</p>
+            `;
+        }
+
+        // Calculate list total
+        function calculateListTotal(list) {
+            return list.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+
+        // Handle add item submission
+        function handleAddItemSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('itemName').value.trim();
+            const quantity = parseInt(document.getElementById('itemQuantity').value);
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            
+            if (!name || isNaN(quantity) || isNaN(price)) {
+                alert('Please fill all fields with valid values');
+                return;
+            }
+            
+            const newItem = {
+                name,
+                quantity,
+                price
+            };
+            
+            const listIndex = lists.findIndex(l => l.id === currentListId);
+            if (listIndex !== -1) {
+                lists[listIndex].items.push(newItem);
+                saveLists();
+                renderListItems(lists[listIndex]);
+                toggleModal(addItemModal, false);
+            }
+        }
+
+        // Delete item from list
+        function deleteItem(itemIndex) {
+            const listIndex = lists.findIndex(l => l.id === currentListId);
+            if (listIndex !== -1) {
+                lists[listIndex].items.splice(itemIndex, 1);
+                saveLists();
+                renderListItems(lists[listIndex]);
+            }
+        }
+
+        // Show list screen (from detail view)
+        function showListScreen() {
+            listDetailScreen.classList.add('hidden');
+            appContainer.classList.remove('hidden');
+            currentListId = null;
+        }
+
+        // Handle print
+        function handlePrint() {
+            const list = lists.find(l => l.id === currentListId);
+            if (!list) return;
+            
+            // Update print template
+            document.getElementById('printTitle').textContent = list.title;
+            document.getElementById('printCreator').textContent = list.creatorName;
+            document.getElementById('printAccountName').textContent = list.accountName || '-';
+            document.getElementById('printAccountNumber').textContent = list.accountNumber || '-';
+            document.getElementById('printBankName').textContent = list.bankName || '-';
+            document.getElementById('printDescription').textContent = list.description || '-';
+            
+            // Update print items
+            const printItemsContainer = document.getElementById('printItems');
+            printItemsContainer.innerHTML = '';
+            
+            list.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${item.quantity}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price)}</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
+                `;
+                printItemsContainer.appendChild(row);
+            });
+            
+            // Update totals
+            document.getElementById('printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
+            document.getElementById('printTotalItems').textContent = list.items.length;
+            
+            // Update date
+            const now = new Date();
+            document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            
+            // Print
+            printTemplate.classList.remove('hidden');
+            window.print();
+            printTemplate.classList.add('hidden');
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-NG', {
+                style: 'currency',
+                currency: 'NGN'
+            }).format(amount);
+        }
+
+        // Save lists to localStorage
+        function saveLists() {
+            localStorage.setItem('lists', JSON.stringify(lists));
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
