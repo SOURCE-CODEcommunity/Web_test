@@ -344,6 +344,24 @@
         }
 
             /* Print styles */
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .print-content, .print-content * {
+            visibility: visible;
+        }
+        .print-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -1114,7 +1132,7 @@ function handlePrint() {
         setTimeout(() => {
             printWindow.print();
             printWindow.close();
-        }, 500);
+        }, 3000);
     };
 }
 alert("New updateoo7")
