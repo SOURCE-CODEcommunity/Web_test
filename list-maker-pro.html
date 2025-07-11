@@ -996,55 +996,146 @@
             currentListId = null;
         }
 
-        // Handle print
 function handlePrint() {
     const list = lists.find(l => l.id === currentListId);
     if (!list) return;
-    
-    // Update print template
-    document.getElementById('printTitle').textContent = list.title;
-    document.getElementById('printCreator').textContent = list.creatorName;
-    document.getElementById('printAccountName').textContent = list.accountName || '-';
-    document.getElementById('printAccountNumber').textContent = list.accountNumber || '-';
-    document.getElementById('printBankName').textContent = list.bankName || '-';
-    document.getElementById('printDescription').textContent = list.description || '-';
-    
-    // Update print items
-    const printItemsContainer = document.getElementById('printItems');
-    printItemsContainer.innerHTML = '';
-    
-    list.items.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${item.quantity}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price)}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
-        `;
-        printItemsContainer.appendChild(row);
-    });
-    
-    // Update totals
-    document.getElementById('printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
-    document.getElementById('printTotalItems').textContent = list.items.length;
-    
-    // Update date
+
+    // Calculate totals
+    const grandTotal = calculateListTotal(list);
+    const totalItems = list.items.length;
     const now = new Date();
-    document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+    const printDate = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+
+    // Create print window
+    const printWindow = window.open('', '_blank');
     
-    // Show the print template
-    const printTemplate = document.getElementById('printTemplate');
-    printTemplate.style.display = 'block';
+    // Build the print content HTML
+    let itemsHTML = '';
+    list.items.forEach(item => {
+        itemsHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td class="text-right">${item.quantity}</td>
+                <td class="text-right">${formatCurrency(item.price)}</td>
+                <td class="text-right">${formatCurrency(item.price * item.quantity)}</td>
+            </tr>
+        `;
+    });
+
+    // Write the complete print document
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>${list.title} - List Maker Pro</title>
+                <style>
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        padding: 20px;
+                        color: #333;
+                    }
+                    h1 { 
+                        text-align: center; 
+                        margin-bottom: 20px; 
+                        font-size: 24px;
+                    }
+                    .info-section {
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                    }
+                    .info-row {
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 8px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                        font-size: 14px;
+                    }
+                    th, td {
+                        padding: 8px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    th {
+                        text-align: left;
+                        background-color: #f2f2f2;
+                    }
+                    .text-right {
+                        text-align: right;
+                    }
+                    .footer {
+                        text-align: center;
+                        margin-top: 30px;
+                        font-size: 12px;
+                        color: #777;
+                    }
+                    .total-row {
+                        border-top: 2px solid #ddd;
+                        font-weight: bold;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>${list.title}</h1>
+                
+                <div class="info-section">
+                    <div class="info-row">
+                        <span><strong>Created by:</strong> ${list.creatorName}</span>
+                    </div>
+                    <div class="info-row">
+                        <span><strong>Account Name:</strong> ${list.accountName || '-'}</span>
+                        <span><strong>Account Number:</strong> ${list.accountNumber || '-'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span><strong>Bank:</strong> ${list.bankName || '-'}</span>
+                    </div>
+                    ${list.description ? `<div class="info-row"><span><strong>Note:</strong> ${list.description}</span></div>` : ''}
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsHTML}
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td colspan="3" class="text-right"><strong>Grand Total:</strong></td>
+                            <td class="text-right"><strong>${formatCurrency(grandTotal)}</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right"><strong>Total Items:</strong></td>
+                            <td class="text-right"><strong>${totalItems}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+                <div class="footer">
+                    <p>Generated by List Maker Pro</p>
+                    <p>${printDate}</p>
+                </div>
+            </body>
+        </html>
+    `);
+
+    printWindow.document.close();
     
-    // Trigger print
-    window.print();
-    
-    // Hide the template after printing
-    setTimeout(() => {
-   //     printTemplate.style.display = 'none';
-    }, 500);
+    // Wait for content to load before printing
+    printWindow.onload = function() {
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    };
 }
-alert("New updateoo4")
+alert("New updateoo5")
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-NG', {
