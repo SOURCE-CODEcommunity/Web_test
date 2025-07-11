@@ -51,7 +51,7 @@
             --glass-border: var(--glass-border-dark);
             --dark-gray: #e8eaed;
             --light-gray: #202124;
-            --medium-gray: #5f6368;
+            --medium-gray: #5f6368;            
         }
 
         /* Base Styles */
@@ -73,7 +73,7 @@
             transition: background-color var(--transition-slow);
         }
 
-        .dark-mode body {
+        body.dark-mode {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         }
 
@@ -1036,8 +1036,13 @@
             
             // Print
             printTemplate.classList.remove('hidden');
-            window.print();
-            //printTemplate.classList.add('hidden');
+            window.print().then(
+            setTimeout(() => {
+                // Hides template once done
+                printTemplate.classList.add('hidden');
+            }, 1000);
+            
+                )
         }
 
         // Format currency
