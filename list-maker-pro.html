@@ -1043,7 +1043,7 @@
 setTimeout(() => {
         // Set up afterprint handler
         const afterPrint = () => {
-            printTemplate.classList.add('hidden');
+            //printTemplate.classList.add('hidden');
             window.onafterprint = null;
         };
         window.onafterprint = afterPrint;
@@ -1059,7 +1059,7 @@ setTimeout(() => {
         window.print();
     }, 50); // Small delay to ensure DOM updates
         }
-
+alert("New updateoo1")
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-NG', {
