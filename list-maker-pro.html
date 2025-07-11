@@ -1038,7 +1038,7 @@ function handlePrint() {
             // Print
             printTemplate.classList.remove('hidden');
             window.print();
-            //printTemplate.classList.add('hidden');
+            printTemplate.onclick = ()=> { printTemplate.classList.add('hidden');}
         }
 
 alert("New updateo10")
