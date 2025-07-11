@@ -1003,55 +1003,18 @@
 function handlePrint() {
     const list = lists.find(l => l.id === currentListId);
     if (!list) return;
-    
-    // Clone the print template to avoid modifying the original
-    const printClone = printTemplate.cloneNode(true);
-    printClone.id = 'printClone';
-    printClone.style.display = 'block';
-    printClone.style.position = 'absolute';
-    printClone.style.left = '-9999px';
-    document.body.appendChild(printClone);
-    
-    // Update print template
-    printClone.querySelector('#printTitle').textContent = list.title;
-    printClone.querySelector('#printCreator').textContent = list.creatorName;
-    printClone.querySelector('#printAccountName').textContent = list.accountName || '-';
-    printClone.querySelector('#printAccountNumber').textContent = list.accountNumber || '-';
-    printClone.querySelector('#printBankName').textContent = list.bankName || '-';
-    printClone.querySelector('#printDescription').textContent = list.description || '-';
-    
-    // Update print items
-    const printItemsContainer = printClone.querySelector('#printItems');
-    printItemsContainer.innerHTML = '';
-    
-    list.items.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${item.quantity}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price)}</td>
-            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
-        `;
-        printItemsContainer.appendChild(row);
-    });
-    
-    // Update totals
-    printClone.querySelector('#printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
-    printClone.querySelector('#printTotalItems').textContent = list.items.length;
-    
-    // Update date
-    const now = new Date();
-    printClone.querySelector('#printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-    
-    // Trigger print
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
+
+    // Create a print-friendly HTML string
+    let printHTML = `
         <!DOCTYPE html>
         <html>
         <head>
             <title>${list.title}</title>
             <style>
                 body { font-family: Arial, sans-serif; margin: 20px; }
+                h1 { text-align: center; margin-bottom: 20px; }
+                .info-section { margin-bottom: 20px; }
+                .two-column { display: flex; justify-content: space-between; }
                 table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
                 th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
                 .text-right { text-align: right; }
@@ -1060,20 +1023,81 @@ function handlePrint() {
             </style>
         </head>
         <body>
-            ${printClone.querySelector('.print-content').outerHTML}
+            <h1>${list.title}</h1>
+            
+            <div class="info-section">
+                <p><strong>Created by:</strong> ${list.creatorName}</p>
+                <div class="two-column">
+                    <p><strong>Account Name:</strong> ${list.accountName || '-'}</p>
+                    <p><strong>Account Number:</strong> ${list.accountNumber || '-'}</p>
+                </div>
+                <p><strong>Bank:</strong> ${list.bankName || '-'}</p>
+                ${list.description ? `<p><strong>Note:</strong> ${list.description}</p>` : ''}
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th class="text-right">Qty</th>
+                        <th class="text-right">Price</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    // Add items to the table
+    list.items.forEach(item => {
+        printHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td class="text-right">${item.quantity}</td>
+                <td class="text-right">${formatCurrency(item.price)}</td>
+                <td class="text-right">${formatCurrency(item.price * item.quantity)}</td>
+            </tr>
+        `;
+    });
+
+    // Add totals and footer
+    const now = new Date();
+    printHTML += `
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="3" class="text-right"><strong>Grand Total:</strong></td>
+                        <td class="text-right"><strong>${formatCurrency(calculateListTotal(list))}</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Total Items:</strong></td>
+                        <td class="text-right"><strong>${list.items.length}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+            
+            <div class="footer">
+                <p>Generated by List Maker Pro</p>
+                <p>${now.toLocaleDateString()} ${now.toLocaleTimeString()}</p>
+            </div>
         </body>
         </html>
-    `);
+    `;
+
+    // Open a new window for printing
+    const printWindow = window.open('', '_blank');
+    printWindow.document.open();
+    printWindow.document.write(printHTML);
     printWindow.document.close();
-    
-    // Give it a moment to load before printing
-    setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-        document.body.removeChild(printClone);
-    }, 500);
+
+    // Wait for content to load before printing
+    printWindow.onload = function() {
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+        }, 500);
+    };
 }
-alert("New updateoo9")
+alert("New updateo10")
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-NG', {
