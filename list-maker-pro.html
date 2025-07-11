@@ -344,24 +344,6 @@
         }
 
             /* Print styles */
-    @media print {
-        body * {
-            visibility: hidden;
-        }
-        .print-content, .print-content * {
-            visibility: visible;
-        }
-        .print-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            padding: 20px;
-        }
-        .no-print {
-            display: none !important;
-        }
-    }
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -1125,6 +1107,7 @@ function handlePrint() {
         </html>
     `);
 
+    printWindow.document.close();
     
     // Wait for content to load before printing
     printWindow.onload = function() {
@@ -1134,7 +1117,7 @@ function handlePrint() {
         }, 500);
     };
 }
-alert("New updateoo6")
+alert("New updateoo7")
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-NG', {
