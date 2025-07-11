@@ -1039,25 +1039,12 @@
                 
     // Show the print template
     printTemplate.classList.remove('hidden');
-          // Use setTimeout to ensure the DOM updates before printing
-setTimeout(() => {
-        // Set up afterprint handler
-        const afterPrint = () => {
-            //printTemplate.classList.add('hidden');
-            window.onafterprint = null;
-        };
-        window.onafterprint = afterPrint;
-        
-        // Add fallback in case onafterprint doesn't fire
-        setTimeout(() => {
-            if (!printTemplate.classList.contains('hidden')) {
-             //   printTemplate.classList.add('hidden');
-            }
-        }, 1000);
-        
+
+    
         // Trigger print
         window.print();
-    }, 50); // Small delay to ensure DOM updates
+     //   printTemplate.classList.add('hidden');
+        
         }
 alert("New updateoo1")
         // Format currency
