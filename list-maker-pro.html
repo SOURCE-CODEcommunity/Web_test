@@ -1035,14 +1035,20 @@
             document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
             
             // Print
-            printTemplate.classList.remove('hidden');
-
-            window.onafterprint = function() {
-        printTemplate.classList.add('hidden');
-        window.onafterprint = null; // Clean up the handler
-    };
-          
-            window.print()
+                
+    // Show the print template
+    printTemplate.classList.remove('hidden');
+          // Use setTimeout to ensure the DOM updates before printing
+    setTimeout(() => {
+        // Set up the afterprint handler
+        window.onafterprint = function() {
+            printTemplate.classList.add('hidden');
+            window.onafterprint = null; // Clean up the handler
+        };
+        
+        // Trigger the print dialog
+        window.print();
+    }, 100); // Small delay to ensure DOM updates
         }
 
         // Format currency
