@@ -342,29 +342,25 @@
             gap: var(--space-md);
         }
 
-        /* Print styles */
-@media print {
-    body * {
-        display: none !important;
+            /* Print styles */
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        .print-content, .print-content * {
+            visibility: visible;
+        }
+        .print-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+        }
+        .no-print {
+            display: none !important;
+        }
     }
-    .print-content {
-        display: block !important;
-        width: 100%;
-        height: auto;
-        position: static;
-        background: white;
-        color: black;
-        padding: 0;
-        margin: 0;
-    }
-    .print-content * {
-        visibility: visible;
-        display: block;
-    }
-    .no-print {
-        display: none !important;
-    }
-}
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -523,7 +519,7 @@
     </div>
 
     <!-- Print Template (hidden until printing) -->
-<div id="printTemplate" class="hidden">
+<div id="printTemplate" style="display: none;">
     <div class="print-content">
         <h1 style="text-align: center; margin-bottom: 20px; font-size: 24px;" id="printTitle">List Title</h1>
         <div style="margin-bottom: 20px; font-size: 14px;">
@@ -1000,52 +996,53 @@
         }
 
         // Handle print
-        function handlePrint() {
-            const list = lists.find(l => l.id === currentListId);
-            if (!list) return;
-            
-            // Update print template
-            document.getElementById('printTitle').textContent = list.title;
-            document.getElementById('printCreator').textContent = list.creatorName;
-            document.getElementById('printAccountName').textContent = list.accountName || '-';
-            document.getElementById('printAccountNumber').textContent = list.accountNumber || '-';
-            document.getElementById('printBankName').textContent = list.bankName || '-';
-            document.getElementById('printDescription').textContent = list.description || '-';
-            
-            // Update print items
-            const printItemsContainer = document.getElementById('printItems');
-            printItemsContainer.innerHTML = '';
-            
-            list.items.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${item.quantity}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price)}</td>
-                    <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
-                `;
-                printItemsContainer.appendChild(row);
-            });
-            
-            // Update totals
-            document.getElementById('printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
-            document.getElementById('printTotalItems').textContent = list.items.length;
-            
-            // Update date
-            const now = new Date();
-            document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-            
-            // Print
-                
-    // Show the print template
-    printTemplate.classList.remove('hidden');
-
+function handlePrint() {
+    const list = lists.find(l => l.id === currentListId);
+    if (!list) return;
     
-        // Trigger print
-        window.print();
-     //   printTemplate.classList.add('hidden');
-        
-        }
+    // Update print template
+    document.getElementById('printTitle').textContent = list.title;
+    document.getElementById('printCreator').textContent = list.creatorName;
+    document.getElementById('printAccountName').textContent = list.accountName || '-';
+    document.getElementById('printAccountNumber').textContent = list.accountNumber || '-';
+    document.getElementById('printBankName').textContent = list.bankName || '-';
+    document.getElementById('printDescription').textContent = list.description || '-';
+    
+    // Update print items
+    const printItemsContainer = document.getElementById('printItems');
+    printItemsContainer.innerHTML = '';
+    
+    list.items.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${item.quantity}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price)}</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
+        `;
+        printItemsContainer.appendChild(row);
+    });
+    
+    // Update totals
+    document.getElementById('printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
+    document.getElementById('printTotalItems').textContent = list.items.length;
+    
+    // Update date
+    const now = new Date();
+    document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+    
+    // Show the print template
+    const printTemplate = document.getElementById('printTemplate');
+    printTemplate.style.display = 'block';
+    
+    // Trigger print
+    window.print();
+    
+    // Hide the template after printing
+    setTimeout(() => {
+        printTemplate.style.display = 'none';
+    }, 500);
+}
 alert("New updateoo2")
         // Format currency
         function formatCurrency(amount) {
