@@ -1036,13 +1036,7 @@
             
             // Print
             printTemplate.classList.remove('hidden');
-            window.print().then(
-            setTimeout(() => {
-                // Hides template once done
-                printTemplate.classList.add('hidden');
-            }, 1000);
-            
-                )
+            window.print()
         }
 
         // Format currency
