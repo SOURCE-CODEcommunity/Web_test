@@ -73,7 +73,7 @@
             transition: background-color var(--transition-slow);
         }
 
-        .dark-mode body {
+        body.dark-mode {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         }
 
@@ -1036,6 +1036,12 @@
             
             // Print
             printTemplate.classList.remove('hidden');
+
+            window.onafterprint = function() {
+        printTemplate.classList.add('hidden');
+        window.onafterprint = null; // Clean up the handler
+    };
+          
             window.print()
         }
 
