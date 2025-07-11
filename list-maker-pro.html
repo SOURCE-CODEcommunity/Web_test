@@ -344,24 +344,27 @@
         }
 
             /* Print styles */
-    @media print {
-        body * {
-            visibility: hidden;
-        }
-        .print-content, .print-content * {
-            visibility: visible;
-        }
-        .print-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            padding: 20px;
-        }
-        .no-print {
-            display: none !important;
-        }
+          @media print {
+    body * {
+        visibility: hidden;
     }
+    .print-content, .print-content * {
+        visibility: visible;
+    }
+    .print-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    .no-print {
+        display: none !important;
+    }
+    #printTemplate {
+        display: block !important;
+    }
+}
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -1001,16 +1004,24 @@ function handlePrint() {
     const list = lists.find(l => l.id === currentListId);
     if (!list) return;
     
+    // Clone the print template to avoid modifying the original
+    const printClone = printTemplate.cloneNode(true);
+    printClone.id = 'printClone';
+    printClone.style.display = 'block';
+    printClone.style.position = 'absolute';
+    printClone.style.left = '-9999px';
+    document.body.appendChild(printClone);
+    
     // Update print template
-    document.getElementById('printTitle').textContent = list.title;
-    document.getElementById('printCreator').textContent = list.creatorName;
-    document.getElementById('printAccountName').textContent = list.accountName || '-';
-    document.getElementById('printAccountNumber').textContent = list.accountNumber || '-';
-    document.getElementById('printBankName').textContent = list.bankName || '-';
-    document.getElementById('printDescription').textContent = list.description || '-';
+    printClone.querySelector('#printTitle').textContent = list.title;
+    printClone.querySelector('#printCreator').textContent = list.creatorName;
+    printClone.querySelector('#printAccountName').textContent = list.accountName || '-';
+    printClone.querySelector('#printAccountNumber').textContent = list.accountNumber || '-';
+    printClone.querySelector('#printBankName').textContent = list.bankName || '-';
+    printClone.querySelector('#printDescription').textContent = list.description || '-';
     
     // Update print items
-    const printItemsContainer = document.getElementById('printItems');
+    const printItemsContainer = printClone.querySelector('#printItems');
     printItemsContainer.innerHTML = '';
     
     list.items.forEach(item => {
@@ -1025,22 +1036,42 @@ function handlePrint() {
     });
     
     // Update totals
-    document.getElementById('printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
-    document.getElementById('printTotalItems').textContent = list.items.length;
+    printClone.querySelector('#printGrandTotal').textContent = formatCurrency(calculateListTotal(list));
+    printClone.querySelector('#printTotalItems').textContent = list.items.length;
     
     // Update date
     const now = new Date();
-    document.getElementById('printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-    
-    // Show the print template
-    const printTemplate = document.getElementById('printTemplate');
-    printTemplate.classList.remove('hidden');
+    printClone.querySelector('#printDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
     
     // Trigger print
-    window.print();
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${list.title}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+                .text-right { text-align: right; }
+                .total-row { font-weight: bold; border-top: 2px solid #000; }
+                .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #777; }
+            </style>
+        </head>
+        <body>
+            ${printClone.querySelector('.print-content').outerHTML}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
     
-    // Don't hide it immediately - let the browser handle it
-    // The print media query will take care of visibility
+    // Give it a moment to load before printing
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+        document.body.removeChild(printClone);
+    }, 500);
 }
 alert("New updateoo9")
         // Format currency
