@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Google Sans', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      color: #202124;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: white;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 24px;
+    }
+    .logo span {
+      color: #1a73e8;
+    }
+    nav a {
+      margin: 0 16px;
+      text-decoration: none;
+      color: #5f6368;
+    }
+    nav a.active {
+      color: #1a73e8;
+      border-bottom: 2px solid #1a73e8;
+    }
+    .user-actions button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .hero {
+      text-align: center;
+      padding: 64px 32px;
+      background: white;
+    }
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #5f6368;
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .search-bar {
+      display: flex;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #dadce0;
+      border-radius: 24px 0 0 24px;
+      font-size: 16px;
+      outline: none;
+    }
+    .search-bar button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 0 24px;
+      border-radius: 0 24px 24px 0;
+      cursor: pointer;
+    }
+    .experiments {
+      padding: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .filter-buttons {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .filter-buttons button {
+      background: #f1f3f4;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+    .filter-buttons button.active {
+      background: #1a73e8;
+      color: white;
+    }
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .badge {
+      background: #e8f0fe;
+      color: #1a73e8;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-right: 12px;
+    }
+    .badge.beta {
+      background: #fef7e0;
+      color: #f9ab00;
+    }
+    .try-button {
+      background: #1a73e8;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .card-description {
+      display: none;
+      margin-top: 12px;
+      color: #5f6368;
+      font-size: 14px;
+    }
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #5f6368;
+      font-size: 14px;
+    }
+    footer a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Your<span>Labs</span></div>
+    <nav>
+      <a href="#" class="active">Home</a>
+      <a href="#">AI Experiments</a>
+      <a href="#">Search Tools</a>
+      <a href="#">Feedback</a>
+    </nav>
+    <div class="user-actions">
+      <button class="sign-in">Sign In</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Experiment with the future</h1>
+      <p>Try cutting-edge tools in development. Your feedback shapes what’s next.</p>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search experiments...">
+        <button id="search-button">Search</button>
+      </div>
+    </section>
+
+    <section class="experiments">
+      <h2>Featured Experiments</h2>
+      <div class="filter-buttons">
+        <button class="filter-button active" data-filter="all">All</button>
+        <button class="filter-button" data-filter="new">New</button>
+        <button class="filter-button" data-filter="beta">Beta</button>
+      </div>
+      <div class="experiment-grid" id="experiment-grid">
+        <!-- Experiment cards will be dynamically filtered here -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2024 YourLabs | <a href="#">Privacy</a> | <a href="#">Terms</a></p>
+  </footer>
+
+  <script>
+    // Experiment data
+    const experiments = [
+      {
+        id: 1,
+        title: "AI-Powered Search",
+        description: "Get answers with generative AI woven into search results. This experiment uses Google's latest LaMDA model.",
+        status: "new",
+        fullDescription: "This tool integrates AI directly into your search queries, providing summaries, code examples, and creative suggestions. Currently supports English, Spanish, and Japanese."
+      },
+      {
+        id: 2,
+        title: "Image Generator",
+        description: "Create images from text prompts using our latest model.",
+        status: "beta",
+        fullDescription: "Powered by Imagen, this tool lets you generate high-resolution images from text descriptions. Try prompts like 'a cat wearing a spacesuit' or 'watercolor landscape'."
+      },
+      {
+        id: 3,
+        title: "Voice Assistant SDK",
+        description: "Build custom voice assistants with our new API.",
+        status: "beta",
+        fullDescription: "Developers can now create voice-controlled apps with natural language processing. Supports real-time translation and multi-step commands."
+      },
+      {
+        id: 4,
+        title: "3D Scene Builder",
+        description: "Drag-and-drop 3D environments for AR/VR.",
+        status: "new",
+        fullDescription: "No coding required. Export scenes to Unity, WebXR, or as glTF files. Includes a library of pre-made objects and textures."
+      }
+    ];
+
+    // DOM elements
+    const experimentGrid = document.getElementById('experiment-grid');
+    const filterButtons = document.querySelectorAll('.filter-button');
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+
+    // Render experiments
+    function renderExperiments(filter = 'all', searchQuery = '') {
+      experimentGrid.innerHTML = '';
+      
+      const filteredExperiments = experiments.filter(exp => {
+        const matchesFilter = filter === 'all' || exp.status === filter;
+        const matchesSearch = exp.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             exp.description.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesFilter && matchesSearch;
+      });
+
+      if (filteredExperiments.length === 0) {
+        experimentGrid.innerHTML = '<p>No experiments found. Try a different search or filter.</p>';
+        return;
+      }
+
+      filteredExperiments.forEach(exp => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="badge ${exp.status}">${exp.status === 'new' ? 'New' : 'Beta'}</span>
+            <h3>${exp.title}</h3>
+          </div>
+          <p>${exp.description}</p>
+          <div class="card-description">${exp.fullDescription}</div>
+          <button class="try-button" onclick="toggleDescription(${exp.id})">Try it</button>
+        `;
+        experimentGrid.appendChild(card);
+      });
+    }
+
+    // Toggle full description
+    window.toggleDescription = function(id) {
+      const card = document.querySelector(`.card:nth-child(${experiments.findIndex(e => e.id === id) + 1})`);
+      const desc = card.querySelector('.card-description');
+      const button = card.querySelector('.try-button');
+      
+      if (desc.style.display === 'block') {
+        desc.style.display = 'none';
+        button.textContent = 'Try it';
+      } else {
+        desc.style.display = 'block';
+        button.textContent = 'Hide Details';
+      }
+    };
+
+    // Filter buttons
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        renderExperiments(button.dataset.filter, searchInput.value);
+      });
+    });
+
+    // Search functionality
+    searchButton.addEventListener('click', () => {
+      renderExperiments(
+        document.querySelector('.filter-button.active').dataset.filter,
+        searchInput.value
+      );
+    });
+
+    searchInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        renderExperiments(
+          document.querySelector('.filter-button.active').dataset.filter,
+          searchInput.value
+        );
+      }
+    });
+
+    // Initial render
+    renderExperiments();
+  </script>
+</body>
+</html>
