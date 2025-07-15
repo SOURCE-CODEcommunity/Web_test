@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Subtitle Merger</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .upload-section {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .upload-box {
+            flex: 1;
+            min-width: 250px;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .upload-box:hover {
+            border-color: #3498db;
+        }
+
+        .upload-box h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+
+        #videoPreview, #subtitlePreview {
+            margin-top: 15px;
+            min-height: 50px;
+            word-break: break-all;
+        }
+
+        #mergeBtn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #mergeBtn:hover {
+            background: #2980b9;
+        }
+
+        #mergeBtn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        #progressContainer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #progressBar {
+            width: 100%;
+            height: 20px;
+        }
+
+        .result {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        video {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #219653;
+        }
+
+        @media (max-width: 600px) {
+            .upload-section {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Video Subtitle Merger</h1>
+        <p>Upload a video and subtitle file to merge them permanently</p>
+        
+        <div class="upload-section">
+            <div class="upload-box">
+                <h3>Video File</h3>
+                <input type="file" id="videoInput" accept="video/*">
+                <div id="videoPreview"></div>
+            </div>
+            
+            <div class="upload-box">
+                <h3>Subtitle File (.srt)</h3>
+                <input type="file" id="subtitleInput" accept=".srt,.vtt,.ass">
+                <div id="subtitlePreview"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="mergeBtn" disabled>Merge & Download</button>
+            <div id="progressContainer" style="display: none;">
+                <progress id="progressBar" value="0" max="100"></progress>
+                <span id="progressText">0%</span>
+            </div>
+        </div>
+        
+        <div class="result">
+            <video id="mergedVideo" controls style="display: none;"></video>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoInput = document.getElementById('videoInput');
+            const subtitleInput = document.getElementById('subtitleInput');
+            const mergeBtn = document.getElementById('mergeBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const mergedVideo = document.getElementById('mergedVideo');
+            
+            let videoFile = null;
+            let subtitleFile = null;
+            
+            // Load FFmpeg
+            const { createFFmpeg, fetchFile } = FFmpeg;
+            const ffmpeg = createFFmpeg({ 
+                log: true,
+                corePath: 'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js',
+                progress: ({ ratio }) => {
+                    const percent = Math.round(ratio * 100);
+                    progressBar.value = percent;
+                    progressText.textContent = `${percent}%`;
+                }
+            });
+            
+            // Handle file uploads
+            videoInput.addEventListener('change', (e) => {
+                videoFile = e.target.files[0];
+                updatePreview('videoPreview', `Video: ${videoFile.name} (${formatFileSize(videoFile.size)})`);
+                checkFiles();
+            });
+            
+            subtitleInput.addEventListener('change', (e) => {
+                subtitleFile = e.target.files[0];
+                updatePreview('subtitlePreview', `Subtitle: ${subtitleFile.name} (${formatFileSize(subtitleFile.size)})`);
+                checkFiles();
+            });
+            
+            // Merge button click handler
+            mergeBtn.addEventListener('click', async () => {
+                if (!videoFile || !subtitleFile) return;
+                
+                mergeBtn.disabled = true;
+                progressContainer.style.display = 'block';
+                
+                try {
+                    // Load FFmpeg if not already loaded
+                    if (!ffmpeg.isLoaded()) {
+                        await ffmpeg.load();
+                    }
+                    
+                    // Write files to FFmpeg's virtual file system
+                    await ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(videoFile));
+                    await ffmpeg.FS('writeFile', 'subtitle.srt', await fetchFile(subtitleFile));
+                    
+                    // Run FFmpeg command to merge subtitles
+                    await ffmpeg.run(
+                        '-i', 'input.mp4',
+                        '-vf', 'subtitles=subtitle.srt',
+                        '-c:a', 'copy',
+                        'output.mp4'
+                    );
+                    
+                    // Read the result
+                    const data = ffmpeg.FS('readFile', 'output.mp4');
+                    
+                    // Create a download link
+                    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+                    mergedVideo.src = url;
+                    mergedVideo.style.display = 'block';
+                    
+                    // Create download button
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'video_with_subtitles.mp4';
+                    a.textContent = 'Download Merged Video';
+                    a.className = 'download-btn';
+                    
+                    // Remove previous download button if exists
+                    const oldBtn = document.querySelector('.download-btn');
+                    if (oldBtn) oldBtn.remove();
+                    
+                    document.querySelector('.result').appendChild(a);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred during processing. Please try again with a different file.');
+                } finally {
+                    mergeBtn.disabled = false;
+                }
+            });
+            
+            // Helper functions
+            function updatePreview(elementId, text) {
+                const element = document.getElementById(elementId);
+                element.textContent = text;
+            }
+            
+            function checkFiles() {
+                mergeBtn.disabled = !(videoFile && subtitleFile);
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        });
+    </script>
+</body>
+</html>
