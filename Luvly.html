@@ -682,8 +682,6 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo">
         Sign in with Google
       </button>
-      <!-- Firebase Auth would be implemented here -->
-      <!-- This button would trigger Firebase Google Auth -->
     </div>
     <div class="footer">
       <div>@Luvly©2025</div>
@@ -692,7 +690,7 @@
   </div>
 
   <!-- Onboarding Page (shown for new users) -->
-  <div id="onboarding-page">
+  <div id="onboarding-page" class="hidden">
     <div class="onboarding-container glass-card">
       <h1>Complete Your Profile</h1>
       <div class="progress-bar">
@@ -810,7 +808,7 @@
   </div>
 
   <!-- Chat Page -->
-  <div id="chat-page">
+  <div id="chat-page" class="hidden">
     <div class="chat-header">
       <button class="back-btn" id="chatBackBtn">←</button>
       <div class="chat-partner">
@@ -848,7 +846,7 @@
   </div>
 
   <!-- PAT (Public Anonymous Texting) Page -->
-  <div id="pat-page">
+  <div id="pat-page" class="hidden">
     <div class="pat-header">
       <button class="back-btn" id="patBackBtn">←</button>
       <h2>Public Anonymous Texting</h2>
@@ -1057,26 +1055,9 @@
     // Onboarding elements
     const onboardingProgress = document.getElementById('onboardingProgress');
     
-    // App State
-    let currentUser = null;
-    let isNewUser = false;
-    
     // Initialize the app
     function initApp() {
-      // Check if user is logged in (in a real app, this would check Firebase Auth)
-      const mockLoggedIn = localStorage.getItem('mockLoggedIn');
-      const mockOnboarded = localStorage.getItem('mockOnboarded');
-      
-      if (mockLoggedIn) {
-        if (mockOnboarded) {
-          showProfilePage();
-        } else {
-          showOnboardingPage();
-        }
-      } else {
-        showLoginPage();
-      }
-      
+      showLoginPage();
       setupEventListeners();
     }
     
@@ -1176,30 +1157,17 @@
     
     // Auth functions (mock implementations)
     function handleGoogleLogin() {
-      // In a real app, this would use Firebase Auth
-      console.log('Google login clicked - would trigger Firebase Auth');
-      
-      // Mock login
-      localStorage.setItem('mockLoggedIn', 'true');
-      
-      // For demo, randomly decide if this is a new user
-      isNewUser = Math.random() > 0.5;
+      // For demo purposes, we'll randomly decide if this is a new user
+      const isNewUser = Math.random() > 0.5;
       
       if (isNewUser) {
         showOnboardingPage();
       } else {
-        localStorage.setItem('mockOnboarded', 'true');
         showProfilePage();
       }
     }
     
     function handleLogout() {
-      // In a real app, this would use Firebase Auth
-      console.log('Logout clicked - would trigger Firebase Auth signOut');
-      
-      // Mock logout
-      localStorage.removeItem('mockLoggedIn');
-      localStorage.removeItem('mockOnboarded');
       showLoginPage();
     }
     
@@ -1257,9 +1225,6 @@
       // Validate final step
       if (!validateOnboardingStep(3)) return;
       
-      // In a real app, this would save to Firestore
-      console.log('Onboarding complete - would save to Firestore');
-      
       // Get all values
       const hobby = document.getElementById('hobby').value;
       const favoriteSeries = document.getElementById('favorite-series').value;
@@ -1268,11 +1233,6 @@
       const age = document.getElementById('age').value;
       const bio = document.getElementById('bio').value;
       
-      console.log('User data:', { hobby, favoriteSeries, school, department, age, bio });
-      
-      // Mark as onboarded
-      localStorage.setItem('mockOnboarded', 'true');
-      
       // Show profile page
       showProfilePage();
     }
@@ -1280,9 +1240,6 @@
     // Profile functions
     function saveProfile(e) {
       e.preventDefault();
-      
-      // In a real app, this would update Firestore
-      console.log('Profile saved - would update Firestore');
       
       // Get values
       const name = document.getElementById('edit-name').value;
@@ -1293,9 +1250,7 @@
       const age = document.getElementById('edit-age').value;
       const bio = document.getElementById('edit-bio').value;
       
-      console.log('Updated profile:', { name, hobby, favorites, school, department, age, bio });
-      
-      // Update profile display (in a real app, this would be reactive with Firestore)
+      // Update profile display
       document.querySelector('.profile-name').textContent = name;
       document.querySelector('.profile-details .detail-value:nth-child(1)').textContent = age;
       document.querySelector('.profile-details .detail-value:nth-child(2)').textContent = 
@@ -1316,9 +1271,6 @@
         return;
       }
       
-      // In a real app, this would check Firestore for the user
-      console.log(`Checking if user exists: ${code} - would query Firestore`);
-      
       // Mock response - randomly decide if user exists
       const userExists = Math.random() > 0.3;
       
@@ -1337,7 +1289,6 @@
     
     function startChat() {
       const code = chatCodeInput.value.trim();
-      console.log(`Starting chat with ${code} - would navigate to chat in Firestore`);
       
       // For demo, just show the chat page
       hideDialog(chatUpDialog);
@@ -1345,7 +1296,6 @@
     }
     
     function openChat(userId) {
-      console.log(`Opening chat with user ${userId} - would load from Firestore`);
       hideDialog(matchesDialog);
       showChatPage();
     }
