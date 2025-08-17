@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StoryForge | Creative Storytelling</title>
+  <style>
+    /* === BASE STYLES === */
+    :root {
+      --paper: #f5f1e6;
+      --ink: #3a3226;
+      --accent: #8b5a2b;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Crimson Pro', serif;
+      line-height: 1.8;
+      background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M20 20h60v60H20z" stroke="%23d3c7b7" fill="none" stroke-width="0.5"/></svg>');
+      background-size: 40px;
+    }
+
+    /* === TYPOGRAPHY === */
+    h1, h2, h3 {
+      font-family: 'Unna', serif;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      line-height: 1.2;
+      text-shadow: 2px 2px 0 var(--shadow);
+    }
+
+    /* === PAPER-LAYER EFFECT === */
+    .paper-layer {
+      background: var(--paper);
+      box-shadow: 
+        0 2px 5px var(--shadow),
+        0 10px 30px -15px rgba(0, 0, 0, 0.2);
+      border-radius: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .paper-layer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, transparent 100%);
+      z-index: 2;
+    }
+
+    /* === HERO SECTION === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 10%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 600px;
+    }
+
+    .hero-illustration {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40%;
+      max-width: 500px;
+      opacity: 0;
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .hero-illustration.visible {
+      opacity: 1;
+      transform: translateY(-50%) rotate(-2deg);
+    }
+
+    /* === STORY CARDS === */
+    .story-cards {
+      display: flex;
+      gap: 30px;
+      padding: 50px 10%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .story-card {
+      min-width: 300px;
+      scroll-snap-align: start;
+      transform: rotate(1deg);
+      transition: transform 0.3s ease;
+    }
+
+    .story-card:hover {
+      transform: rotate(0deg) scale(1.02);
+    }
+
+    /* === INK STROKE EFFECT === */
+    .ink-stroke {
+      position: relative;
+      display: inline-block;
+    }
+
+    .ink-stroke::after {
+      content: "";
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: var(--accent);
+      opacity: 0.3;
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .ink-stroke.active::after {
+      transform: scaleX(1);
+    }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Unna', serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    /* === ANIMATIONS === */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .floating {
+      animation: float 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- HERO SECTION -->
+  <section class="hero paper-layer">
+    <div class="hero-content">
+      <h1><span class="ink-stroke">Craft</span> your adventure, <span class="ink-stroke">one</span> page at a time</h1>
+      <p style="margin: 20px 0 30px; font-size: 1.2rem;">
+        A creative space where stories unfold like handmade books, filled with art and imagination.
+      </p>
+      <button class="btn">Begin Your Story</button>
+    </div>
+    <img src="https://i.imgur.com/JQlEs9O.png" alt="Storytelling illustration" class="hero-illustration floating">
+  </section>
+
+  <!-- STORY CAROUSEL -->
+  <section style="padding: 80px 0; background-color: #f9f5ec;">
+    <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Featured Adventures</h2>
+    <div class="story-cards">
+      <div class="story-card paper-layer" style="padding: 30px;">
+        <h3>The Lost Kingdom</h3>
+        <p style="margin: 15px 0;">A watercolor journey through forgotten ruins...</p>
+        <button class="btn" style="background-color: #6b8c42;">Read Now</button>
+      </div>
+      <div class="story-card paper-layer" style="padding: 30px;">
+        <h3>Whispers in the Dark</h3>
+        <p style="margin: 15px 0;">Ink and shadow weave this haunting tale...</p>
+        <button class="btn" style="background-color: #5e2f46;">Read Now</button>
+      </div>
+      <div class="story-card paper-layer" style="padding: 30px;">
+        <h3>Skybound</h3>
+        <p style="margin: 15px 0;">Paper-cut illustrations bring this aerial adventure to life...</p>
+        <button class="btn" style="background-color: #3a6b8c;">Read Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="text-align: center; padding: 40px; background-color: var(--ink); color: var(--paper);">
+    <p>Made with ❤️ and ink stains</p>
+  </footer>
+
+  <script>
+    // === INTERACTIVE ELEMENTS ===
+    document.addEventListener('DOMContentLoaded', function() {
+      // Ink stroke animation on headings
+      const inkStrokes = document.querySelectorAll('.ink-stroke');
+      inkStrokes.forEach((stroke, index) => {
+        setTimeout(() => {
+          stroke.classList.add('active');
+        }, 300 * index);
+      });
+
+      // Hero illustration fade-in
+      const heroIllustration = document.querySelector('.hero-illustration');
+      setTimeout(() => {
+        heroIllustration.classList.add('visible');
+      }, 500);
+
+      // Story card hover effects
+      const storyCards = document.querySelectorAll('.story-card');
+      storyCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.boxShadow = '0 15px 30px -10px rgba(0, 0, 0, 0.2)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.boxShadow = '';
+        });
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
+
+    // === PARALLAX EFFECT ===
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.pageYOffset;
+      const heroIllustration = document.querySelector('.hero-illustration');
+      
+      if (heroIllustration) {
+        heroIllustration.style.transform = `translateY(calc(-50% + ${scrollPosition * 0.1}px)) rotate(-2deg)`;
+      }
+    });
+  </script>
+
+  <!-- GOOGLE FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Unna:wght@400;700&display=swap" rel="stylesheet">
+</body>
+</html>
