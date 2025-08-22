@@ -4,13 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Code Access - Share Code Snippets</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Reset & Base Styles */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Google Sans', Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
@@ -27,12 +28,23 @@
       align-items: center;
       border-bottom: 1px solid #e0e0e0;
       background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .logo {
       font-size: 24px;
-      font-weight: 500;
+      font-weight: 700;
       color: #4285F4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo i {
+      font-size: 28px;
     }
 
     .add-btn {
@@ -43,7 +55,7 @@
       border-radius: 4px;
       font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -51,6 +63,7 @@
 
     .add-btn:hover {
       background-color: #3367D6;
+      transform: translateY(-2px);
     }
 
     /* Main Content */
@@ -62,65 +75,98 @@
 
     .section-title {
       font-size: 32px;
-      font-weight: 400;
+      font-weight: 600;
       margin-bottom: 30px;
       color: #202124;
+      text-align: center;
     }
 
     /* Code List */
     .code-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
     }
 
     .code-item {
       background-color: #ffffff;
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
       position: relative;
+      overflow: hidden;
+      border-left: 4px solid #4285F4;
     }
 
     .code-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    .code-date {
+      font-size: 12px;
+      color: #5f6368;
     }
 
     .code-content {
-      font-family: 'Courier New', monospace;
-      background-color: #f1f3f4;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      background-color: #f8f9fa;
       padding: 15px;
-      border-radius: 4px;
+      border-radius: 6px;
       margin-bottom: 15px;
-      max-height: 150px;
+      max-height: 200px;
       overflow: hidden;
       position: relative;
+      line-height: 1.5;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
 
-    .code-content:after {
-      content: "";
+    .code-content.expanded {
+      max-height: none;
+    }
+
+    .expand-btn {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 40px;
-      background: linear-gradient(transparent, #f1f3f4);
+      bottom: 5px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      color: #4285F4;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      z-index: 2;
     }
 
     .code-actions {
       display: flex;
       gap: 10px;
+      justify-content: flex-end;
     }
 
     .action-btn {
-      padding: 8px 12px;
+      padding: 8px 15px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 14px;
-      transition: background-color 0.3s;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .copy-btn {
@@ -162,15 +208,29 @@
       z-index: 1000;
       align-items: center;
       justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .modal-content {
       background-color: #ffffff;
       padding: 30px;
-      border-radius: 8px;
+      border-radius: 12px;
       width: 90%;
-      max-width: 600px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      max-width: 700px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .modal-header {
@@ -178,11 +238,13 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f1f3f4;
     }
 
     .modal-title {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .close-btn {
@@ -191,32 +253,42 @@
       font-size: 24px;
       cursor: pointer;
       color: #5f6368;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #202124;
     }
 
     .code-input {
       width: 100%;
-      height: 300px;
+      min-height: 300px;
       padding: 15px;
       border: 1px solid #dadce0;
-      border-radius: 4px;
-      font-family: 'Courier New', monospace;
+      border-radius: 6px;
+      font-family: 'Fira Code', 'Courier New', monospace;
       resize: vertical;
       margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
     .submit-btn {
       background-color: #4285F4;
       color: white;
       border: none;
-      padding: 10px 24px;
+      padding: 12px 28px;
       border-radius: 4px;
       font-weight: 500;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s;
+      display: block;
+      margin-left: auto;
     }
 
     .submit-btn:hover {
       background-color: #3367D6;
+      transform: translateY(-2px);
     }
 
     /* Toast Notification */
@@ -227,13 +299,23 @@
       background-color: #333;
       color: white;
       padding: 15px 25px;
-      border-radius: 4px;
+      border-radius: 6px;
       opacity: 0;
       transition: opacity 0.3s;
+      z-index: 1001;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .toast.show {
       opacity: 1;
+    }
+
+    .toast.success {
+      background-color: #137333;
+    }
+
+    .toast.error {
+      background-color: #c5221f;
     }
 
     /* Footer */
@@ -244,6 +326,7 @@
       color: #5F6368;
       font-size: 14px;
       margin-top: 60px;
+      border-top: 1px solid #e0e0e0;
     }
 
     .footer-links {
@@ -256,10 +339,31 @@
     .footer-links a {
       color: #5F6368;
       text-decoration: none;
+      transition: color 0.2s;
     }
 
     .footer-links a:hover {
+      color: #4285F4;
       text-decoration: underline;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #5f6368;
+      grid-column: 1 / -1;
+    }
+
+    .empty-state i {
+      font-size: 60px;
+      margin-bottom: 20px;
+      color: #dadce0;
+    }
+
+    .empty-state p {
+      font-size: 18px;
+      margin-bottom: 20px;
     }
 
     /* Responsive Adjustments */
@@ -279,17 +383,62 @@
       .code-list {
         grid-template-columns: 1fr;
       }
+
+      .modal-content {
+        padding: 20px;
+      }
+    }
+
+    /* Code Syntax Highlighting */
+    .code-content {
+      color: #24292e;
+    }
+
+    .code-content .keyword {
+      color: #d73a49;
+    }
+
+    .code-content .string {
+      color: #032f62;
+    }
+
+    .code-content .comment {
+      color: #6a737d;
+    }
+
+    .code-content .function {
+      color: #6f42c1;
+    }
+
+    .code-content .number {
+      color: #005cc5;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #4285F4;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <!-- Header -->
   <header>
-    <div class="logo">Code Access</div>
+    <div class="logo">
+      <i class="fas fa-code"></i>
+      <span>Code Access</span>
+    </div>
     <button class="add-btn" id="addBtn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 4V20M4 12H20" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <i class="fas fa-plus"></i>
       Add Code
     </button>
   </header>
@@ -299,6 +448,11 @@
     <h2 class="section-title">Shared Code Snippets</h2>
     <div class="code-list" id="codeList">
       <!-- Code items will be dynamically inserted here -->
+      <div class="empty-state" id="emptyState">
+        <i class="fas fa-code"></i>
+        <p>No code snippets yet</p>
+        <p>Click "Add Code" to share your first code snippet!</p>
+      </div>
     </div>
   </div>
 
@@ -310,7 +464,10 @@
         <button class="close-btn" id="closeAddModal">&times;</button>
       </div>
       <textarea class="code-input" id="codeInput" placeholder="Paste your code here..."></textarea>
-      <button class="submit-btn" id="submitCode">Post Code</button>
+      <button class="submit-btn" id="submitCode">
+        <i class="fas fa-paper-plane"></i>
+        Post Code
+      </button>
     </div>
   </div>
 
@@ -322,7 +479,10 @@
         <button class="close-btn" id="closeEditModal">&times;</button>
       </div>
       <textarea class="code-input" id="editCodeInput"></textarea>
-      <button class="submit-btn" id="updateCode">Update Code</button>
+      <button class="submit-btn" id="updateCode">
+        <i class="fas fa-save"></i>
+        Update Code
+      </button>
     </div>
   </div>
 
@@ -332,10 +492,11 @@
   <!-- Footer -->
   <footer>
     <div class="footer-links">
-      <a href="iar-portfolio.netlify.app">IAR productions</a>
-      
+      <a href="#"><i class="fas fa-shield-alt"></i> Privacy</a>
+      <a href="#"><i class="fas fa-file-contract"></i> Terms</a>
+      <a href="#"><i class="fas fa-question-circle"></i> Help</a>
     </div>
-    <div>© 2025 Code Access. All rights reserved.</div>
+    <div>© 2023 Code Access. All rights reserved.</div>
   </footer>
 
   <!-- Firebase Imports -->
@@ -351,8 +512,9 @@
       updateDoc 
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    // Replace with your Firebase config
     const firebaseConfig = {
-   apiKey: "AIzaSyAYeaAsFZuP2p7zwKPpu30DoFZa0E62h3Q",
+      apiKey: "AIzaSyAYeaAsFZuP2p7zwKPpu30DoFZa0E62h3Q",
   authDomain: "quickcbt-f3e52.firebaseapp.com",
   projectId: "quickcbt-f3e52",
   storageBucket: "quickcbt-f3e52.firebasestorage.app",
@@ -368,6 +530,7 @@
     // DOM Elements
     const addBtn = document.getElementById('addBtn');
     const codeList = document.getElementById('codeList');
+    const emptyState = document.getElementById('emptyState');
     const addModal = document.getElementById('addModal');
     const editModal = document.getElementById('editModal');
     const closeAddModal = document.getElementById('closeAddModal');
@@ -414,11 +577,13 @@
             createdAt: new Date().toISOString()
           });
           addModal.style.display = 'none';
-          showToast('Code posted successfully!');
+          showToast('Code posted successfully!', 'success');
         } catch (error) {
           console.error("Error adding document: ", error);
-          showToast('Error posting code. Please try again.');
+          showToast('Error posting code. Please try again.', 'error');
         }
+      } else {
+        showToast('Please enter some code', 'error');
       }
     });
 
@@ -433,10 +598,10 @@
           });
           editModal.style.display = 'none';
           currentEditId = null;
-          showToast('Code updated successfully!');
+          showToast('Code updated successfully!', 'success');
         } catch (error) {
           console.error("Error updating document: ", error);
-          showToast('Error updating code. Please try again.');
+          showToast('Error updating code. Please try again.', 'error');
         }
       }
     });
@@ -446,10 +611,10 @@
       if (confirm('Are you sure you want to delete this code snippet?')) {
         try {
           await deleteDoc(doc(db, "codes", id));
-          showToast('Code deleted successfully!');
+          showToast('Code deleted successfully!', 'success');
         } catch (error) {
           console.error("Error deleting document: ", error);
-          showToast('Error deleting code. Please try again.');
+          showToast('Error deleting code. Please try again.', 'error');
         }
       }
     }
@@ -465,41 +630,31 @@
     async function copyCode(content) {
       try {
         await navigator.clipboard.writeText(content);
-        showToast('Code copied to clipboard!');
+        showToast('Code copied to clipboard!', 'success');
       } catch (err) {
         console.error('Failed to copy: ', err);
-        showToast('Failed to copy code. Please try again.');
+        showToast('Failed to copy code. Please try again.', 'error');
       }
     }
 
+    // Toggle code expansion
+    function toggleExpand(btn) {
+      const codeContent = btn.parentElement;
+      codeContent.classList.toggle('expanded');
+      btn.textContent = codeContent.classList.contains('expanded') ? 'Show Less' : 'Show More';
+    }
+
     // Show toast notification
-    function showToast(message) {
+    function showToast(message, type = '') {
       toast.textContent = message;
+      toast.className = 'toast';
+      if (type) toast.classList.add(type);
       toast.classList.add('show');
       
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
     }
-
-    // Display codes in real-time
-    onSnapshot(codesCollection, (snapshot) => {
-      codeList.innerHTML = '';
-      snapshot.docs.forEach((doc) => {
-        const code = doc.data();
-        const li = document.createElement('div');
-        li.className = 'code-item';
-        li.innerHTML = `
-          <div class="code-content">${escapeHtml(code.content)}</div>
-          <div class="code-actions">
-            <button class="action-btn copy-btn" onclick="copyCode('${escapeSingleQuotes(code.content)}')">Copy</button>
-            <button class="action-btn edit-btn" onclick="editCode('${doc.id}', '${escapeSingleQuotes(code.content)}')">Edit</button>
-            <button class="action-btn delete-btn" onclick="deleteCode('${doc.id}')">Delete</button>
-          </div>
-        `;
-        codeList.appendChild(li);
-      });
-    });
 
     // Helper function to escape HTML
     function escapeHtml(unsafe) {
@@ -513,13 +668,80 @@
 
     // Helper function to escape single quotes
     function escapeSingleQuotes(str) {
-      return str.replace(/'/g, "\\'");
+      return str.replace(/'/g, "&#039;").replace(/\n/g, "\\n").replace(/\r/g, "\\r");
     }
+
+    // Simple syntax highlighting
+    function highlightCode(code) {
+      let highlightedCode = escapeHtml(code);
+      
+      // Highlight patterns
+      highlightedCode = highlightedCode
+        .replace(/(\/\/.*)/g, '<span class="comment">$1</span>')
+        .replace(/\b(function|return|if|else|for|while|var|let|const|import|from|export|default)\b/g, '<span class="keyword">$1</span>')
+        .replace(/\b(\d+)\b/g, '<span class="number">$1</span>')
+        .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>')
+        .replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g, '<span class="function">$1</span>(');
+      
+      return highlightedCode;
+    }
+
+    // Display codes in real-time
+    onSnapshot(codesCollection, (snapshot) => {
+      if (snapshot.empty) {
+        emptyState.style.display = 'block';
+        codeList.innerHTML = '';
+        codeList.appendChild(emptyState);
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      codeList.innerHTML = '';
+      
+      snapshot.docs.forEach((doc) => {
+        const code = doc.data();
+        const li = document.createElement('div');
+        li.className = 'code-item';
+        
+        const date = new Date(code.createdAt);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        
+        const highlightedCode = highlightCode(code.content);
+        const isLongCode = code.content.length > 300;
+        
+        li.innerHTML = `
+          <div class="code-header">
+            <div class="code-date">${formattedDate}</div>
+          </div>
+          <div class="code-content">
+            ${highlightedCode}
+            ${isLongCode ? '<button class="expand-btn" onclick="toggleExpand(this)">Show More</button>' : ''}
+          </div>
+          <div class="code-actions">
+            <button class="action-btn copy-btn" onclick="copyCode('${escapeSingleQuotes(code.content)}')">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+            <button class="action-btn edit-btn" onclick="editCode('${doc.id}', '${escapeSingleQuotes(code.content)}')">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="action-btn delete-btn" onclick="deleteCode('${doc.id}')">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        `;
+        codeList.appendChild(li);
+      });
+    });
 
     // Make functions global for HTML onclick
     window.deleteCode = deleteCode;
     window.editCode = editCode;
     window.copyCode = copyCode;
+    window.toggleExpand = toggleExpand;
   </script>
 </body>
   </html>
