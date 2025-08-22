@@ -542,6 +542,7 @@
     const toast = document.getElementById('toast');
 
     let currentEditId = null;
+    let codeDataMap = new Map(); // Store code content separately to avoid issues with large text
 
     // Show modal functions
     addBtn.addEventListener('click', () => {
@@ -611,6 +612,7 @@
       if (confirm('Are you sure you want to delete this code snippet?')) {
         try {
           await deleteDoc(doc(db, "codes", id));
+          codeDataMap.delete(id);
           showToast('Code deleted successfully!', 'success');
         } catch (error) {
           console.error("Error deleting document: ", error);
@@ -620,20 +622,44 @@
     }
 
     // Edit code
-    function editCode(id, content) {
-      currentEditId = id;
-      editCodeInput.value = content;
-      editModal.style.display = 'flex';
+    function editCode(id) {
+      const codeContent = codeDataMap.get(id);
+      if (codeContent) {
+        currentEditId = id;
+        editCodeInput.value = codeContent;
+        editModal.style.display = 'flex';
+      }
     }
 
     // Copy code to clipboard
-    async function copyCode(content) {
+    async function copyCode(id) {
+      const codeContent = codeDataMap.get(id);
+      if (!codeContent) return;
+      
       try {
-        await navigator.clipboard.writeText(content);
+        await navigator.clipboard.writeText(codeContent);
         showToast('Code copied to clipboard!', 'success');
       } catch (err) {
         console.error('Failed to copy: ', err);
-        showToast('Failed to copy code. Please try again.', 'error');
+        
+        // Fallback method for copying
+        const textArea = document.createElement('textarea');
+        textArea.value = codeContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            showToast('Code copied to clipboard!', 'success');
+          } else {
+            showToast('Failed to copy code. Please try again.', 'error');
+          }
+        } catch (fallbackErr) {
+          showToast('Failed to copy code. Please try again.', 'error');
+        }
+        
+        document.body.removeChild(textArea);
       }
     }
 
@@ -658,6 +684,7 @@
 
     // Helper function to escape HTML
     function escapeHtml(unsafe) {
+      if (!unsafe) return '';
       return unsafe
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -666,13 +693,10 @@
         .replace(/'/g, "&#039;");
     }
 
-    // Helper function to escape single quotes
-    function escapeSingleQuotes(str) {
-      return str.replace(/'/g, "&#039;").replace(/\n/g, "\\n").replace(/\r/g, "\\r");
-    }
-
     // Simple syntax highlighting
     function highlightCode(code) {
+      if (!code) return '';
+      
       let highlightedCode = escapeHtml(code);
       
       // Highlight patterns
@@ -698,6 +722,13 @@
       emptyState.style.display = 'none';
       codeList.innerHTML = '';
       
+      // Store all code content in the map first
+      snapshot.docs.forEach((doc) => {
+        const code = doc.data();
+        codeDataMap.set(doc.id, code.content);
+      });
+      
+      // Then render the UI
       snapshot.docs.forEach((doc) => {
         const code = doc.data();
         const li = document.createElement('div');
@@ -722,10 +753,10 @@
             ${isLongCode ? '<button class="expand-btn" onclick="toggleExpand(this)">Show More</button>' : ''}
           </div>
           <div class="code-actions">
-            <button class="action-btn copy-btn" onclick="copyCode('${escapeSingleQuotes(code.content)}')">
+            <button class="action-btn copy-btn" onclick="copyCode('${doc.id}')">
               <i class="fas fa-copy"></i> Copy
             </button>
-            <button class="action-btn edit-btn" onclick="editCode('${doc.id}', '${escapeSingleQuotes(code.content)}')">
+            <button class="action-btn edit-btn" onclick="editCode('${doc.id}')">
               <i class="fas fa-edit"></i> Edit
             </button>
             <button class="action-btn delete-btn" onclick="deleteCode('${doc.id}')">
