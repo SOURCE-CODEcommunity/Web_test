@@ -1507,3 +1507,59 @@ MIDDLEWARE = [
     # ... other middleware
 ]
 ```
+
+**Using Vercel for cors in IARAP**
+
+```json
+{
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-Requested-With, Content-Type, Authorization" }
+      ]
+    }
+  ]
+}
+```
+
+**Extra-Cors in settings.py**
+```python
+# Allow all origins (for development)
+CORS_ALLOW_ALL_ORIGINS = True
+
+# OR for production, specify allowed origins:
+CORS_ALLOWED_ORIGINS = [
+    "https://your-frontend-domain.com",
+    "http://localhost:3000",  # For local development
+    "http://127.0.0.1:3000",
+]
+
+# Allow credentials if needed
+CORS_ALLOW_CREDENTIALS = True
+
+# Allowed methods
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Allowed headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+```
