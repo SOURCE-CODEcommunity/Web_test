@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100-Level Courses Timetable</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #202124;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #1a73e8;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: #1a73e8;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 6px;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+        
+        .download-btn:hover {
+            background: #1967d2;
+        }
+        
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .timetable th {
+            background: #f1f3f4;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #dadce0;
+        }
+        
+        .timetable td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #dadce0;
+            font-size: 0.9rem;
+        }
+        
+        .time-header {
+            background: #e8f0fe;
+            color: #1a73e8;
+            font-weight: 500;
+        }
+        
+        .course-code {
+            font-weight: 500;
+            color: #1a73e8;
+        }
+        
+        .location {
+            font-size: 0.8rem;
+            color: #5f6368;
+            margin-top: 4px;
+        }
+        
+        @media (max-width: 600px) {
+            .timetable {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .timetable th, .timetable td {
+                padding: 8px 4px;
+                font-size: 0.8rem;
+            }
+            
+            .location {
+                font-size: 0.7rem;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #5f6368;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>UNIVERSITY OF IBADAN</h1>
+            <div class="subtitle">FACULTY OF SCIENCE - 100 LEVEL COURSES TIMETABLE</div>
+            <div class="subtitle">SECOND SEMESTER 2024/2025</div>
+        </header>
+        
+        <a href="#" class="download-btn" onclick="downloadTimetable()">Download Timetable as Image</a>
+        
+        <table class="timetable">
+            <thead>
+                <tr>
+                    <th>TIME</th>
+                    <th>MONDAY</th>
+                    <th>TUESDAY</th>
+                    <th>WEDNESDAY</th>
+                    <th>THURSDAY</th>
+                    <th>FRIDAY</th>
+                    <th>SATURDAY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-header">8-9am</td>
+                    <td>
+                        <div class="course-code">C-PHY 102</div>
+                        <div class="location">CBN</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-ZOO 101</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-CSC 103</div>
+                        <div class="location">FLT</div>
+                        <div class="course-code">C-GEY 103</div>
+                        <div class="location">100LCR</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-PHY 104</div>
+                        <div class="location">C CBN</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-PHY 102</div>
+                        <div class="location">R CBN</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-MAT 142</div>
+                        <div class="location">MLT</div>
+                        <div class="course-code">C-BIO 102</div>
+                        <div class="location">R CBN</div>
+                        <div class="course-code">C-CSC 103</div>
+                        <div class="location">FLT</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">9-10am</td>
+                    <td>
+                        <div class="course-code">C-BOT 141</div>
+                        <div class="location">CBN</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BOT 141 (P)</div>
+                        <div class="location">LAB A1</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108 (P)</div>
+                        <div class="location">FFL</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BOT 141</div>
+                        <div class="location">CBN</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">10-11am</td>
+                    <td>
+                        <div class="course-code">C-CHM 108A</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108</div>
+                        <div class="location">100L LAB</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 101</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 102/127/126</div>
+                        <div class="location">CRN</div>
+                        <div class="course-code">C-CHM 102/177/176</div>
+                        <div class="location">CRN</div>
+                        <div class="course-code">C-BIO 108</div>
+                        <div class="location">D11</div>
+                        <div class="course-code">C-MAT 142</div>
+                        <div class="location">MLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108</div>
+                        <div class="location">C10</div>
+                        <div class="course-code">C-CHM 108 (R)</div>
+                        <div class="location">FFL AJ</div>
+                        <div class="course-code">C-CHM 108 (R)</div>
+                        <div class="location">MPL</div>
+                        <div class="course-code">C-PHY 108 P (R)</div>
+                        <div class="location">LAB</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108 A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108 MPL</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 P (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-STA 122</div>
+                        <div class="location">SLT</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">11-12pm</td>
+                    <td>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FF FFL</div>
+                        <div class="course-code">C-GEO 141 (R)</div>
+                        <div class="location">022</div>
+                        <div class="course-code">C-MAT 141 (R)</div>
+                        <div class="location">FLT</div>
+                        <div class="course-code">C-PHY 108</div>
+                        <div class="location">100L LAB</div>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-MAT 141 (R)</div>
+                        <div class="location">FLT</div>
+                        <div class="course-code">C-PHY 101 (E) LAB</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                        <div class="course-code">C-MTH 102</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 (R) LAB</div>
+                        <div class="location">100L</div>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 (P)</div>
+                        <div class="location">100L LAB</div>
+                        <div class="course-code">C-STA 122</div>
+                        <div class="location">NFLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C10 & C11</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">12-1pm</td>
+                    <td>
+                        <div class="course-code">C-BOT 141 (P)</div>
+                        <div class="location">LAB A1</div>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-MAT 141 (R)</div>
+                        <div class="location">FLT</div>
+                        <div class="course-code">C-PHY 108 (R)</div>
+                        <div class="location">100L LAB</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL AJE</div>
+                        <div class="course-code">C-CHM 108</div>
+                        <div class="location">FFL CD</div>
+                        <div class="course-code">C-GEO 141 (R)</div>
+                        <div class="location">019</div>
+                        <div class="course-code">C-MAT 141 (R)</div>
+                        <div class="location">FLT</div>
+                        <div class="course-code">C-PHY 101 LAB</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 102/127/126</div>
+                        <div class="location">CRN</div>
+                        <div class="course-code">C-CHM 102/177/176</div>
+                        <div class="location">CRN</div>
+                        <div class="course-code">C-BIO 108 (D11)</div>
+                        <div class="location">ZLT</div>
+                        <div class="course-code">C-MAT 142</div>
+                        <div class="location">MLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108 (C10)</div>
+                        <div class="location">ZLT</div>
+                        <div class="course-code">C-CHM 108 (R)</div>
+                        <div class="location">FFL AJ</div>
+                        <div class="course-code">C-CHM 108 (R)</div>
+                        <div class="location">MPL</div>
+                        <div class="course-code">C-PHY 108 P (R)</div>
+                        <div class="location">LAB</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108 A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108 MPL</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 P (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-STA 122</div>
+                        <div class="location">SLT</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">1-2pm</td>
+                    <td>
+                        <div class="course-code">GES 103</div>
+                        <div class="location">NFLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">GES 103</div>
+                        <div class="location">NFLT</div>
+                        <div class="course-code">C-PHY 101P LAB</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-STA 121</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-MAT 142</div>
+                        <div class="location">MLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-MAT 142</div>
+                        <div class="location">MLT</div>
+                        <div class="course-code">GET 103</div>
+                        <div class="location">100L CR</div>
+                        <div class="course-code">C-ZOO 102 (T)</div>
+                        <div class="location">CBN</div>
+                    </td>
+                    <td>
+                        <div class="course-code">JUMAT</div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">3-4pm</td>
+                    <td>
+                        <div class="course-code">C-CHM 108A</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108P (R)</div>
+                        <div class="location">100L LAB</div>
+                        <div class="course-code">C-BIO 108</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108P (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-BIO 108P</div>
+                        <div class="location">C7 & C8</div>
+                        <div class="course-code">STA 131 (C)</div>
+                        <div class="location">SLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108 (P)</div>
+                        <div class="location">C7 & C8</div>
+                        <div class="course-code">C-CHM 108A</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108P (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-STA 121 (R)</div>
+                        <div class="location">SLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108P</div>
+                        <div class="location">C7 & C8</div>
+                        <div class="course-code">C-BOT 141 (P)</div>
+                        <div class="location">LAB A1/CBN</div>
+                        <div class="course-code">C-CHM 108 (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108A/B (R)</div>
+                        <div class="location">FFL</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-header">4-5pm</td>
+                    <td>
+                        <div class="course-code">C-CHM 108A</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 (R)</div>
+                        <div class="location">100L LAB</div>
+                        <div class="course-code">GES 103</div>
+                        <div class="location">FLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 101P LAB</div>
+                        <div class="location">CBN</div>
+                        <div class="course-code">C-PHY 108 (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-BIO 108P</div>
+                        <div class="location">C10 & C11</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108P</div>
+                        <div class="location">C10 & C11</div>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-PHY 108 (R)</div>
+                        <div class="location">LAB</div>
+                        <div class="course-code">C-STA 121 (C)</div>
+                        <div class="location">SLT</div>
+                    </td>
+                    <td>
+                        <div class="course-code">C-BIO 108P</div>
+                        <div class="location">C10 & C11</div>
+                        <div class="course-code">C-BOT 141 (P)</div>
+                        <div class="location">LAB A1</div>
+                        <div class="course-code">C-CHM 108A (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-CHM 108B (R)</div>
+                        <div class="location">FFL</div>
+                        <div class="course-code">C-BIO 102</div>
+                        <div class="location">CBN</div>
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            <p>Faculty of Science - University of Ibadan</p>
+            <p>Second Semester 2024/2025 Academic Session</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle the download (this would need a proper implementation for a real scenario)
+        function downloadTimetable() {
+            alert("In a real implementation, this would download the timetable as an image. For now, you can take a screenshot of the timetable.");
+            // In a real implementation, you would use a library like html2canvas to convert the table to an image
+            // and then trigger a download. This is simplified for demonstration purposes.
+        }
+        
+        // Auto-scroll to the timetable on page load
+        window.onload = function() {
+            document.querySelector('.download-btn').scrollIntoView({ behavior: 'smooth' });
+        };
+    </script>
+</body>
+</html>
