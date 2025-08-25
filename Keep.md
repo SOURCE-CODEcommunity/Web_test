@@ -1478,3 +1478,32 @@ This implementation provides a complete website for Communications for Christ Mi
 7. Consistent navigation and footer across all pages
 
 The JavaScript handles all the interactive elements, and the db.js file contains all the data as requested. The design follows the template you provided while adapting it for a church ministry with appropriate colors and styling.
+
+
+###**To Complete the IARAP Project**
+
+1. Create a file called cors_middleware.py in your app folder.
+```python
+class CorsMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        
+        if request.method == "OPTIONS":
+            response.status_code = 200
+            return response
+            
+        return response
+```
+2. Add it to MIDDLEWARE in settings.py
+```python
+MIDDLEWARE = [
+    'your_app.cors_middleware.CorsMiddleware',
+    # ... other middleware
+]
+```
