@@ -1,3 +1,206 @@
+I'll provide you with a complete Vercel configuration for your Django project. Based on your existing vercel.json, here's a full configuration setup:
+
+Complete vercel.json
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "iarap/wsgi.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "/media/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "iarap/wsgi.py",
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
+      "headers": {
+        "Access-Control-Allow-Origin": ["*"],
+        "Access-Control-Allow-Methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "Access-Control-Allow-Headers": ["Content-Type", "Authorization", "X-CSRFToken"],
+        "Access-Control-Allow-Credentials": "true"
+      }
+    }
+  ],
+  "env": {
+    "PYTHON_VERSION": "3.11",
+    "DJANGO_SETTINGS_MODULE": "iarap.settings",
+    "PYTHONPATH": "/var/task"
+  },
+  "functions": {
+    "iarap/wsgi.py": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production",
+      "PYTHON_VERSION": "3.11"
+    }
+  }
+}
+```
+
+Required Files
+
+1. api/vercel.py (Serverless Function Handler)
+
+```python
+from iarap.wsgi import application
+
+def handler(request, response):
+    return application(request, response)
+```
+
+2. requirements.txt
+
+Make sure you have all your dependencies listed:
+
+```
+Django>=4.0,<5.0
+psycopg2-binary
+whitenoise
+gunicorn
+python-decouple
+```
+
+3. build.sh (Build Script)
+
+```bash
+#!/bin/bash
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Collect static files
+python manage.py collectstatic --noinput
+
+# Run migrations (if database is configured)
+# python manage.py migrate --noinput
+```
+
+4. Django Settings Configuration
+
+Update your settings.py:
+
+```python
+import os
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Security settings for production
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-here')
+
+ALLOWED_HOSTS = [
+    '.vercel.app',
+    '.now.sh',
+    'localhost',
+    '127.0.0.1'
+]
+
+# Database (if using PostgreSQL on Vercel)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DATABASE'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    }
+}
+
+# Static files configuration
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Whitenoise for static files
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # ... other middleware
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-csrftoken',
+]
+```
+
+5. .vercelignore
+
+```
+*.pyc
+__pycache__/
+.env
+.env.local
+.env.production
+node_modules/
+*.sqlite3
+media/
+.DS_Store
+*.log
+```
+
+6. Environment Variables
+
+Set these in your Vercel dashboard:
+
+```
+DEBUG=False
+SECRET_KEY=your-random-secret-key
+DJANGO_SETTINGS_MODULE=iarap.settings
+PYTHON_VERSION=3.11
+```
+
+Deployment Steps
+
+1. Install Vercel CLI: npm i -g vercel
+2. Login: vercel login
+3. Deploy: vercel --prod
+4. Set environment variables in Vercel dashboard
+
+Additional Recommendations
+
+1. Database: Use Vercel Postgres or an external database service
+2. Storage: Use AWS S3 or similar for media files
+3. Caching: Consider adding Redis for caching
+4. CDN: Enable Vercel's CDN for static assets
+
+This configuration provides a complete setup for deploying your Django application on Vercel with proper static file handling, CORS support, and production-ready settings.
+
 
 ###**To Complete the IARAP Project**
 
