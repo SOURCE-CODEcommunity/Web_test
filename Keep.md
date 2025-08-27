@@ -6,41 +6,39 @@ https://www.youtube.com/@CommforChristTV
 **Iframes**
 
 
-<!-- My Year of Transformation  -->
+My Year of Transformation  
 ```html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/IZ4fkffEBYM?si=nfrH6_qwfzRfQXMs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
 
-<!-- Mantra 1  -->
+ Mantra 1  
 ```html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Lbnl_wVI7uE?si=gGd8ZqQni15UIYi7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-<!-- description: It is important to have an idea of what the kingdom of heaven is all about, otherwise, you will easily fall prey to misleaders.  If that choir mistress had known the kingdom of heaven, she would not have accepted to fornicate with her pastor.  Having an idea of what it is required to make heaven will definitely help you to know the type of church to attend, the type of friends to make, the type of pastor you will follow, and more importantly, the importance of learning, knowing and doing the will of God (Matthew 7:20-22; 1 John 2:17). -->
+description: It is important to have an idea of what the kingdom of heaven is all about, otherwise, you will easily fall prey to misleaders.  If that choir mistress had known the kingdom of heaven, she would not have accepted to fornicate with her pastor.  Having an idea of what it is required to make heaven will definitely help you to know the type of church to attend, the type of friends to make, the type of pastor you will follow, and more importantly, the importance of learning, knowing and doing the will of God (Matthew 7:20-22; 1 John 2:17). 
 
-<!-- mantra 2  -->
+ mantra 2  
 ```html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/hDzsNCDTGVI?si=oT3wMZi_muLD6nBU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-<!-- description: Any situation in which you find yourself, just have faith in god that all is well.  -->
+ description: Any situation in which you find yourself, just have faith in god that all is well.  
 
-<!-- mantra 3  -->
+mantra 3  
 ```html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/QTJ37j-HIPM?si=EgknZi4PFgnKYU-n" tiitle="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-<!-- description: God does not say you should not become what you say you want to become, But do you consider asking yourself these three (3) questions  -->
+description: God does not say you should not become what you say you want to become, But do you consider asking yourself these three (3) questions  
 
-<!-- mantra 4  -->
+mantra 4  
 ```html
 <iframe width="560" height="315" src="https://www.youtube.com/embed/00PwqaB7a58?si=9h-0zER33zgXl8QZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ```
-<!--  description: What do you need to do in order to move forward?
- -->
-```
+ description: What do you need to do in order to move forward?
 
 
 
 
-I'll provide you with a complete Vercel configuration for your Django project. Based on your existing vercel.json, here's a full configuration setup:
+### I'll provide you with a complete Vercel configuration for your Django project. Based on your existing vercel.json, here's a full configuration setup:
 
 Complete vercel.json
 
