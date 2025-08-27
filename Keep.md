@@ -1,3 +1,47 @@
+## Read More Functionality in Under 200 Words
+
+The Read More functionality uses CSS for the visual effect and JavaScript for the toggle interaction.
+
+HTML: Create a container with text and a button:
+
+```html
+<div class="text-container">
+  <p class="text-content">Your long text here...</p>
+  <button class="read-more-btn">Read More</button>
+</div>
+```
+
+CSS: Limit text to few lines initially:
+
+```css
+.text-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.text-content.expanded {
+  -webkit-line-clamp: unset; /* Show all text when expanded */
+}
+```
+
+JavaScript: Toggle the expanded class on click:
+
+```javascript
+const button = document.querySelector('.read-more-btn');
+const text = document.querySelector('.text-content');
+
+button.addEventListener('click', () => {
+  text.classList.toggle('expanded');
+  button.textContent = text.classList.contains('expanded') 
+    ? 'Read Less' : 'Read More';
+});
+```
+
+This creates a smooth, accessible read more/less toggle without needing complex libraries. The CSS line-clamp property handles the text truncation, while JavaScript toggles the expanded state and button text.
+
+
 ### **CfC YouTube channel**
 
 
