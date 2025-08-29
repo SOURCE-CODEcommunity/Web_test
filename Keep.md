@@ -1,4 +1,4 @@
-## Read More Functionality in Under 200 Words
+## Read More Functionality
 
 The Read More functionality uses CSS for the visual effect and JavaScript for the toggle interaction.
 
@@ -40,6 +40,293 @@ button.addEventListener('click', () => {
 ```
 
 This creates a smooth, accessible read more/less toggle without needing complex libraries. The CSS line-clamp property handles the text truncation, while JavaScript toggles the expanded state and button text.
+
+
+## Code to display unique images for each chapter card.
+
+1. First, Update Your Story Database
+
+In story-db.js, add image URLs to each chapter:
+
+```javascript
+const stories = {
+  "Lima's Door": {
+    logline: LimaLogline,
+    genre: "Fantasy",
+    imageUrl: "https://i.imgur.com/JQlEs9O.png",
+    chapters: [
+      {
+        number: 1,
+        title: "The Attic Discovery",
+        story: LimaChapter1,
+        imageUrl: "https://i.imgur.com/attic-discovery.jpg" // Add this
+      },
+      {
+        number: 2,
+        title: "Welcome to Oniria",
+        story: LimaChapter2,
+        imageUrl: "https://i.imgur.com/welcome-oniria.jpg" // Add this
+      }
+    ]
+  },
+  "The Rat Taker": {
+    logline: TheRatTakerLogline,
+    genre: "Dark Fantasy",
+    imageUrl: "https://i.imgur.com/7VyvX3J.jpg",
+    chapters: [
+      {
+        number: 1,
+        title: "Plague and Shadows",
+        story: TheRatTakerChapter1,
+        imageUrl: "https://i.imgur.com/plague-shadows.jpg" // Add this
+      }
+    ]
+  }
+};
+```
+
+2. Update the Chapter Card HTML Generation
+
+In script.js, modify the showStory() function:
+
+```javascript
+function showStory(storyTitle) {
+  currentStory = stories[storyTitle];
+  storyViewTitle.textContent = storyTitle;
+  
+  // Render all chapters with images
+  chapterCardsContainer.innerHTML = '';
+  currentStory.chapters.forEach((chapter, index) => {
+    const chapterCard = document.createElement('div');
+    chapterCard.className = 'chapter-card paper-layer';
+    
+    chapterCard.innerHTML = `
+      <div class="chapter-card-image" 
+           style="background-image: url('${chapter.imageUrl || currentStory.imageUrl}')">
+      </div>
+      <div class="chapter-card-content">
+        <div class="chapter-card-number">Chapter ${chapter.number}</div>
+        <h4 class="chapter-card-title">${chapter.title}</h4>
+        <p class="chapter-card-preview">${getFirstSentence(chapter.story)}</p>
+      </div>
+    `;
+    
+    chapterCard.addEventListener('click', () => showChapter(storyTitle, index));
+    chapterCardsContainer.appendChild(chapterCard);
+  });
+  
+  // ... rest of your showStory code
+}
+
+// Helper function to get first sentence for preview
+function getFirstSentence(text) {
+  const firstSentence = text.split('.')[0] + '.';
+  return firstSentence.length > 100 ? firstSentence.substring(0, 100) + '...' : firstSentence;
+}
+```
+
+3. Add CSS for Chapter Card Images
+
+In styles.css, add these styles:
+
+```css
+/* Chapter Card with Image */
+.chapter-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 280px; /* Fixed height for consistency */
+}
+
+.chapter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.chapter-card-image {
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.chapter-card:hover .chapter-card-image {
+  transform: scale(1.05);
+}
+
+.chapter-card-image::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+}
+
+.chapter-card-content {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chapter-card-number {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.chapter-card-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+  font-family: 'Unna', serif;
+}
+
+.chapter-card-preview {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+/* Latest Chapter Styling */
+.latest-chapter .chapter-card {
+  height: 320px; /* Slightly larger for emphasis */
+}
+
+.latest-chapter .chapter-card-image {
+  height: 180px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chapter-card {
+    height: 250px;
+  }
+  
+  .chapter-card-image {
+    height: 120px;
+  }
+  
+  .latest-chapter .chapter-card {
+    height: 280px;
+  }
+  
+  .latest-chapter .chapter-card-image {
+    height: 140px;
+  }
+}
+
+/* Fallback for missing images */
+.chapter-card-image:empty::before {
+  content: 'Chapter ' attr(data-chapter-number);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: linear-gradient(135deg, var(--accent) 0%, #6b8c42 100%);
+  color: white;
+  font-family: 'Unna', serif;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 1rem;
+}
+```
+
+4. Update Latest Chapter Display
+
+Also in script.js, update the latest chapter display:
+
+```javascript
+// In showStory function, update latest chapter display
+if (currentStory.chapters.length > 0) {
+  const latestChapter = currentStory.chapters[currentStory.chapters.length - 1];
+  latestChapterInfo.innerHTML = `
+    <div class="chapter-card paper-layer">
+      <div class="chapter-card-image" 
+           style="background-image: url('${latestChapter.imageUrl || currentStory.imageUrl}')"
+           data-chapter-number="${latestChapter.number}">
+      </div>
+      <div class="chapter-card-content">
+        <div class="chapter-card-number">Chapter ${latestChapter.number}</div>
+        <h4 class="chapter-card-title">${latestChapter.title}</h4>
+        <p class="chapter-card-preview">${getFirstSentence(latestChapter.story)}</p>
+        <button class="read-chapter-btn" data-index="${currentStory.chapters.length - 1}">
+          Read Chapter
+        </button>
+      </div>
+    </div>
+  `;
+  
+  latestChapterInfo.querySelector('.read-chapter-btn').addEventListener('click', (e) => {
+    showChapter(storyTitle, parseInt(e.target.dataset.index));
+  });
+}
+```
+
+5. Enhanced Version with Fallback Images
+
+If you want to ensure every chapter has an image, even if not specified:
+
+```javascript
+// Add this function to generate fallback images based on chapter number
+function getChapterImage(chapter, storyImage) {
+  if (chapter.imageUrl) return chapter.imageUrl;
+  
+  // Generate a gradient based on chapter number for fallback
+  const hue = (chapter.number * 30) % 360; // Different color for each chapter
+  return `linear-gradient(135deg, hsl(${hue}, 70%, 60%) 0%, hsl(${hue + 20}, 80%, 40%) 100%)`;
+}
+
+// Update the chapter card image style
+chapterCard.innerHTML = `
+  <div class="chapter-card-image" 
+       style="background: ${getChapterImage(chapter, currentStory.imageUrl)}">
+    <span class="chapter-number-badge">Ch. ${chapter.number}</span>
+  </div>
+  <!-- rest of content -->
+`;
+```
+
+6. Add Badge CSS for Gradient Chapters
+
+```css
+.chapter-number-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* For gradient backgrounds */
+.chapter-card-image[style*="gradient"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'Unna', serif;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+```
+
+Now each chapter card will display its own unique image, with fallbacks to the story image or automatically generated gradients if no specific image is provided!
 
 
 ### **CfC YouTube channel**
