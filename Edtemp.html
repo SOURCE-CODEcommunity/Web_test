@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== Design System ===== */
+        :root {
+            /* Color Palette */
+            --primary: #4285F4;
+            --primary-dark: #3367D6;
+            --secondary: #34A853;
+            --secondary-dark: #2D8E49;
+            --accent: #EA4335;
+            --accent-dark: #D33426;
+            --warning: #FBBC05;
+            --warning-dark: #F9AB00;
+            --light: #f8f9fa;
+            --medium: #999da3;
+            --dark: #5f6368;
+            --darker: #3c4043;
+            --white: #ffffff;
+            --black: #000000;
+            
+            /* Typography */
+            --font-main: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-size-base: 1rem;
+            --line-height: 1.5;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            
+            /* Effects */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s ease;
+            --blur-effect: blur(10px);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            
+            /* Glass morphism */
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --glass-bg-dark: rgba(0, 0, 0, 0.6);
+            --glass-border-dark: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dark Mode Variables */
+        .dark-mode {
+            --glass-bg: var(--glass-bg-dark);
+            --glass-border: var(--glass-border-dark);
+            --dark: #e8eaed;
+            --darker: #ffffff;
+            --light: #202124;
+            --medium: #5f6368;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height);
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f5ff 0%, #f9f9ff 50%, #ffffff 100%);
+            min-height: 100vh;
+            transition: background-color var(--transition-normal);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: var(--darker);
+        }
+
+        /* Layout */
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Auth Screen */
+        .auth-container {
+            max-width: 500px;
+            margin: auto;
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--medium);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: var(--space-md);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .tab-btn.active {
+            border-bottom-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .auth-form {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--space-xs);
+            font-weight: 500;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: var(--space-sm);
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            font-size: var(--font-size-base);
+        }
+
+        .courses-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            padding: var(--space-sm);
+        }
+
+        .course-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-xs);
+        }
+
+        .course-checkbox input {
+            margin-right: var(--space-sm);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border: none;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn.secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn.secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn.text {
+            background: none;
+            color: var(--primary);
+            padding: 0;
+        }
+
+        .btn.text:hover {
+            text-decoration: underline;
+        }
+
+        .btn.small {
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.875rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--dark);
+            transition: var(--transition-fast);
+        }
+
+        .icon-btn:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .icon-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            padding: var(--space-md);
+            box-shadow: var(--glass-shadow);
+            border-bottom: var(--glass-border);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left h1 {
+            font-size: 1.25rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .header-left p {
+            font-size: 0.875rem;
+            color: var(--medium);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        /* Main Content */
+        .app-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            flex: 1;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            -webkit-backdrop-filter: var(--blur-effect);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            padding: var(--space-lg);
+            transition: var(--transition-normal);
+        }
+
+        .greeting-card h1 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Exams List */
+        .exams-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .exam-card {
+            padding: var(--space-md);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.05);
+            transition: var(--transition-fast);
+            cursor: pointer;
+        }
+
+        .dark-mode .exam-card {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .exam-card:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .exam-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .exam-card .exam-code {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .exam-card .exam-name {
+            font-size: 0.875rem;
+            margin-top: var(--space-xs);
+        }
+
+        .exam-card .exam-date {
+            font-size: 0.875rem;
+            color: var(--medium);
+            margin-top: var(--space-xs);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur-effect);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--medium);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: var(--space-md);
+        }
+
+        .exam-detail {
+            margin-bottom: var(--space-md);
+        }
+
+        .exam-detail label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: var(--space-xs);
+        }
+
+        .exam-detail span {
+            display: block;
+        }
+
+        .exam-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-lg);
+        }
+
+        /* Help Button Styles */
+        .help-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .help-button:hover {
+            transform: scale(1.1);
+            background-color: var(--primary-dark);
+        }
+
+        .help-button svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Help Dialog Styles */
+        .help-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .help-dialog-content {
+            background-color: white;
+            background: var(--glass-bg);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .help-dialog h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .developer-info {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        .developer-info a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .developer-info a:hover {
+            text-decoration: underline;
+        }
+
+        .close-help {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .dark-mode .help-dialog-content {
+            background: var(--glass-bg-dark);
+            color: var(--darker);
+        }
+
+        /* Search Input Styles */
+        .search-input {
+            width: 100%;
+            padding: var(--space-sm);
+            margin-bottom: var(--space-sm);
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            font-size: var(--font-size-base);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+        }
+
+        /* Course Checkbox Styles */
+        .course-checkbox {
+            display: flex;
+            align-items: center;
+            padding: var(--space-xs) 0;
+            transition: all var(--transition-fast);
+        }
+
+        .course-code {
+            font-weight: 500;
+            color: var(--primary);
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .course-name {
+            color: var(--dark);
+        }
+
+        .dark-mode .course-name {
+            color: var(--light);
+        }
+
+        /* Highlight matching text */
+        .highlight {
+            background-color: rgba(255, 235, 59, 0.3);
+            padding: 2px 0;
+        }
+
+        /* Department Selector Styles */
+        .other-department-input {
+            margin-top: 10px;
+            width: 100%;
+            padding: var(--space-sm);
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            transition: all var(--transition-fast);
+        }
+
+        .other-department-input.hidden {
+            display: none;
+        }
+
+        .department-select {
+            margin-bottom: 0;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            color: #999;
+            padding: var(--space-md);
+        }
+
+        /* Utility Classes */
+        .mt-3 {
+            margin-top: var(--space-md);
+        }
+        .mb-3 {
+            margin-bottom: var(--space-md);
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-main {
+                padding: var(--space-md);
+            }
+            
+            .auth-container {
+                padding: var(--space-md);
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Auth Screen -->
+        <div id="auth-screen" class="screen">
+            <div class="auth-container">
+                <h1>Exam Details</h1>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="signup">Sign Up</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password">
+                    </div>
+                    <button id="login-btn" class="btn primary">Login</button>
+                    <p class="text-center mt-3">
+                        <a href="#" class="btn text">Forgot Password?</a>
+                    </p>
+                </div>
+                
+                <!-- Signup Form -->
+                <div id="signup-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-level">Level</label>
+                        <select id="signup-level">
+                            <option value="">Select Level</option>
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                            <option value="500">500 Level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Courses</label>
+                        <input type="text" id="course-search" placeholder="Search courses..." class="search-input">
+                        <div id="courses-checkboxes" class="courses-list">
+                            <!-- Sample courses -->
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="course1" value="CSC101">
+                                <label for="course1"><span class="course-code">CSC101</span> - Introduction to Computer Science</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="course2" value="MTH101">
+                                <label for="course2"><span class="course-code">MTH101</span> - General Mathematics I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="course3" value="PHY101">
+                                <label for="course3"><span class="course-code">PHY101</span> - General Physics I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="course4" value="CHM101">
+                                <label for="course4"><span class="course-code">CHM101</span> - General Chemistry I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="course5" value="BIO101">
+                                <label for="course5"><span class="course-code">BIO101</span> - General Biology I</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="signup-btn" class="btn primary">Create Account</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main App Screen (Hidden by default) -->
+        <div id="main-screen" class="screen hidden">
+            <header class="app-header">
+                <div class="header-left">
+                    <h1>Exam Details</h1>
+                    <p>Welcome back, <span id="user-name">Student</span></p>
+                </div>
+                <div class="header-right">
+                    <button id="theme-toggle" class="icon-btn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="profile-btn" class="icon-btn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button id="logout-btn" class="btn small">Logout</button>
+                </div>
+            </header>
+            
+            <main class="app-main">
+                <div class="glass-card greeting-card mb-3">
+                    <h1>Good morning, <span id="greeting-name">Student</span>!</h1>
+                    <p>You have <span id="exam-count">3</span> upcoming exams.</p>
+                </div>
+                
+                <div class="section-header">
+                    <h2>Upcoming Exams</h2>
+                    <button id="add-exam-btn" class="btn secondary small">Add Exam</button>
+                </div>
+                
+                <div class="exams-list">
+                    <!-- Sample exam cards -->
+                    <div class="exam-card glass-card">
+                        <div class="exam-code">CSC101</div>
+                        <div class="exam-name">Introduction to Computer Science</div>
+                        <div class="exam-date">Monday, Dec 15 - 10:00 AM</div>
+                    </div>
+                    <div class="exam-card glass-card">
+                        <div class="exam-code">MTH101</div>
+                        <div class="exam-name">General Mathematics I</div>
+                        <div class="exam-date">Wednesday, Dec 17 - 2:00 PM</div>
+                    </div>
+                    <div class="exam-card glass-card">
+                        <div class="exam-code">PHY101</div>
+                        <div class="exam-name">General Physics I</div>
+                        <div class="exam-date">Friday, Dec 19 - 9:00 AM</div>
+                    </div>
+                </div>
+            </main>
+            
+            <footer>
+                <p>&copy; 2023 Exam Details App</p>
+            </footer>
+        </div>
+        
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Profile</h2>
+                    <button id="close-profile-modal" class="icon-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit-name">Full Name</label>
+                        <input type="text" id="edit-name" placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" placeholder="Your email">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-level">Level</label>
+                        <select id="edit-level">
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                            <option value="500">500 Level</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Your Courses</label>
+                        <input type="text" id="edit-course-search" placeholder="Search courses..." class="search-input">
+                        <div id="edit-courses-checkboxes" class="courses-list">
+                            <!-- Sample courses -->
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="edit-course1" value="CSC101" checked>
+                                <label for="edit-course1"><span class="course-code">CSC101</span> - Introduction to Computer Science</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="edit-course2" value="MTH101" checked>
+                                <label for="edit-course2"><span class="course-code">MTH101</span> - General Mathematics I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="edit-course3" value="PHY101" checked>
+                                <label for="edit-course3"><span class="course-code">PHY101</span> - General Physics I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="edit-course4" value="CHM101">
+                                <label for="edit-course4"><span class="course-code">CHM101</span> - General Chemistry I</label>
+                            </div>
+                            <div class="course-checkbox">
+                                <input type="checkbox" id="edit-course5" value="BIO101">
+                                <label for="edit-course5"><span class="course-code">BIO101</span> - General Biology I</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-password">New Password (leave blank to keep current)</label>
+                        <input type="password" id="edit-password" placeholder="New password">
+                    </div>
+                    <button id="save-profile-btn" class="btn primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button id="helpButton" class="help-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12" y2="17"></line>
+        </svg>
+    </button>
+
+    <!-- Help Dialog -->
+    <div id="helpDialog" class="help-dialog">
+        <div class="help-dialog-content">
+            <button class="close-help">&times;</button>
+            <h3>Need Help or Have Feedback?</h3>
+            <p>For any inquiries or suggestions about the application, please reach out to the developer:</p>
+            <div class="developer-info">
+                <p><strong>Iyiola Adedamola Richard</strong></p>
+                <a href="https://iar-portfolio.netlify.app/" target="_blank">Visit Developer Portfolio</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Show appropriate form
+                    if (targetTab === 'login') {
+                        loginForm.classList.remove('hidden');
+                        signupForm.classList.add('hidden');
+                    } else {
+                        loginForm.classList.add('hidden');
+                        signupForm.classList.remove('hidden');
+                    }
+                });
+            });
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+            
+            // Login functionality
+            const loginBtn = document.getElementById('login-btn');
+            const authScreen = document.getElementById('auth-screen');
+            const mainScreen = document.getElementById('main-screen');
+            
+            loginBtn.addEventListener('click', () => {
+                authScreen.classList.add('hidden');
+                mainScreen.classList.remove('hidden');
+            });
+            
+            // Logout functionality
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            logoutBtn.addEventListener('click', () => {
+                authScreen.classList.remove('hidden');
+                mainScreen.classList.add('hidden');
+            });
+            
+            // Profile modal functionality
+            const profileBtn = document.getElementById('profile-btn');
+            const profileModal = document.getElementById('profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            
+            profileBtn.addEventListener('click', () => {
+                profileModal.classList.remove('hidden');
+            });
+            
+            closeProfileModal.addEventListener('click', () => {
+                profileModal.classList.add('hidden');
+            });
+            
+            // Help dialog functionality
+            const helpButton = document.getElementById('helpButton');
+            const helpDialog = document.getElementById('helpDialog');
+            const closeHelp = document.querySelector('.close-help');
+            
+            helpButton.addEventListener('click', () => {
+                helpDialog.style.display = 'flex';
+            });
+            
+            closeHelp.addEventListener('click', () => {
+                helpDialog.style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target === profileModal) {
+                    profileModal.classList.add('hidden');
+                }
+                if (event.target === helpDialog) {
+                    helpDialog.style.display = 'none';
+                }
+            });
+            
+            // Course search functionality
+            const courseSearch = document.getElementById('course-search');
+            const courseCheckboxes = document.querySelectorAll('#courses-checkboxes .course-checkbox');
+            
+            courseSearch.addEventListener('input', () => {
+                const searchTerm = courseSearch.value.toLowerCase();
+                
+                courseCheckboxes.forEach(course => {
+                    const courseText = course.textContent.toLowerCase();
+                    if (courseText.includes(searchTerm)) {
+                        course.style.display = 'flex';
+                    } else {
+                        course.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Edit course search functionality
+            const editCourseSearch = document.getElementById('edit-course-search');
+            const editCourseCheckboxes = document.querySelectorAll('#edit-courses-checkboxes .course-checkbox');
+            
+            editCourseSearch.addEventListener('input', () => {
+                const searchTerm = editCourseSearch.value.toLowerCase();
+                
+                editCourseCheckboxes.forEach(course => {
+                    const courseText = course.textContent.toLowerCase();
+                    if (courseText.includes(searchTerm)) {
+                        course.style.display = 'flex';
+                    } else {
+                        course.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
